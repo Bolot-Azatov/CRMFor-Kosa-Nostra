@@ -23,7 +23,7 @@ CREATE TABLE businesses (
                             name VARCHAR(150) NOT NULL,
                             type VARCHAR(100) NOT NULL,
                             weekly_revenue DECIMAL(15, 2) NOT NULL DEFAULT 0.00,
-                            capo_id BIGINT,
+                            capo_id BIGINT UNIQUE,
                             family_id BIGINT NOT NULL,
                             CONSTRAINT fk_businesses_capo FOREIGN KEY (capo_id) REFERENCES users(id) ON DELETE SET NULL,
                             CONSTRAINT fk_businesses_family FOREIGN KEY (family_id) REFERENCES families(id) ON DELETE CASCADE
@@ -58,7 +58,8 @@ CREATE TABLE family_relations (
                                   status VARCHAR(50) NOT NULL DEFAULT 'PEACE',
                                   CONSTRAINT fk_relations_family1 FOREIGN KEY (family_1_id) REFERENCES families(id) ON DELETE CASCADE,
                                   CONSTRAINT fk_relations_family2 FOREIGN KEY (family_2_id) REFERENCES families(id) ON DELETE CASCADE,
-                                  CONSTRAINT uq_family_pair UNIQUE (family_1_id, family_2_id)
+                                  CONSTRAINT uq_family_pair UNIQUE (family_1_id, family_2_id),
+                                  CONSTRAINT chk_family_order CHECK (family_1_id < family_2_id)
 );
 
 CREATE TABLE articles (

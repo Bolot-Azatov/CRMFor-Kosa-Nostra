@@ -82,3 +82,10 @@ INSERT INTO articles (id, title, content, is_public, family_id) VALUES
 (2, 'Пять Семей Нью-Йорка', 'Коза Ностра в Нью-Йорке разделена на пять главных семей: Гамбино, Дженовезе, Луккезе, Бонанно и Коломбо. Каждая семья имеет четкую иерархию: Босс, Консильери, Подбосс, Капо и Солдаты.', TRUE, NULL),
 (3, 'История семьи Gambino', 'Семья Гамбино — одна из самых мощных организаций. Основана на контроле портов, текстильной промышленности и строительного сектора Нью-Йорка.', FALSE, 1),
 (4, 'Хроника семьи Genovese', 'Семья Дженовезе известна как "Айви Лига" мафии за свою скрытность и высочайший уровень дисциплины. Контролирует Уолл-Стрит и Набережную.', FALSE, 2);
+
+
+ALTER TABLE families ALTER COLUMN id RESTART WITH 6;
+ALTER TABLE users ALTER COLUMN id RESTART WITH 18;
+ALTER TABLE businesses ALTER COLUMN id RESTART WITH 6;
+ALTER TABLE family_relations ALTER COLUMN id RESTART WITH 11;
+ALTER TABLE articles ALTER COLUMN id RESTART WITH 5;
