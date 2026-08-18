@@ -33,7 +33,7 @@ public class CapoController {
             model.addAttribute("error", e.getMessage());
         }
 
-        return "capo/business"; // Шаблон src/main/resources/templates/capo/business.html
+        return "capo/business";
     }
 
     @PostMapping("/tribute")
