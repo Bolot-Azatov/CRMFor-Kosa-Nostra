@@ -30,8 +30,8 @@ public class CustomUserDetailsService implements UserDetailsService {
                 user.getUsername(),
                 user.getPasswordHash(),
                 List.of(new SimpleGrantedAuthority("ROLE_" + user.getRole().name())),
-                userId,
-                familyId
+                familyId,
+                userId
         );
     }
 }

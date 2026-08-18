@@ -8,11 +8,9 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -20,7 +18,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final CustomUserDetailsService customUserDetailsService;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -31,21 +29,51 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+
                 .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
+
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
-                                "/api/v1/auth/**",
-                                "/api/v1/public/**",
+                                "/",
+                                "/login",
+                                "/register",
+                                "/articles",
+                                "/articles/**",
                                 "/public/**",
                                 "/h2-console/**",
                                 "/css/**",
                                 "/js/**",
                                 "/images/**"
                         ).permitAll()
+
+                        .requestMatchers("/boss/**").hasRole("BOSS")
+
+                        .requestMatchers("/counselor/**").hasAnyRole("COUNSELOR", "BOSS")
+
+                        .requestMatchers("/capo/**").hasAnyRole("CAPO", "COUNSELOR", "BOSS")
+
+                        .requestMatchers("/hierarchy", "/profile").hasAnyRole("SOLDIER", "CAPO", "COUNSELOR", "BOSS")
+
                         .anyRequest().authenticated()
                 )
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+
+                .formLogin(form -> form
+                        .loginPage("/login")
+                        .loginProcessingUrl("/login")
+                        .defaultSuccessUrl("/", true)
+                        .failureUrl("/login?error=true")
+                        .permitAll()
+                )
+
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/login?logout=true")
+                        .invalidateHttpSession(true)
+                        .deleteCookies("JSESSIONID")
+                        .permitAll()
+                )
+
+                .userDetailsService(customUserDetailsService);
 
         return http.build();
     }

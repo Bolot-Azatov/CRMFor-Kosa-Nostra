@@ -6,7 +6,6 @@ import org.crmkosanostra.crmkosanostra.dto.request.LoginRequest;
 import org.crmkosanostra.crmkosanostra.dto.response.AuthResponse;
 import org.crmkosanostra.crmkosanostra.entity.User;
 import org.crmkosanostra.crmkosanostra.repository.UserRepository;
-import org.crmkosanostra.crmkosanostra.security.JwtUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
