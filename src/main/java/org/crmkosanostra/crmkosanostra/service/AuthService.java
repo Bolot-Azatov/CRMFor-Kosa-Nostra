@@ -1,10 +1,12 @@
 package org.crmkosanostra.crmkosanostra.service;
 
-
 import lombok.RequiredArgsConstructor;
-import org.crmkosanostra.crmkosanostra.dto.request.LoginRequest;
-import org.crmkosanostra.crmkosanostra.dto.response.AuthResponse;
+import org.crmkosanostra.crmkosanostra.dto.request.RegisterRequest;
+import org.crmkosanostra.crmkosanostra.dto.response.UserResponse;
+import org.crmkosanostra.crmkosanostra.entity.Family;
+import org.crmkosanostra.crmkosanostra.entity.Role;
 import org.crmkosanostra.crmkosanostra.entity.User;
+import org.crmkosanostra.crmkosanostra.exception.exceptions.BadRequestException;
 import org.crmkosanostra.crmkosanostra.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -13,21 +15,49 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class AuthService {
 
-    private final UserRepository userRepository;
+    private final UserService userService;
     private final PasswordEncoder passwordEncoder;
-    private final JwtUtils jwtUtils;
+    private final FamilyService familyService;
+    private final UserRepository userRepository;
 
-    public AuthResponse login(LoginRequest request) {
-        User user = userRepository.findByUsername(request.getUsername())
-                .orElseThrow(() -> new RuntimeException("Неверное имя пользователя или пароль"));
+    public UserResponse register(RegisterRequest registerRequest) {
 
-        if (!passwordEncoder.matches(request.getPassword(), user.getPasswordHash())) {
-            throw new RuntimeException("Неверное имя пользователя или пароль");
+        if(userService.isUserExistsByUsername(registerRequest.getUsername())) {
+            throw new BadRequestException("Пользователь с таким username уже существует");
         }
 
-        Long familyId = user.getFamily() != null ? user.getFamily().getId() : null;
-        String token = jwtUtils.generateToken(user.getUsername(), user.getRole().name(), familyId);
+        User userAfterMap = mapToUser(registerRequest);
 
-        return new AuthResponse(token, user.getUsername(), user.getRole().name(), familyId);
+        User savedUser = userRepository.save(userAfterMap);
+
+        return mapToUserResponse(savedUser);
+
     }
+
+    private User mapToUser(RegisterRequest registerRequest) {
+
+        Role role = userService.getRoleByName(registerRequest.getRole());
+        Family family = familyService.getFamilyByName(registerRequest.getFamilyName());
+
+        return User.builder()
+                .username(registerRequest.getUsername())
+                .passwordHash(passwordEncoder.encode(registerRequest.getPassword()))
+                .role(role)
+                .family(family)
+                .photoUrl(registerRequest.getPhotoUrl())
+                .bio(registerRequest.getBio())
+                .build();
+    }
+
+    private UserResponse mapToUserResponse(User user) {
+
+        return UserResponse.builder()
+                .id(user.getId())
+                .username(user.getUsername())
+                .role(user.getRole().name())
+                .familyId(user.getFamily().getId())
+                .build();
+    }
+
+
 }

@@ -7,5 +7,9 @@ import java.util.Optional;
 
 public interface FamilyRepository extends JpaRepository<Family, Long> {
 
-    Optional<Family> findByName(String name);
+
+    @Override
+    Optional<Family> findById(Long aLong);
+
+    Optional<Family> getFamilyByName(String name);
 }

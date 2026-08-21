@@ -1,4 +1,4 @@
-<#import "main.ftlh" as main>
+<#import "../layout/main.ftlh" as main>
 
 <@main.page title="Ошибка ${status!500}">
     <div class="row justify-content-center my-5">

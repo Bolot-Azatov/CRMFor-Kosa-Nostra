@@ -8,13 +8,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/public")
+@RequestMapping("/articles")
 @RequiredArgsConstructor
-public class PublicController {
+public class ArticleController {
 
     private final ArticleService articleService;
 
-    @GetMapping("/articles")
+    @GetMapping()
     public String getPublicArticles(Model model) {
         model.addAttribute("articles", articleService.getPublicArticles());
         return "public/articles";

@@ -48,9 +48,9 @@ public class SecurityConfig {
 
                         .requestMatchers("/boss/**").hasRole("BOSS")
 
-                        .requestMatchers("/counselor/**").hasAnyRole("COUNSELOR", "BOSS")
+                        .requestMatchers("/counselor/**").hasRole("COUNSELOR")
 
-                        .requestMatchers("/capo/**").hasAnyRole("CAPO", "COUNSELOR", "BOSS")
+                        .requestMatchers("/capo/**").hasRole("CAPO")
 
                         .requestMatchers("/hierarchy", "/profile").hasAnyRole("SOLDIER", "CAPO", "COUNSELOR", "BOSS")
 
@@ -60,7 +60,11 @@ public class SecurityConfig {
                 .formLogin(form -> form
                         .loginPage("/login")
                         .loginProcessingUrl("/login")
-                        .defaultSuccessUrl("/", true)
+                        .successHandler((request, response, authentication) -> {
+                            CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+                            Long userId = userDetails.getUserId();
+                            response.sendRedirect("/profile/" + userId);
+                        })
                         .failureUrl("/login?error=true")
                         .permitAll()
                 )

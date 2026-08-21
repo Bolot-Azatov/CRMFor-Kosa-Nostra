@@ -2,6 +2,7 @@ package org.crmkosanostra.crmkosanostra.exception;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
+import org.crmkosanostra.crmkosanostra.exception.exceptions.BadRequestException;
 import org.crmkosanostra.crmkosanostra.exception.exceptions.BusinessLogicException;
 import org.crmkosanostra.crmkosanostra.exception.exceptions.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -22,6 +23,15 @@ public class GlobalExceptionHandler {
         log.warn("Resource not found [{}]: {}", request.getRequestURI(), ex.getMessage());
 
         populateErrorModel(model, HttpStatus.NOT_FOUND.value(), "Ресурс не найден", ex.getMessage(), request.getRequestURI());
+        return "error";
+    }
+
+    @ExceptionHandler(BadRequestException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public String handleBadRequest(BadRequestException ex, HttpServletRequest request, Model model) {
+        log.warn("Bad request [{}]: {}", request.getRequestURI(), ex.getMessage());
+
+        populateErrorModel(model, HttpStatus.BAD_REQUEST.value(), "Некорректный запрос", ex.getMessage(), request.getRequestURI());
         return "error";
     }
 

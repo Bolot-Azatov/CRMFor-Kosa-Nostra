@@ -30,7 +30,7 @@ public class HierarchyService {
         return FamilyHierarchyResponse.builder()
                 .familyName(family.getName())
                 .boss(findSingleMember(members, Role.BOSS))
-                .counselor(findSingleMember(members, Role.COUNSELOR))
+                .counselor(findSingleMember(members, Role.CONSIGLIERE))
                 .capos(findAllMembers(members, Role.CAPO))
                 .soldiers(findAllMembers(members, Role.SOLDIER))
                 .build();

@@ -4,6 +4,6 @@ public enum Role {
     ANONYMOUS,
     SOLDIER,
     CAPO,
-    COUNSELOR,
+    CONSIGLIERE,
     BOSS
 }

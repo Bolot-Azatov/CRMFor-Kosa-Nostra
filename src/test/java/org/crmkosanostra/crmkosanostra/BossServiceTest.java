@@ -43,9 +43,9 @@ class BossServiceTest {
         soldier.setRole(Role.SOLDIER);
 
         when(userRepository.findById(2L)).thenReturn(Optional.of(soldier));
-        when(userRepository.existsByFamilyIdAndRole(1L, Role.COUNSELOR)).thenReturn(true);
+        when(userRepository.existsByFamilyIdAndRole(1L, Role.CONSIGLIERE)).thenReturn(true);
 
-        BossDto.AssignRoleRequest request = new BossDto.AssignRoleRequest(2L, Role.COUNSELOR);
+        BossDto.AssignRoleRequest request = new BossDto.AssignRoleRequest(2L, Role.CONSIGLIERE);
 
         assertThrows(BusinessLogicException.class, () -> bossService.assignRole(boss, request));
     }

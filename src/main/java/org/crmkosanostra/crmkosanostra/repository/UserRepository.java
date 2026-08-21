@@ -15,4 +15,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByFamilyIdAndRole(Long familyId, Role role);
 
     boolean existsByFamilyIdAndRole(Long familyId, Role role);
+
+    boolean existsByUsername(String username);
+
+    Optional<User> findUserById(Long id);
 }

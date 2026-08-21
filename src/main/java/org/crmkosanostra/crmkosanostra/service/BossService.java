@@ -53,10 +53,10 @@ public class BossService {
         }
 
         // Ограничение: Ровно 1 COUNSELOR на семью
-        if (request.newRole() == Role.COUNSELOR) {
+        if (request.newRole() == Role.CONSIGLIERE) {
             boolean counselorExists = userRepository.existsByFamilyIdAndRole(
-                    boss.getFamily().getId(), Role.COUNSELOR);
-            if (counselorExists && targetUser.getRole() != Role.COUNSELOR) {
+                    boss.getFamily().getId(), Role.CONSIGLIERE);
+            if (counselorExists && targetUser.getRole() != Role.CONSIGLIERE) {
                 throw new BusinessLogicException("Family already has a Counselor");
             }
         }
@@ -160,7 +160,7 @@ public class BossService {
         // 2. Босс другой семьи
         boolean isOwnFamilyMember = recipient.getFamily().getId().equals(boss.getFamily().getId());
         boolean isAllowedSubordinate = isOwnFamilyMember &&
-                (recipient.getRole() == Role.CAPO || recipient.getRole() == Role.COUNSELOR);
+                (recipient.getRole() == Role.CAPO || recipient.getRole() == Role.CONSIGLIERE);
         boolean isOtherFamilyBoss = !isOwnFamilyMember && recipient.getRole() == Role.BOSS;
 
         if (!isAllowedSubordinate && !isOtherFamilyBoss) {
