@@ -2,6 +2,7 @@ package org.crmkosanostra.crmkosanostra.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 
 import java.time.LocalDateTime;
 
@@ -34,4 +35,8 @@ public class Message {
 
     @Column(name = "sent_at", nullable = false)
     private LocalDateTime sentAt;
+
+    @Column(name="is_read", nullable = false)
+    @Builder.Default
+    private boolean isRead = false;
 }
