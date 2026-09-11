@@ -47,6 +47,8 @@
             max-width: 1000px;
             margin: 0 auto;
         }
+
+        /* Кликабельная карточка мафиози */
         .card-member {
             background: var(--bg-card);
             border: var(--border-gold);
@@ -54,16 +56,24 @@
             width: 280px;
             text-align: center;
             box-shadow: 0 4px 15px rgba(0,0,0,0.8);
-            transition: transform 0.2s;
+            transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+            text-decoration: none;
+            display: block;
+            color: inherit;
+            cursor: pointer;
         }
         .card-member:hover {
-            transform: translateY(-3px);
+            transform: translateY(-4px);
             border-color: var(--brass-gold-hover);
+            box-shadow: 0 0 25px rgba(197, 160, 89, 0.4);
         }
         .card-don {
             width: 310px;
             border: 2px solid var(--brass-gold);
             background: linear-gradient(180deg, #221410 0%, var(--bg-card) 100%);
+        }
+        .card-don:hover {
+            box-shadow: 0 0 30px rgba(197, 160, 89, 0.5);
         }
         .member-avatar {
             width: 50px;
@@ -78,6 +88,7 @@
             font-family: 'Cinzel', serif;
             font-size: 1.3rem;
             margin: 0 auto 0.6rem auto;
+            overflow: hidden;
         }
         .badge-rank {
             display: inline-block;
@@ -125,6 +136,26 @@
             top: -0.6rem;
             text-transform: uppercase;
         }
+
+        /* Кликабельная карточка солдата */
+        .soldier-card-link {
+            background: #121212;
+            border: 1px solid rgba(197,160,89,0.2);
+            padding: 0.6rem 1rem;
+            width: 220px;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            text-decoration: none;
+            color: inherit;
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+        .soldier-card-link:hover {
+            transform: translateY(-2px);
+            border-color: var(--brass-gold);
+            box-shadow: 0 0 15px rgba(197, 160, 89, 0.25);
+        }
     </style>
 
     <div style="text-align: center; margin-bottom: 2rem;">
@@ -147,7 +178,7 @@
             <div class="tree-box">
                 <!-- DON -->
                 <#if fam.boss??>
-                    <div class="card-member card-don">
+                    <a href="/profile/${fam.boss.id}" class="card-member card-don" title="Открыть досье Дона">
                         <div class="member-avatar">
                             <#if (fam.boss.photoUrl)?? && fam.boss.photoUrl?has_content>
                                 <img src="${fam.boss.photoUrl}" alt="${fam.boss.username}" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerText='${(fam.boss.username[0..0])!'D'}';"/>
@@ -157,12 +188,12 @@
                         </div>
                         <span class="badge-rank">Capo di Tutti Capi</span>
                         <h3 style="font-family: 'Cinzel', serif; color: var(--text-main); font-size: 1.1rem; margin: 0.2rem 0;">
-                            <a href="/profile/${fam.boss.id}" style="color: inherit; text-decoration: none;">${fam.boss.username}</a>
+                            ${fam.boss.username}
                         </h3>
                         <p style="font-size: 0.75rem; color: var(--text-muted); margin: 0;">Глава Семьи</p>
-                    </div>
+                    </a>
                 <#else>
-                    <div class="card-member card-don">
+                    <div class="card-member card-don" style="cursor: default;">
                         <div class="member-avatar">👑</div>
                         <span class="badge-rank">Трон свободен</span>
                     </div>
@@ -172,7 +203,7 @@
 
                 <!-- CONSIGLIERE -->
                 <#if fam.counselor??>
-                    <div class="card-member">
+                    <a href="/profile/${fam.counselor.id}" class="card-member" title="Открыть досье Консильери">
                         <div class="member-avatar">
                             <#if (fam.counselor.photoUrl)?? && fam.counselor.photoUrl?has_content>
                                 <img src="${fam.counselor.photoUrl}" alt="${fam.counselor.username}" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerText='${(fam.counselor.username[0..0])!'C'}';"/>
@@ -182,10 +213,10 @@
                         </div>
                         <span class="badge-rank badge-cons">Consigliere</span>
                         <h4 style="font-family: 'Cinzel', serif; color: var(--text-main); margin: 0.2rem 0;">
-                            <a href="/profile/${fam.counselor.id}" style="color: inherit; text-decoration: none;">${fam.counselor.username}</a>
+                            ${fam.counselor.username}
                         </h4>
                         <p style="font-size: 0.75rem; color: var(--text-muted); margin: 0;">Советник Дона</p>
-                    </div>
+                    </a>
                     <div class="v-line"></div>
                 </#if>
 
@@ -194,7 +225,7 @@
                 <div class="row-members">
                     <#if fam.capos?? && fam.capos?has_content>
                         <#list fam.capos as capo>
-                            <div class="card-member">
+                            <a href="/profile/${capo.id}" class="card-member" title="Открыть досье Капо">
                                 <div class="member-avatar">
                                     <#if (capo.photoUrl)?? && capo.photoUrl?has_content>
                                         <img src="${capo.photoUrl}" alt="${capo.username}" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerText='${(capo.username[0..0])!'C'}';"/>
@@ -203,10 +234,10 @@
                                     </#if>
                                 </div>
                                 <span class="badge-rank">Caporegime</span>
-                                <div style="font-family: 'Cinzel', serif; font-weight: bold; margin-top: 0.3rem;">
-                                    <a href="/profile/${capo.id}" style="color: var(--brass-gold); text-decoration: none;">${capo.username}</a>
+                                <div style="font-family: 'Cinzel', serif; font-weight: bold; margin-top: 0.3rem; color: var(--brass-gold);">
+                                    ${capo.username}
                                 </div>
-                            </div>
+                            </a>
                         </#list>
                     <#else>
                         <p style="color: var(--text-muted); font-size: 0.85rem;">Капо не назначены</p>
@@ -218,7 +249,7 @@
                 <div class="row-members">
                     <#if fam.soldiers?? && fam.soldiers?has_content>
                         <#list fam.soldiers as s>
-                            <div style="background: #121212; border: 1px solid rgba(197,160,89,0.2); padding: 0.6rem 1rem; width: 220px; text-align: center; display: flex; align-items: center; gap: 0.8rem;">
+                            <a href="/profile/${s.id}" class="soldier-card-link" title="Открыть досье Солдата">
                                 <div style="width: 38px; height: 38px; border-radius: 50%; border: 1px solid var(--brass-gold); overflow: hidden; flex-shrink: 0; background: var(--burgundy-dark); display: flex; align-items: center; justify-content: center; color: var(--brass-gold); font-family: 'Cinzel', serif;">
                                     <#if (s.photoUrl)?? && s.photoUrl?has_content>
                                         <img src="${s.photoUrl}" alt="${s.username}" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerText='${(s.username[0..0])!'S'}';"/>
@@ -227,10 +258,10 @@
                                     </#if>
                                 </div>
                                 <div style="text-align: left;">
-                                    <a href="/profile/${s.id}" style="color: var(--text-main); text-decoration: none; font-family: 'Cinzel', serif; font-size: 0.85rem; font-weight: bold;">${s.username}</a>
+                                    <div style="color: var(--text-main); font-family: 'Cinzel', serif; font-size: 0.85rem; font-weight: bold;">${s.username}</div>
                                     <div style="font-size: 0.68rem; color: var(--brass-gold); text-transform: uppercase;">Soldier</div>
                                 </div>
-                            </div>
+                            </a>
                         </#list>
                     <#else>
                         <p style="color: var(--text-muted); font-size: 0.85rem;">Рядовые солдаты отсутствуют</p>

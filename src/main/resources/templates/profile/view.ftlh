@@ -67,6 +67,36 @@
             flex-shrink: 0;
             text-shadow: 0 2px 5px rgba(0, 0, 0, 0.8);
             overflow: hidden;
+            position: relative;
+        }
+
+        /* Интерактив для кликабельной аватарки */
+        .avatar-box.clickable {
+            cursor: pointer;
+            transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+        }
+
+        .avatar-box.clickable:hover {
+            transform: scale(1.04);
+            border-color: var(--brass-gold-hover);
+            box-shadow: 0 0 20px rgba(197, 160, 89, 0.5);
+        }
+
+        .avatar-box.clickable::after {
+            content: '🔍';
+            position: absolute;
+            bottom: 4px;
+            right: 4px;
+            font-size: 0.75rem;
+            background: rgba(0, 0, 0, 0.75);
+            border-radius: 50%;
+            padding: 3px;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+
+        .avatar-box.clickable:hover::after {
+            opacity: 1;
         }
 
         .avatar-img {
@@ -185,6 +215,94 @@
             color: var(--brass-gold-hover);
             border-color: var(--brass-gold-hover);
         }
+
+        /* --- Стили для модального увеличения фотографии (x4) --- */
+        .photo-modal {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            left: 0;
+            top: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(5px);
+            align-items: center;
+            justify-content: center;
+            animation: fadeInModal 0.2s ease-out;
+        }
+
+        .photo-modal.active {
+            display: flex;
+        }
+
+        .photo-modal-card {
+            position: relative;
+            background: var(--bg-card);
+            border: 2px solid var(--brass-gold);
+            padding: 1.2rem;
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.95), inset 0 0 20px rgba(61, 12, 2, 0.5);
+            text-align: center;
+            animation: scaleInModal 0.25s ease-out;
+            max-width: 95vw;
+        }
+
+        /* Ровно х4 от базового размера 110px = 440px */
+        .photo-modal-img {
+            width: 440px;
+            height: 440px;
+            max-width: 85vw;
+            max-height: 75vh;
+            object-fit: cover;
+            display: block;
+            border: 1px solid rgba(197, 160, 89, 0.4);
+            margin: 0 auto;
+        }
+
+        .photo-modal-caption {
+            margin-top: 0.9rem;
+            font-family: 'Cinzel', serif;
+            color: var(--brass-gold);
+            font-size: 0.85rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        .photo-modal-close {
+            position: absolute;
+            top: -14px;
+            right: -14px;
+            width: 32px;
+            height: 32px;
+            background: var(--burgundy-dark);
+            border: 1px solid var(--brass-gold);
+            border-radius: 50%;
+            color: var(--brass-gold);
+            font-size: 1.2rem;
+            line-height: 1;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+        }
+
+        .photo-modal-close:hover {
+            background: var(--burgundy-light);
+            color: #FFF;
+            transform: scale(1.1);
+        }
+
+        @keyframes fadeInModal {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes scaleInModal {
+            from { transform: scale(0.85); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
     </style>
 
     <div class="dossier-container">
@@ -193,8 +311,12 @@
                 <span class="file-stamp">ЛИЧНОЕ ДЕЛО №${user.id}</span>
 
                 <div class="dossier-header">
-                    <!-- Фотография бойца или винтажная литера -->
-                    <div class="avatar-box">
+                    <!-- Фотография бойца с кликом для зума -->
+                    <div class="avatar-box <#if (user.photoUrl)?? && user.photoUrl?has_content>clickable</#if>"
+                            <#if (user.photoUrl)?? && user.photoUrl?has_content>
+                        onclick="openPhotoModal('${user.photoUrl}')"
+                        title="Нажмите, чтобы увеличить фото"
+                            </#if>>
                         <#if (user.photoUrl)?? && user.photoUrl?has_content>
                             <img src="${user.photoUrl}" alt="${user.username}" class="avatar-img" onerror="this.style.display='none'; this.parentElement.innerText='${(user.username[0..0])!'U'}';"/>
                         <#else>
@@ -253,6 +375,46 @@
                     </a>
                 </div>
             </div>
+
+            <!-- Модальное окно увеличения фотографии (x4) -->
+            <div id="photoModal" class="photo-modal" onclick="closePhotoModal(event)">
+                <div class="photo-modal-card">
+                    <button type="button" class="photo-modal-close" onclick="closeModalDirect()" title="Закрыть">&times;</button>
+                    <img id="modalImage" src="" alt="${user.username}" class="photo-modal-img"/>
+                    <div class="photo-modal-caption">${user.username} • Архивное фото</div>
+                </div>
+            </div>
+
+            <script>
+                function openPhotoModal(src) {
+                    const modal = document.getElementById('photoModal');
+                    const img = document.getElementById('modalImage');
+                    if (modal && img) {
+                        img.src = src;
+                        modal.classList.add('active');
+                    }
+                }
+
+                function closeModalDirect() {
+                    const modal = document.getElementById('photoModal');
+                    if (modal) {
+                        modal.classList.remove('active');
+                    }
+                }
+
+                function closePhotoModal(event) {
+                    if (event.target.id === 'photoModal') {
+                        closeModalDirect();
+                    }
+                }
+
+                document.addEventListener('keydown', function(e) {
+                    if (e.key === 'Escape') {
+                        closeModalDirect();
+                    }
+                });
+            </script>
+
         <#else>
             <div style="text-align: center; padding: 3rem; background: var(--bg-card); border: var(--border-gold);">
                 <h2 style="font-family: 'Cinzel', serif; color: var(--brass-gold); margin-bottom: 1rem;">

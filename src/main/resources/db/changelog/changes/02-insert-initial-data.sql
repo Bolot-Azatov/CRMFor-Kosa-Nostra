@@ -26,7 +26,7 @@ INSERT INTO users (id, username, password_hash, role, family_id, photo_url, bio)
                                                                                       'https://upload.wikimedia.org/wikipedia/commons/7/73/BiondoMugshot38.png',
                                                                                       'Правая рука Карло Гамбино, советник по финансовым вопросам и азартным играм в Квинсе.'),
                                                                                      (3, 'aniello_dellacroce', '$2a$12$on/8hD.t/h6GPu5Gdt.khunNPmf3C.5H6FCBjOYTAA8g.MDJ.1MVS', 'CAPO', 1,
-                                                                                      'https://upload.wikimedia.org/wikipedia/commons/6/6a/AnielloDellacroce1.jpg',
+                                                                                      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcToR5_RlQD4NXn5ChaV1oYYWtYyyNwNvKpYYFJ4x9S6XQ&s=10',
                                                                                       'Влиятельный и беспощадный капо по кличке "Нил", контролирующий порты Манхэттена.'),
                                                                                      (4, 'paul_castellano', '$2a$12$on/8hD.t/h6GPu5Gdt.khunNPmf3C.5H6FCBjOYTAA8g.MDJ.1MVS', 'SOLDIER', 1,
                                                                                       'https://upload.wikimedia.org/wikipedia/commons/f/f7/Castellanomug.jpg',
@@ -35,13 +35,13 @@ INSERT INTO users (id, username, password_hash, role, family_id, photo_url, bio)
 -- 2. Семья Genovese
 INSERT INTO users (id, username, password_hash, role, family_id, photo_url, bio) VALUES
                                                                                      (5, 'vito_genovese', '$2a$12$on/8hD.t/h6GPu5Gdt.khunNPmf3C.5H6FCBjOYTAA8g.MDJ.1MVS', 'BOSS', 2,
-                                                                                      'https://upload.wikimedia.org/wikipedia/commons/a/a9/Vito_Genovese_NYWTS_%28cropped%29.jpg',
+                                                                                      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTGAEdzxoIXHP91ESBOXomuYTqqwG9BKGeyoULhxNFDsA&s=10',
                                                                                       'Босс семьи Дженовезе. Жестокий, властный и амбициозный лидер синдиката.'),
                                                                                      (6, 'michele_miranda', '$2a$12$on/8hD.t/h6GPu5Gdt.khunNPmf3C.5H6FCBjOYTAA8g.MDJ.1MVS', 'CONSIGLIERE', 2,
-                                                                                      'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Wriverside04.jpg/330px-Wriverside04.jpg',
+                                                                                      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcREsrggI44bYjUHGaIwTMgGghRsdX8mY3Hay7o3HfaieQ&s=10',
                                                                                       'Опытный консильери "Большой Майк", один из серых кардиналов Нью-Йорка.'),
                                                                                      (7, 'anthony_salerno', '$2a$12$on/8hD.t/h6GPu5Gdt.khunNPmf3C.5H6FCBjOYTAA8g.MDJ.1MVS', 'CAPO', 2,
-                                                                                      'https://upload.wikimedia.org/wikipedia/commons/f/fa/Anthony_Salerno_%28cropped%29.jpg',
+                                                                                      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQO8jF0eo-mytMvRvfmXIPImkhQMJqTDAq0VuSXs_1OUQ&s=10',
                                                                                       'Капо по кличке "Толстый Тони", держит подпольные лотереи и рэкет в Восточном Гарлеме.'),
                                                                                      (8, 'vincent_gigante', '$2a$12$on/8hD.t/h6GPu5Gdt.khunNPmf3C.5H6FCBjOYTAA8g.MDJ.1MVS', 'SOLDIER', 2,
                                                                                       'https://upload.wikimedia.org/wikipedia/commons/0/09/Vincent_Gigante_%28mugshot%2C_1960%29.jpg',
@@ -50,13 +50,13 @@ INSERT INTO users (id, username, password_hash, role, family_id, photo_url, bio)
 -- 3. Семья Lucchese
 INSERT INTO users (id, username, password_hash, role, family_id, photo_url, bio) VALUES
                                                                                      (9, 'tommy_lucchese', '$2a$12$on/8hD.t/h6GPu5Gdt.khunNPmf3C.5H6FCBjOYTAA8g.MDJ.1MVS', 'BOSS', 3,
-                                                                                      'https://upload.wikimedia.org/wikipedia/commons/7/73/TommyLucchese1.jpg',
+                                                                                      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRKNMSTgDkIsF3uNQeYBnRyQS4LqZn6FIpuSBJKi5C1vQ&s=10',
                                                                                       'Босс семьи Луккезе по кличке "Трехпалый Томми". Мастер закулисных союзов и рэкета Garment District.'),
                                                                                      (10, 'vincenzo_rao', '$2a$12$on/8hD.t/h6GPu5Gdt.khunNPmf3C.5H6FCBjOYTAA8g.MDJ.1MVS', 'CONSIGLIERE', 3,
-                                                                                      'https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Lucchese_crime_family_-_Chart_1991.jpg/250px-Lucchese_crime_family_-_Chart_1991.jpg',
+                                                                                      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSqmq_ZTAOag1t21vzmLCaoft5L3lh3Q4kQTGMrh9Ob-w&s=10',
                                                                                       'Консильери семьи Луккезе, теневой финансист строительных и штукатурных корпораций.'),
                                                                                      (11, 'anthony_corallo', '$2a$12$on/8hD.t/h6GPu5Gdt.khunNPmf3C.5H6FCBjOYTAA8g.MDJ.1MVS', 'CAPO', 3,
-                                                                                      'https://upload.wikimedia.org/wikipedia/commons/8/87/Anthony.corallo_%28cropped%29.jpg',
+                                                                                      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRwmLur7PWTJ3BURwyg8gSa0228gMRTrtcbwCZHh4DhQg&s=10',
                                                                                       'Капо по кличке "Тони Утка", виртуозно уклоняющийся от повесток и держащий профсоюзы.');
 
 -- 4. Семья Bonanno
@@ -65,10 +65,10 @@ INSERT INTO users (id, username, password_hash, role, family_id, photo_url, bio)
                                                                                       'https://upload.wikimedia.org/wikipedia/commons/9/94/Joseph_Bonanno_%28cropped%29.jpg',
                                                                                       'Босс семьи Бонанно ("Джо Бананас"). Ревнитель древних сицилийских традиций.'),
                                                                                      (13, 'john_tartamella', '$2a$12$on/8hD.t/h6GPu5Gdt.khunNPmf3C.5H6FCBjOYTAA8g.MDJ.1MVS', 'CONSIGLIERE', 4,
-                                                                                      'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Bonanno_Crime_Family.jpg/330px-Bonanno_Crime_Family.jpg',
+                                                                                      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRYSeRbFna--VYRgu6xinP5abIN19q_pkl8GRykRSa9eQ&s=10',
                                                                                       'Старейший консильери семьи, мудрый советник и профсоюзный деятель Бруклина.'),
                                                                                      (14, 'carmine_galante', '$2a$12$on/8hD.t/h6GPu5Gdt.khunNPmf3C.5H6FCBjOYTAA8g.MDJ.1MVS', 'CAPO', 4,
-                                                                                      'https://upload.wikimedia.org/wikipedia/commons/6/63/Carmine_Galante.jpg',
+                                                                                      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTNhVOwCD0Ujgdv1LkUcs7_vCUqxRc9tvB0UAhRSqksyw&s=10',
                                                                                       'Свирепый капо с неизменной сигарой, контролирующий импорт и сеть распределения.');
 
 -- 5. Семья Colombo
@@ -80,7 +80,7 @@ INSERT INTO users (id, username, password_hash, role, family_id, photo_url, bio)
                                                                                       'https://upload.wikimedia.org/wikipedia/commons/d/d5/Joe_Magliocco.jpg',
                                                                                       'Шеф-консильери по кличке "Дурной Глаз", правая рука и шурин Джо Профачи.'),
                                                                                      (17, 'carmine_persico', '$2a$12$on/8hD.t/h6GPu5Gdt.khunNPmf3C.5H6FCBjOYTAA8g.MDJ.1MVS', 'CAPO', 5,
-                                                                                      'https://upload.wikimedia.org/wikipedia/commons/a/a9/Alphonse_Carmine_Persico_-_FBI_Wanted_Poster.jpg',
+                                                                                      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRBYTtzDAbe9x1XksOk-fdkFvB0qw_XQuhMsIbvYXZKAQ&s=10',
                                                                                       'Дерзкий и опасный молодой капо по кличке "Змея", лидер гарлемских операций.');
 -- =================================================================
 -- 3. БИЗНЕСЫ (СВЯЗАННЫЕ С КАПО)

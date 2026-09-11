@@ -1,7 +1,7 @@
 <#import "/spring.ftl" as spring/>
 <#import "../layout/layout.ftlh" as layout/>
 
-<@layout.page_layout title="Иерархия Семьи | Cosa Nostra" activeTab="capos">
+<@layout.page_layout title="Иерархия Семьи | Cosa Nostra" activeTab="family">
 
     <style>
         * {
@@ -31,7 +31,6 @@
             letter-spacing: 2px;
         }
 
-        /* Главный контейнер — строгая вертикальная ось по центру */
         .tree-container {
             display: flex;
             flex-direction: column;
@@ -42,7 +41,7 @@
             padding: 1rem 0 3rem 0;
         }
 
-        /* Карточка участника */
+        /* Кликабельная карточка участника */
         .card-node {
             background: var(--bg-card);
             border: var(--border-gold);
@@ -54,15 +53,18 @@
             transition: all 0.3s ease;
             z-index: 2;
             flex-shrink: 0;
+            text-decoration: none;
+            display: block;
+            color: inherit;
+            cursor: pointer;
         }
 
         .card-node:hover {
             border-color: var(--brass-gold-hover);
-            box-shadow: 0 0 25px rgba(197, 160, 89, 0.3);
+            box-shadow: 0 0 25px rgba(197, 160, 89, 0.35);
             transform: translateY(-3px);
         }
 
-        /* Дон (Вершина) */
         .card-node.don-node {
             width: 300px;
             background: linear-gradient(180deg, #221410 0%, var(--bg-card) 100%);
@@ -85,6 +87,7 @@
             color: var(--brass-gold);
             font-weight: bold;
             text-transform: uppercase;
+            overflow: hidden;
         }
 
         .node-role {
@@ -120,7 +123,6 @@
             margin-top: 0.4rem;
         }
 
-        /* Соединительная линия строго по центру без отрицательных отступов */
         .line-vertical {
             width: 2px;
             height: 2rem;
@@ -129,7 +131,6 @@
             margin: 0 auto;
         }
 
-        /* Уровни с несколькими элементами */
         .tree-level {
             display: flex;
             justify-content: center;
@@ -159,7 +160,6 @@
             top: -0.6rem;
         }
 
-        /* Солдаты — flex-центрирование для любого количества элементов */
         .soldiers-grid {
             display: flex;
             justify-content: center;
@@ -178,11 +178,15 @@
             align-items: center;
             gap: 0.8rem;
             transition: all 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+            cursor: pointer;
         }
 
         .soldier-card:hover {
             border-color: var(--brass-gold);
             transform: translateY(-2px);
+            box-shadow: 0 0 15px rgba(197, 160, 89, 0.25);
         }
 
         .soldier-avatar {
@@ -198,6 +202,7 @@
             font-size: 0.9rem;
             flex-shrink: 0;
             text-transform: uppercase;
+            overflow: hidden;
         }
 
         .soldier-name {
@@ -230,14 +235,20 @@
 
         <!-- 1. УРОВЕНЬ: ДОН (Boss) -->
         <#if hierarchy.boss??>
-            <div class="card-node don-node">
-                <div class="avatar-frame">${(hierarchy.boss.username[0..0])!'D'}</div>
+            <a href="/profile/${hierarchy.boss.id}" class="card-node don-node" title="Открыть досье Дона">
+                <div class="avatar-frame">
+                    <#if (hierarchy.boss.photoUrl)?? && hierarchy.boss.photoUrl?has_content>
+                        <img src="${hierarchy.boss.photoUrl}" alt="${hierarchy.boss.username}" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerText='${(hierarchy.boss.username[0..0])!'D'}';"/>
+                    <#else>
+                        ${(hierarchy.boss.username[0..0])!'D'}
+                    </#if>
+                </div>
                 <span class="node-role">Capo di Tutti Capi</span>
                 <div class="node-name">${(hierarchy.boss.username)!'Неизвестно'}</div>
                 <div class="node-details">Глава Семьи</div>
-            </div>
+            </a>
         <#else>
-            <div class="card-node don-node">
+            <div class="card-node don-node" style="cursor: default;">
                 <div class="avatar-frame">👑</div>
                 <span class="node-role">Дон не назначен</span>
                 <div class="node-name">Трон свободен</div>
@@ -248,12 +259,18 @@
 
         <!-- 2. УРОВЕНЬ: КОНСИЛЬЕРИ (Consigliere) -->
         <#if hierarchy.counselor??>
-            <div class="card-node">
-                <div class="avatar-frame">${(hierarchy.counselor.username[0..0])!'C'}</div>
+            <a href="/profile/${hierarchy.counselor.id}" class="card-node" title="Открыть досье Консильери">
+                <div class="avatar-frame">
+                    <#if (hierarchy.counselor.photoUrl)?? && hierarchy.counselor.photoUrl?has_content>
+                        <img src="${hierarchy.counselor.photoUrl}" alt="${hierarchy.counselor.username}" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerText='${(hierarchy.counselor.username[0..0])!'C'}';"/>
+                    <#else>
+                        ${(hierarchy.counselor.username[0..0])!'C'}
+                    </#if>
+                </div>
                 <span class="node-role counselor-role">Consigliere</span>
                 <div class="node-name">${(hierarchy.counselor.username)!'Неизвестно'}</div>
                 <div class="node-details">Советник Дона</div>
-            </div>
+            </a>
             <div class="line-vertical"></div>
         </#if>
 
@@ -265,11 +282,17 @@
         <div class="tree-level">
             <#if hierarchy.capos?? && hierarchy.capos?has_content>
                 <#list hierarchy.capos as capo>
-                    <div class="card-node">
-                        <div class="avatar-frame">${(capo.username[0..0])!'C'}</div>
+                    <a href="/profile/${capo.id}" class="card-node" title="Открыть досье Капо">
+                        <div class="avatar-frame">
+                            <#if (capo.photoUrl)?? && capo.photoUrl?has_content>
+                                <img src="${capo.photoUrl}" alt="${capo.username}" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerText='${(capo.username[0..0])!'C'}';"/>
+                            <#else>
+                                ${(capo.username[0..0])!'C'}
+                            </#if>
+                        </div>
                         <span class="node-role">Caporegime</span>
                         <div class="node-name">${(capo.username)!'Неизвестно'}</div>
-                    </div>
+                    </a>
                 </#list>
             <#else>
                 <p class="empty-text">Капореджиме не назначены</p>
@@ -284,13 +307,19 @@
         <#if hierarchy.soldiers?? && hierarchy.soldiers?has_content>
             <div class="soldiers-grid">
                 <#list hierarchy.soldiers as soldier>
-                    <div class="soldier-card">
-                        <div class="soldier-avatar">${(soldier.username[0..0])!'S'}</div>
+                    <a href="/profile/${soldier.id}" class="soldier-card" title="Открыть досье Солдата">
+                        <div class="soldier-avatar">
+                            <#if (soldier.photoUrl)?? && soldier.photoUrl?has_content>
+                                <img src="${soldier.photoUrl}" alt="${soldier.username}" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerText='${(soldier.username[0..0])!'S'}';"/>
+                            <#else>
+                                ${(soldier.username[0..0])!'S'}
+                            </#if>
+                        </div>
                         <div>
                             <div class="soldier-name">${(soldier.username)!'Неизвестно'}</div>
                             <div class="soldier-role">"SOLDIER"</div>
                         </div>
-                    </div>
+                    </a>
                 </#list>
             </div>
         <#else>
