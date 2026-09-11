@@ -166,7 +166,10 @@ public class BossService {
         // Проверка допустимых адресатов для Босса:
         // 1. Капо или Консильери своей семьи
         // 2. Босс другой семьи
-        boolean isOwnFamilyMember = recipient.getFamily().getId().equals(boss.getFamily().getId());
+        boolean isOwnFamilyMember = recipient.getFamily() != null
+                && boss.getFamily() != null
+                && recipient.getFamily().getId().equals(boss.getFamily().getId());
+
         boolean isAllowedSubordinate = isOwnFamilyMember &&
                 (recipient.getRole() == Role.CAPO || recipient.getRole() == Role.CONSIGLIERE);
         boolean isOtherFamilyBoss = !isOwnFamilyMember && recipient.getRole() == Role.BOSS;

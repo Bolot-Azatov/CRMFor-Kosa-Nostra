@@ -173,7 +173,6 @@
             <h1 class="page-title">Сводки и архивы</h1>
             <p style="color: var(--text-muted); font-size: 0.82rem; margin-top: 0.3rem;">Конфиденциальные донесения семей Синдиката</p>
         </div>
-        <a href="/articles/create" class="btn-create">✍️ Составить сводку</a>
     </div>
 
     <!-- Проверка наличия статей в модели (модель ожидает список "articles") -->

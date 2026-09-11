@@ -28,5 +28,12 @@ spring:
     drop-first: true
     enabled: true
 
+  freemarker:
+    template-loader-path: classpath:/templates/
+    suffix: .ftlh
+    charset: UTF-8
+    settings:
+      number_format: "0.##"
+
 server:
   port: 8080

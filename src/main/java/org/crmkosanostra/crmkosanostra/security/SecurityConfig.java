@@ -79,6 +79,10 @@ public class SecurityConfig {
                         .permitAll()
                 )
 
+                .exceptionHandling(ex -> ex
+                        .accessDeniedPage("/403")
+                )
+
                 .userDetailsService(customUserDetailsService);
 
         return http.build();
