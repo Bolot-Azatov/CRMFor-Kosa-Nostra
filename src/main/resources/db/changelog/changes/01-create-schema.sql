@@ -47,6 +47,7 @@ CREATE TABLE messages (
                           subject VARCHAR(255) NOT NULL,
                           body TEXT NOT NULL,
                           sent_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                          is_read BOOLEAN NOT NULL DEFAULT FALSE,
                           CONSTRAINT fk_messages_sender FOREIGN KEY (sender_id) REFERENCES users(id) ON DELETE CASCADE,
                           CONSTRAINT fk_messages_recipient FOREIGN KEY (recipient_id) REFERENCES users(id) ON DELETE CASCADE
 );
