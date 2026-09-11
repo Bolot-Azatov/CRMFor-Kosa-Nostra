@@ -188,4 +188,75 @@ public class BossService {
 
         return messageRepository.save(message);
     }
+
+    // Добавить в src/main/java/org/crmkosanostra/crmkosanostra/service/BossService.java
+
+    // Закрепление бизнеса за Капо (1 Капо = 1 бизнес)
+    @Transactional
+    public void assignBusinessToCapo(User boss, BossDto.AssignBusinessRequest request) {
+        Business business = businessRepository.findById(request.businessId())
+                .orElseThrow(() -> new ResourceNotFoundException("Предприятие не найдено"));
+
+        if (!business.getFamily().getId().equals(boss.getFamily().getId())) {
+            throw new BusinessLogicException("Нельзя распоряжаться предприятиями чужой семьи");
+        }
+
+        User capo = userRepository.findById(request.capoId())
+                .orElseThrow(() -> new ResourceNotFoundException("Капо не найден"));
+
+        if (!capo.getFamily().getId().equals(boss.getFamily().getId())) {
+            throw new BusinessLogicException("Капо должен принадлежать вашей семье");
+        }
+
+        if (capo.getRole() != Role.CAPO) {
+            throw new BusinessLogicException("Предприятие может быть закреплено только за членом семьи в ранге CAPO");
+        }
+
+        // Если за данным Капо уже числился другой бизнес, отвязываем его
+        businessRepository.findByCapoId(capo.getId()).ifPresent(oldBiz -> {
+            if (!oldBiz.getId().equals(business.getId())) {
+                oldBiz.setCapo(null);
+                businessRepository.save(oldBiz);
+            }
+        });
+
+        business.setCapo(capo);
+        businessRepository.save(business);
+    }
+
+    @Transactional(readOnly = true)
+    public List<User> getFamilyCapos(User boss) {
+        return userRepository.findByFamilyId(boss.getFamily().getId()).stream()
+                .filter(u -> u.getRole() == Role.CAPO)
+                .toList();
+    }
+
+    @Transactional(readOnly = true)
+    public List<User> getFamilyMembers(User boss) {
+        return userRepository.findByFamilyId(boss.getFamily().getId());
+    }
+
+    @Transactional(readOnly = true)
+    public List<FamilyRelation> getFamilyRelations(User boss) {
+        return relationRepository.findAllByFamilyId(boss.getFamily().getId());
+    }
+
+    @Transactional(readOnly = true)
+    public List<User> getAllowedRecipientsForBoss(User boss) {
+        Long bossFamilyId = boss.getFamily().getId();
+
+        // 1. Капо и Консильери своей семьи
+        List<User> ownSubordinates = userRepository.findByFamilyId(bossFamilyId).stream()
+                .filter(u -> u.getRole() == Role.CAPO || u.getRole() == Role.CONSIGLIERE)
+                .toList();
+
+        // 2. Боссы других семей
+        List<User> otherBosses = userRepository.findAll().stream()
+                .filter(u -> u.getRole() == Role.BOSS && (u.getFamily() == null || !u.getFamily().getId().equals(bossFamilyId)))
+                .toList();
+
+        List<User> recipients = new java.util.ArrayList<>(ownSubordinates);
+        recipients.addAll(otherBosses);
+        return recipients;
+    }
 }
