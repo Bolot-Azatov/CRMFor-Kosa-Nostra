@@ -22,12 +22,18 @@ public class FamilyController {
         Long familyId = userDetails.getFamilyId();
 
         model.addAttribute("hierarchy", hierarchyService.getFamilyHierarchy(familyId));
-        return "hierarchy/my-family";
+        return "family/my-family";
     }
 
     @GetMapping("/{id}")
     public String getFamilyHierarchyById(@PathVariable Long id, Model model) {
         model.addAttribute("hierarchy", hierarchyService.getFamilyHierarchy(id));
-        return "hierarchy/other-family";
+        return "family/other-family";
+    }
+
+    @GetMapping("/hierarchy/allfamilies")
+    public String getFullHierarchy(Model model) {
+        model.addAttribute("families", hierarchyService.getAllFamiliesHierarchy());
+        return "hierarchy/index";
     }
 }
