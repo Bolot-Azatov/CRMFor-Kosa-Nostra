@@ -1,7 +1,8 @@
+<!-- src/main/resources/templates/boss/dashboard.ftlh -->
 <#import "/spring.ftl" as spring/>
 <#import "../layout/layout.ftlh" as layout/>
 
-<@layout.page_layout title="Кабинет Дона | Cosa Nostra" activeTab="capos">
+<@layout.page_layout title="Кабинет Дона | Cosa Nostra" activeTab="dashboard">
 
     <style>
         .boss-header {
@@ -12,7 +13,6 @@
             padding-bottom: 1rem;
             border-bottom: 1px solid rgba(197, 160, 89, 0.25);
         }
-
         .boss-title {
             font-family: 'Cinzel', serif;
             font-size: 2.2rem;
@@ -20,243 +20,157 @@
             text-transform: uppercase;
             letter-spacing: 3px;
         }
-
-        .treasury-badge {
-            background: var(--burgundy-dark);
-            border: 2px solid var(--brass-gold);
-            padding: 0.8rem 1.6rem;
-            text-align: right;
-            box-shadow: 0 0 15px rgba(197, 160, 89, 0.2);
-        }
-
-        .treasury-title {
-            font-family: 'Cinzel', serif;
-            font-size: 0.72rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
-        }
-
-        .treasury-sum {
-            font-family: 'Cinzel', serif;
-            font-size: 1.6rem;
-            color: var(--brass-gold);
-            font-weight: bold;
-        }
-
-        .dashboard-grid {
+        .stats-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 2rem;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
             margin-bottom: 2.5rem;
         }
-
-        @media (max-width: 850px) {
-            .dashboard-grid {
-                grid-template-columns: 1fr;
-            }
+        @media (max-width: 768px) {
+            .stats-grid { grid-template-columns: 1fr; }
         }
-
-        .action-card {
+        .stat-card {
             background: var(--bg-card);
             border: var(--border-gold);
-            padding: 1.8rem;
-            position: relative;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.7);
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.8);
         }
-
-        .card-heading {
+        .stat-value {
             font-family: 'Cinzel', serif;
+            font-size: 2rem;
             color: var(--brass-gold);
-            font-size: 1.15rem;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            margin-bottom: 1.2rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 1px solid rgba(197, 160, 89, 0.2);
+            font-weight: bold;
+            margin: 0.5rem 0;
         }
-
-        .form-label {
-            font-family: 'Cinzel', serif;
-            font-size: 0.75rem;
+        .stat-label {
+            font-size: 0.8rem;
             color: var(--text-muted);
             text-transform: uppercase;
-            display: block;
-            margin-bottom: 0.3rem;
-        }
-
-        .form-input, .form-select {
-            width: 100%;
-            padding: 0.75rem;
-            background: #121212;
-            border: var(--border-gold);
-            color: var(--text-main);
-            font-family: 'Courier Prime', monospace;
-            font-size: 0.9rem;
-            margin-bottom: 1rem;
-            outline: none;
-        }
-
-        .form-input:focus, .form-select:focus {
-            border-color: var(--brass-gold-hover);
-        }
-
-        .btn-gold {
-            width: 100%;
-            padding: 0.85rem;
-            background: linear-gradient(180deg, var(--brass-gold) 0%, #8C6D33 100%);
-            color: #0A0A0A;
-            font-family: 'Cinzel', serif;
-            font-size: 0.85rem;
-            font-weight: bold;
-            text-transform: uppercase;
             letter-spacing: 1px;
-            border: none;
-            cursor: pointer;
-            transition: all 0.2s ease;
         }
-
-        .btn-gold:hover {
-            background: linear-gradient(180deg, var(--brass-gold-hover) 0%, var(--brass-gold) 100%);
+        .quick-nav-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.2rem;
+            margin-bottom: 2.5rem;
+        }
+        .quick-btn {
+            background: #161616;
+            border: var(--border-gold);
+            padding: 1.2rem;
+            text-align: center;
+            text-decoration: none;
+            color: var(--text-main);
+            transition: all 0.3s ease;
+            display: block;
+        }
+        .quick-btn:hover {
+            background: var(--burgundy-dark);
+            border-color: var(--brass-gold);
             transform: translateY(-2px);
         }
-
-        .btn-danger {
-            background: linear-gradient(180deg, #6B1310 0%, #3D0C02 100%);
-            color: #FFD2D2;
-            border: 1px solid #FF5555;
-        }
-
-        .btn-danger:hover {
-            background: #8B1A16;
-            color: #FFFFFF;
-        }
-
-        .nav-tabs-bar {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
-
-        .nav-tab-link {
-            padding: 0.6rem 1.2rem;
-            background: var(--bg-card);
-            border: var(--border-gold);
-            color: var(--brass-gold);
+        .quick-btn h3 {
             font-family: 'Cinzel', serif;
-            font-size: 0.8rem;
-            text-decoration: none;
+            color: var(--brass-gold);
+            font-size: 1rem;
+            margin-bottom: 0.4rem;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: all 0.2s;
         }
-
-        .nav-tab-link:hover {
-            background: var(--burgundy-dark);
-            color: var(--brass-gold-hover);
+        .quick-btn p {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin: 0;
         }
     </style>
 
     <div class="boss-header">
         <div>
-            <h1 class="boss-title">Кабинет Дона</h1>
+            <h1 class="boss-title">Ставка Дона</h1>
             <p style="color: var(--text-muted); font-size: 0.85rem; text-transform: uppercase;">
-                Семья ${(family.name)!'Cosa Nostra'} • Верховное командование
+                Семья ${(family.name)!'Cosa Nostra'} • Сводная оперативная сводка
             </p>
         </div>
-        <div class="treasury-badge">
-            <div class="treasury-title">Казначейство (Общак)</div>
-            <div class="treasury-sum">$${(family.treasuryBalance?string[",##0.00"])!'0.00'}</div>
+    </div>
+
+    <!-- Блок ключевых показателей семьи -->
+    <div class="stats-grid">
+        <div class="stat-card" style="border-color: var(--brass-gold);">
+            <div class="stat-label">Казначейство (Общак)</div>
+            <div class="stat-value">$${(family.treasuryBalance?string[",##0.00"])!'0.00'}</div>
+            <a href="/boss/treasury" style="color: var(--brass-gold); font-size: 0.75rem; text-decoration: none;">Управление казной →</a>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Бойцов под присягой</div>
+            <div class="stat-value">${membersCount!0}</div>
+            <a href="/boss/members" style="color: var(--brass-gold); font-size: 0.75rem; text-decoration: none;">Кадровый учет →</a>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Контролируемый рэкет</div>
+            <div class="stat-value">${businessesCount!0}</div>
+            <a href="/boss/businesses" style="color: var(--brass-gold); font-size: 0.75rem; text-decoration: none;">Предприятия →</a>
         </div>
     </div>
 
-    <div class="nav-tabs-bar">
-        <a href="/boss/businesses" class="nav-tab-link">🏛 Бизнесы Семьи</a>
-        <a href="/boss/ledger" class="nav-tab-link">📜 Журнал Доходов</a>
+    <!-- Быстрая навигация по министерствам Дона -->
+    <div class="quick-nav-grid">
+        <a href="/boss/members" class="quick-btn">
+            <h3>🎖 Личный состав</h3>
+            <p>Назначение Капо и Консильери</p>
+        </a>
+        <a href="/boss/businesses" class="quick-btn">
+            <h3>🏛 Предприятия</h3>
+            <p>Закрепление точек за Капо</p>
+        </a>
+        <a href="/boss/treasury" class="quick-btn">
+            <h3>💰 Инвестиции</h3>
+            <p>Списание средств из общака</p>
+        </a>
+        <a href="/boss/diplomacy" class="quick-btn">
+            <h3>🕊 Дипломатия</h3>
+            <p>Отношения с 4 семьями</p>
+        </a>
+        <a href="/boss/messages" class="quick-btn">
+            <h3>✉ Тайная Почта</h3>
+            <p>Депеши и переписка Дона</p>
+        </a>
     </div>
 
-    <div class="dashboard-grid">
-
-        <!-- 1. Инвестиции из Общака -->
-        <div class="action-card">
-            <h2 class="card-heading">💰 Инвестиция из Казны</h2>
-            <form action="/boss/treasury/invest" method="POST">
-
-                <input type="hidden" name="${(_csrf.parameterName)!'_csrf'}" value="${(_csrf.token)!''}"/>
-
-                <label class="form-label" for="amount">Сумма инвестиции ($) *</label>
-                <input type="number" step="0.01" min="0.01" name="amount" id="amount" class="form-input" placeholder="Например: 10000" required />
-
-                <label class="form-label" for="description">Цель финансирования *</label>
-                <input type="text" name="description" id="description" class="form-input" placeholder="Подкуп сенатора / Оружие" required />
-
-                <button type="submit" class="btn-gold">Выделить средства</button>
-            </form>
-        </div>
-
-        <!-- 2. Кадровый учет (Назначение ролей) -->
-        <div class="action-card">
-            <h2 class="card-heading">🎖 Назначение ранга</h2>
-            <form action="/boss/members/assign-role" method="POST">
-
-                <input type="hidden" name="${(_csrf.parameterName)!'_csrf'}" value="${(_csrf.token)!''}"/>
-
-                <label class="form-label" for="userId">ID Участника семьи *</label>
-                <input type="number" name="userId" id="userId" class="form-input" placeholder="Идентификатор бойца" required />
-
-                <label class="form-label" for="newRole">Присвоить звание *</label>
-                <select name="newRole" id="newRole" class="form-select" required>
-                    <option value="SOLDIER">Солдат (Soldier)</option>
-                    <option value="CAPO">Капореджиме (Capo)</option>
-                    <option value="CONSIGLIERE">Консильери (Советник)</option>
-                </select>
-
-                <button type="submit" class="btn-gold">Утвердить приказ</button>
-            </form>
-        </div>
-
-        <!-- 3. Внешняя Политика: Объявление войны -->
-        <div class="action-card">
-            <h2 class="card-heading" style="color: #FF7777;">🗡 Объявить войну</h2>
-            <form action="/boss/diplomacy/declare-war" method="POST" id="warForm">
-
-                <input type="hidden" name="${(_csrf.parameterName)!'_csrf'}" value="${(_csrf.token)!''}"/>
-
-                <label class="form-label" for="warTarget">ID Враждебной Семьи *</label>
-                <input type="number" name="targetFamilyId" id="warTarget" class="form-input" placeholder="Например: 2 (Genovese)" required />
-
-                <button type="submit" class="btn-gold btn-danger">Начать войну за территорию</button>
-            </form>
-        </div>
-
-        <!-- 4. Дипломатия: Предложение мира -->
-        <div class="action-card">
-            <h2 class="card-heading">🕊 Перемирие</h2>
-            <form action="/boss/diplomacy/propose-peace" method="POST">
-
-                <input type="hidden" name="${(_csrf.parameterName)!'_csrf'}" value="${(_csrf.token)!''}"/>
-
-                <label class="form-label" for="peaceTarget">ID Семьи для договора *</label>
-                <input type="number" name="targetFamilyId" id="peaceTarget" class="form-input" placeholder="Например: 4 (Bonanno)" required />
-
-                <button type="submit" class="btn-gold">Направить посланца с миром</button>
-            </form>
-        </div>
-
-    </div>
-
-    <!-- JS-перехват отправки формы (preventDefault из раздатки) для подтверждения опасного действия -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const warForm = document.getElementById('warForm');
-
-            warForm.addEventListener('submit', function(event) {
-                const confirmed = confirm("Вы уверены, Дон? Объявление войны приведет к неизбежным потерям солдат и прибыли.");
-                if (!confirmed) {
-                    // Отменяем отправку формы в браузер
-                    event.preventDefault();
-                }
-            });
-        });
-    </script>
+    <!-- Последние транзакции общака -->
+    <h2 style="font-family: 'Cinzel', serif; color: var(--brass-gold); font-size: 1.3rem; margin-bottom: 1rem; text-transform: uppercase;">
+        📜 Последние операции казны
+    </h2>
+    <#if recentLedger?? && recentLedger?has_content>
+        <table style="width: 100%; border-collapse: collapse; background: var(--bg-card); border: var(--border-gold);">
+            <thead>
+            <tr style="background: var(--burgundy-dark); color: var(--brass-gold); font-family: 'Cinzel', serif; text-align: left;">
+                <th style="padding: 0.8rem;">ID</th>
+                <th style="padding: 0.8rem;">Инициатор</th>
+                <th style="padding: 0.8rem;">Сумма</th>
+                <th style="padding: 0.8rem;">Дата</th>
+                <th style="padding: 0.8rem;">Назначение</th>
+            </tr>
+            </thead>
+            <tbody>
+            <#list recentLedger as item>
+                <tr style="border-bottom: 1px solid rgba(197,160,89,0.15);">
+                    <td style="padding: 0.8rem;">#${item.id}</td>
+                    <td style="padding: 0.8rem; color: var(--brass-gold); font-weight: bold;">${(item.capo.username)!'Семья'}</td>
+                    <td style="padding: 0.8rem; font-family: 'Cinzel', serif; font-weight: bold;">
+                        <#if (item.amount >= 0)>
+                            <span style="color: #81C784;">+$${item.amount?string[",##0.00"]}</span>
+                        <#else>
+                            <span style="color: #FF7777;">-$${(-item.amount)?string[",##0.00"]}</span>
+                        </#if>
+                    </td>
+                    <td style="padding: 0.8rem; color: var(--text-muted); font-size: 0.85rem;">${item.contributedAt}</td>
+                    <td style="padding: 0.8rem; color: var(--text-main); font-size: 0.85rem;">${item.description!"-"}</td>
+                </tr>
+            </#list>
+            </tbody>
+        </table>
+    <#else>
+        <p style="color: var(--text-muted);">Транзакций пока нет.</p>
+    </#if>
 
 </@layout.page_layout>

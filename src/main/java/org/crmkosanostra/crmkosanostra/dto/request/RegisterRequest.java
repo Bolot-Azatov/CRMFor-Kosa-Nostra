@@ -16,7 +16,6 @@ public class RegisterRequest {
     @Size(min = 4, max = 10)
     private String password;
 
-    @NotBlank
     private String role;
 
     @NotBlank
