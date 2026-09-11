@@ -13,6 +13,28 @@
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800;900&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
 
+        <#global known = SPRING_SECURITY_CONTEXT??>
+        <#if known>
+            <#assign user = SPRING_SECURITY_CONTEXT.authentication.principal>
+            <#assign username = user.username!>
+            <#assign authorities = SPRING_SECURITY_CONTEXT.authentication.authorities!>
+            <#global isBoss = false>
+            <#global isConsigliere = false>
+            <#global isCapo = false>
+            <#global isSoldier = false>
+            <#list authorities as auth>
+                <#if auth.authority == "BOSS"><#global isBoss = true></#if>
+                <#if auth.authority == "CONSIGLIERE"><#global isConsigliere = true></#if>
+                <#if auth.authority == "CAPO"><#global isCapo = true></#if>
+                <#if auth.authority == "SOLDIER"><#global isSoldier = true></#if>
+            </#list>
+        <#else>
+            <#global isBoss = false>
+            <#global isConsigliere = false>
+            <#global isCapo = false>
+            <#global isSoldier = false>
+        </#if>
+
         <style>
             :root {
                 --bg-charcoal: #121212;
@@ -230,7 +252,7 @@
         <nav>
             <ul class="nav-links">
                 <li class="nav-item">
-                    <a href="/capos" class="nav-link <#if activeTab == 'capos'>active</#if>">Семья</a>
+                    <a href="/family" class="nav-link <#if activeTab == 'capos'>active</#if>">Семья</a>
                 </li>
                 <li class="nav-item">
                     <a href="/racket" class="nav-link <#if activeTab == 'racket'>active</#if>">Доходы & Рэкет</a>
