@@ -298,9 +298,9 @@
     <header class="speakeasy-navbar">
         <a href="/" class="brand-logo">Cosa Nostra</a>
 
+        <!-- Фрагмент навбара в src/main/resources/templates/layout/layout.ftlh -->
         <nav>
             <ul class="nav-links">
-                <!-- Общие пункты -->
                 <li>
                     <a href="/" class="nav-link <#if activeTab == 'home'>active</#if>">Главная</a>
                 </li>
@@ -309,12 +309,12 @@
                 </li>
 
                 <#if known>
-                    <!-- Иерархия (для всех авторизованных) -->
+                    <!-- Единая иерархия 5 семей -->
                     <li>
-                        <a href="/family" class="nav-link <#if activeTab == 'family'>active</#if>">Семья</a>
+                        <a href="/hierarchy" class="nav-link <#if activeTab == 'family'>active</#if>">Иерархия 5 Семей</a>
                     </li>
 
-                    <!-- Пункты для КАПО -->
+                    <!-- Капо -->
                     <#if isCapo>
                         <li>
                             <a href="/capo/business" class="nav-link <#if activeTab == 'racket' || activeTab == 'business'>active</#if>">Мой Рэкет</a>
@@ -324,26 +324,35 @@
                         </li>
                     </#if>
 
-                    <!-- Пункты для КОНСИЛЬЕРИ -->
+                    <!-- Консильери -->
                     <#if isConsigliere>
                         <li>
                             <a href="/consigliere/ledger" class="nav-link <#if activeTab == 'ledger'>active</#if>">Книга Доходов</a>
                         </li>
                         <li>
-                            <a href="/consigliere/message" class="nav-link <#if activeTab == 'message'>active</#if>">Донесение Дону</a>
+                            <a href="/consigliere/messages" class="nav-link <#if activeTab == 'message'>active</#if>">Почта</a>
                         </li>
                     </#if>
 
-                    <!-- Пункты для БОССА -->
+                    <!-- Дон (Босс) -->
                     <#if isBoss>
                         <li>
-                            <a href="/boss" class="nav-link <#if activeTab == 'capos' || activeTab == 'boss'>active</#if>">Кабинет Дона</a>
+                            <a href="/boss/dashboard" class="nav-link <#if activeTab == 'dashboard'>active</#if>">Штаб Дона</a>
+                        </li>
+                        <li>
+                            <a href="/boss/members" class="nav-link <#if activeTab == 'capos'>active</#if>">Кадры</a>
                         </li>
                         <li>
                             <a href="/boss/businesses" class="nav-link <#if activeTab == 'businesses'>active</#if>">Бизнесы</a>
                         </li>
                         <li>
-                            <a href="/boss/ledger" class="nav-link <#if activeTab == 'boss_ledger'>active</#if>">Общак</a>
+                            <a href="/boss/treasury" class="nav-link <#if activeTab == 'boss_ledger'>active</#if>">Казна</a>
+                        </li>
+                        <li>
+                            <a href="/boss/diplomacy" class="nav-link <#if activeTab == 'diplomacy'>active</#if>">Дипломатия</a>
+                        </li>
+                        <li>
+                            <a href="/boss/messages" class="nav-link <#if activeTab == 'messages'>active</#if>">Депеши</a>
                         </li>
                     </#if>
                 </#if>
