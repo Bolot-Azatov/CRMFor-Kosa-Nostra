@@ -148,7 +148,13 @@
                 <!-- DON -->
                 <#if fam.boss??>
                     <div class="card-member card-don">
-                        <div class="member-avatar">${(fam.boss.username[0..0])!'D'}</div>
+                        <div class="member-avatar">
+                            <#if (fam.boss.photoUrl)?? && fam.boss.photoUrl?has_content>
+                                <img src="${fam.boss.photoUrl}" alt="${fam.boss.username}" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerText='${(fam.boss.username[0..0])!'D'}';"/>
+                            <#else>
+                                ${(fam.boss.username[0..0])!'D'}
+                            </#if>
+                        </div>
                         <span class="badge-rank">Capo di Tutti Capi</span>
                         <h3 style="font-family: 'Cinzel', serif; color: var(--text-main); font-size: 1.1rem; margin: 0.2rem 0;">
                             <a href="/profile/${fam.boss.id}" style="color: inherit; text-decoration: none;">${fam.boss.username}</a>
@@ -167,7 +173,13 @@
                 <!-- CONSIGLIERE -->
                 <#if fam.counselor??>
                     <div class="card-member">
-                        <div class="member-avatar">${(fam.counselor.username[0..0])!'C'}</div>
+                        <div class="member-avatar">
+                            <#if (fam.counselor.photoUrl)?? && fam.counselor.photoUrl?has_content>
+                                <img src="${fam.counselor.photoUrl}" alt="${fam.counselor.username}" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerText='${(fam.counselor.username[0..0])!'C'}';"/>
+                            <#else>
+                                ${(fam.counselor.username[0..0])!'C'}
+                            </#if>
+                        </div>
                         <span class="badge-rank badge-cons">Consigliere</span>
                         <h4 style="font-family: 'Cinzel', serif; color: var(--text-main); margin: 0.2rem 0;">
                             <a href="/profile/${fam.counselor.id}" style="color: inherit; text-decoration: none;">${fam.counselor.username}</a>
@@ -183,7 +195,13 @@
                     <#if fam.capos?? && fam.capos?has_content>
                         <#list fam.capos as capo>
                             <div class="card-member">
-                                <div class="member-avatar">${(capo.username[0..0])!'C'}</div>
+                                <div class="member-avatar">
+                                    <#if (capo.photoUrl)?? && capo.photoUrl?has_content>
+                                        <img src="${capo.photoUrl}" alt="${capo.username}" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerText='${(capo.username[0..0])!'C'}';"/>
+                                    <#else>
+                                        ${(capo.username[0..0])!'C'}
+                                    </#if>
+                                </div>
                                 <span class="badge-rank">Caporegime</span>
                                 <div style="font-family: 'Cinzel', serif; font-weight: bold; margin-top: 0.3rem;">
                                     <a href="/profile/${capo.id}" style="color: var(--brass-gold); text-decoration: none;">${capo.username}</a>
@@ -200,9 +218,18 @@
                 <div class="row-members">
                     <#if fam.soldiers?? && fam.soldiers?has_content>
                         <#list fam.soldiers as s>
-                            <div style="background: #121212; border: 1px solid rgba(197,160,89,0.2); padding: 0.6rem 1rem; width: 220px; text-align: center;">
-                                <a href="/profile/${s.id}" style="color: var(--text-main); text-decoration: none; font-family: 'Cinzel', serif; font-size: 0.9rem; font-weight: bold;">${s.username}</a>
-                                <div style="font-size: 0.7rem; color: var(--brass-gold); text-transform: uppercase;">Soldier</div>
+                            <div style="background: #121212; border: 1px solid rgba(197,160,89,0.2); padding: 0.6rem 1rem; width: 220px; text-align: center; display: flex; align-items: center; gap: 0.8rem;">
+                                <div style="width: 38px; height: 38px; border-radius: 50%; border: 1px solid var(--brass-gold); overflow: hidden; flex-shrink: 0; background: var(--burgundy-dark); display: flex; align-items: center; justify-content: center; color: var(--brass-gold); font-family: 'Cinzel', serif;">
+                                    <#if (s.photoUrl)?? && s.photoUrl?has_content>
+                                        <img src="${s.photoUrl}" alt="${s.username}" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerText='${(s.username[0..0])!'S'}';"/>
+                                    <#else>
+                                        ${(s.username[0..0])!'S'}
+                                    </#if>
+                                </div>
+                                <div style="text-align: left;">
+                                    <a href="/profile/${s.id}" style="color: var(--text-main); text-decoration: none; font-family: 'Cinzel', serif; font-size: 0.85rem; font-weight: bold;">${s.username}</a>
+                                    <div style="font-size: 0.68rem; color: var(--brass-gold); text-transform: uppercase;">Soldier</div>
+                                </div>
                             </div>
                         </#list>
                     <#else>

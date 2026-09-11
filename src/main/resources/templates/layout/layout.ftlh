@@ -4,6 +4,7 @@
     <!DOCTYPE html>
     <html lang="ru">
     <head>
+        <link rel="icon" href="data:,">
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>${title}</title>
@@ -88,26 +89,30 @@
                 flex-direction: column;
             }
 
-            /* --- Navbar --- */
+            /* --- Speakeasy Header & Navbar --- */
             .speakeasy-navbar {
-                background: linear-gradient(180deg, #1A1A1A 0%, #121212 100%);
+                width: 100%;
+                background: linear-gradient(180deg, #1C1C1C 0%, #121212 100%);
                 border-bottom: 2px solid var(--brass-gold);
-                padding: 0 2rem;
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                min-height: 70px;
-                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
+                box-shadow: 0 6px 25px rgba(0, 0, 0, 0.9);
                 position: sticky;
                 top: 0;
                 z-index: 1000;
-                flex-wrap: wrap;
-                gap: 1rem;
+                padding: 0.7rem 2rem 0.5rem 2rem;
+                overflow: visible;
+            }
+
+            .navbar-top {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding-bottom: 0.6rem;
+                border-bottom: 1px solid rgba(197, 160, 89, 0.2);
             }
 
             .brand-logo {
                 font-family: 'Cinzel', serif;
-                font-size: 1.4rem;
+                font-size: 1.45rem;
                 font-weight: 900;
                 color: var(--brass-gold);
                 text-decoration: none;
@@ -116,20 +121,32 @@
                 display: flex;
                 align-items: center;
                 gap: 10px;
-                text-shadow: 0 0 10px rgba(197, 160, 89, 0.2);
+                text-shadow: 0 0 10px rgba(197, 160, 89, 0.3);
+                flex-shrink: 0;
             }
 
             .brand-logo::before {
                 content: '⚖';
-                font-size: 1.2rem;
+                font-size: 1.25rem;
+            }
+
+            .navbar-menu {
+                width: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                padding-top: 0.5rem;
+                overflow: visible;
             }
 
             .nav-links {
                 display: flex;
                 list-style: none;
-                gap: 1rem;
+                gap: 0.8rem;
                 align-items: center;
-                flex-wrap: wrap;
+                margin: 0;
+                padding: 0;
+                flex-wrap: nowrap;
             }
 
             .nav-link {
@@ -139,34 +156,29 @@
                 text-decoration: none;
                 text-transform: uppercase;
                 letter-spacing: 1px;
-                padding: 0.4rem 0.6rem;
-                transition: all 0.3s ease;
-                position: relative;
+                padding: 0.4rem 0.7rem;
+                transition: all 0.25s ease;
+                white-space: nowrap;
+                border-bottom: 2px solid transparent;
             }
 
-            .nav-link:hover, .nav-link.active {
+            .nav-link:hover {
                 color: var(--brass-gold);
                 text-shadow: 0 0 8px rgba(197, 160, 89, 0.4);
             }
 
-            .nav-link.active::after {
-                content: '';
-                position: absolute;
-                bottom: -6px;
-                left: 0;
-                width: 100%;
-                height: 2px;
-                background-color: var(--brass-gold);
-                box-shadow: 0 0 8px var(--brass-gold);
+            .nav-link.active {
+                color: var(--brass-gold);
+                border-bottom: 2px solid var(--brass-gold);
+                text-shadow: 0 0 8px rgba(197, 160, 89, 0.4);
             }
 
             .user-status {
                 display: flex;
                 align-items: center;
-                gap: 12px;
+                gap: 1.2rem;
                 font-size: 0.85rem;
-                border-left: var(--border-gold);
-                padding-left: 1.5rem;
+                flex-shrink: 0;
             }
 
             .user-profile-link {
@@ -182,8 +194,8 @@
             }
 
             .avatar-frame {
-                width: 38px;
-                height: 38px;
+                width: 36px;
+                height: 36px;
                 border-radius: 50%;
                 border: 1px solid var(--brass-gold);
                 background: var(--burgundy-dark);
@@ -192,8 +204,9 @@
                 justify-content: center;
                 font-family: 'Cinzel', serif;
                 color: var(--brass-gold);
-                font-size: 0.85rem;
+                font-size: 0.8rem;
                 font-weight: bold;
+                overflow: hidden;
             }
 
             .logout-form {
@@ -209,14 +222,14 @@
                 color: var(--text-muted);
                 font-family: 'Cinzel', serif;
                 font-size: 0.75rem;
-                padding: 0.4rem 0.7rem;
+                padding: 0.35rem 0.75rem;
                 cursor: pointer;
                 transition: all 0.3s ease;
                 text-transform: uppercase;
                 letter-spacing: 1px;
                 display: flex;
                 align-items: center;
-                gap: 4px;
+                gap: 5px;
             }
 
             .logout-btn:hover {
@@ -246,7 +259,7 @@
             /* --- Main Content --- */
             .main-container {
                 flex: 1;
-                max-width: 1200px;
+                max-width: 1250px;
                 width: 100%;
                 margin: 2rem auto;
                 padding: 0 1.5rem;
@@ -294,12 +307,42 @@
     </head>
     <body>
 
-    <!-- Навбар с динамическими правами -->
     <header class="speakeasy-navbar">
-        <a href="/" class="brand-logo">Cosa Nostra</a>
+        <!-- Верхняя линия: Логотип слева, Профиль и Выход справа -->
+        <div class="navbar-top">
+            <a href="/" class="brand-logo">Cosa Nostra</a>
 
-        <!-- Фрагмент навбара в src/main/resources/templates/layout/layout.ftlh -->
-        <nav>
+            <div class="user-status">
+                <#if known>
+                    <a href="/profile" class="user-profile-link" title="Личное досье">
+                        <div class="avatar-frame">${roleBadge!"MBR"}</div>
+                        <div>
+                            <div style="color: var(--brass-gold); font-family: 'Cinzel', serif; font-weight: bold; font-size: 0.85rem;">
+                                ${username!"Неизвестный"}
+                            </div>
+                            <div style="color: var(--text-muted); font-size: 0.68rem; text-transform: uppercase;">
+                                ${roleTitle!"Участник"}
+                            </div>
+                        </div>
+                    </a>
+
+                    <form action="/logout" method="post" class="logout-form">
+                        <#if _csrf??>
+                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                        </#if>
+                        <button type="submit" class="logout-btn" title="Покинуть сходку">
+                            🚪 Выйти
+                        </button>
+                    </form>
+                <#else>
+                    <a href="/login" class="btn-auth-link">Вход</a>
+                    <a href="/register" class="btn-auth-link" style="border-color: rgba(197, 160, 89, 0.6); background: rgba(197, 160, 89, 0.1);">Присяга</a>
+                </#if>
+            </div>
+        </div>
+
+        <!-- Нижняя линия: Все 9 вкладок без скроллбаров -->
+        <nav class="navbar-menu">
             <ul class="nav-links">
                 <li>
                     <a href="/" class="nav-link <#if activeTab == 'home'>active</#if>">Главная</a>
@@ -309,12 +352,11 @@
                 </li>
 
                 <#if known>
-                    <!-- Единая иерархия 5 семей -->
                     <li>
                         <a href="/hierarchy" class="nav-link <#if activeTab == 'family'>active</#if>">Иерархия 5 Семей</a>
                     </li>
 
-                    <!-- Капо -->
+                <#-- Капо -->
                     <#if isCapo>
                         <li>
                             <a href="/capo/business" class="nav-link <#if activeTab == 'racket' || activeTab == 'business'>active</#if>">Мой Рэкет</a>
@@ -324,7 +366,7 @@
                         </li>
                     </#if>
 
-                    <!-- Консильери -->
+                <#-- Консильери -->
                     <#if isConsigliere>
                         <li>
                             <a href="/consigliere/ledger" class="nav-link <#if activeTab == 'ledger'>active</#if>">Книга Доходов</a>
@@ -334,7 +376,7 @@
                         </li>
                     </#if>
 
-                    <!-- Дон (Босс) -->
+                <#-- Дон (Босс) -->
                     <#if isBoss>
                         <li>
                             <a href="/boss/dashboard" class="nav-link <#if activeTab == 'dashboard'>active</#if>">Штаб Дона</a>
@@ -358,36 +400,6 @@
                 </#if>
             </ul>
         </nav>
-
-        <!-- Блок статуса пользователя справа -->
-        <div class="user-status">
-            <#if known>
-                <a href="/profile" class="user-profile-link" title="Перейти в личное досье">
-                    <div class="avatar-frame">${roleBadge!"MBR"}</div>
-                    <div>
-                        <div style="color: var(--brass-gold); font-family: 'Cinzel', serif; font-weight: bold;">
-                            ${username!"Неизвестный"}
-                        </div>
-                        <div style="color: var(--text-muted); font-size: 0.72rem; text-transform: uppercase;">
-                            ${roleTitle!"Участник"}
-                        </div>
-                    </div>
-                </a>
-
-                <!-- Выход из системы с обязательным CSRF-токеном -->
-                <form action="/logout" method="post" class="logout-form">
-                    <#if _csrf??>
-                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                    </#if>
-                    <button type="submit" class="logout-btn" title="Покинуть сходку">
-                        🚪 Выйти
-                    </button>
-                </form>
-            <#else>
-                <a href="/login" class="btn-auth-link">Вход</a>
-                <a href="/register" class="btn-auth-link" style="border-color: rgba(197, 160, 89, 0.6); background: rgba(197, 160, 89, 0.1);">Присяга</a>
-            </#if>
-        </div>
     </header>
 
     <main class="main-container">
