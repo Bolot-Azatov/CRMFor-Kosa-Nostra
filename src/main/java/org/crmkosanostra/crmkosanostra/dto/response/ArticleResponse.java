@@ -17,7 +17,7 @@ public class ArticleResponse {
                 article.getId(),
                 article.getTitle(),
                 article.getContent(),
-                article.getFamily().getName()
+                article.getFamily() != null ? article.getFamily().getName() : null
         );
     }
 }

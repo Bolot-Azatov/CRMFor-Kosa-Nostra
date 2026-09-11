@@ -13,6 +13,7 @@ public class UserResponse {
     private Long id;
     private String username;
     private String role;
+    private Long familyId;
     private String familyName;
     private String photoUrl;
     private String bio;
@@ -22,6 +23,7 @@ public class UserResponse {
                 .id(user.getId())
                 .username(user.getUsername())
                 .role(user.getRole().name())
+                .familyId(user.getFamily().getId())
                 .familyName(user.getFamily().getName())
                 .photoUrl(user.getPhotoUrl())
                 .bio(user.getBio())

@@ -25,7 +25,7 @@ public class ConsigliereController {
     @GetMapping("/ledger")
     public String getLedger(@AuthenticationPrincipal CustomUserDetails userDetails, Model model) {
         model.addAttribute("ledger", consigliereService.getFamilyLedger(userDetails.getFamilyId()));
-        return "counselor/ledger";
+        return "consigliere/ledger";
     }
 
     // Форма отправки сообщения Боссу
@@ -34,7 +34,7 @@ public class ConsigliereController {
         if (!model.containsAttribute("messageRequest")) {
             model.addAttribute("messageRequest", new MessageRequest());
         }
-        return "counselor/message"; // Шаблон src/main/resources/templates/counselor/message.html
+        return "consigliere/message"; // Шаблон src/main/resources/templates/counselor/message.html
     }
 
     // Обработка отправки сообщения Боссу
@@ -47,7 +47,7 @@ public class ConsigliereController {
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.messageRequest", bindingResult);
             redirectAttributes.addFlashAttribute("messageRequest", request);
-            return "redirect:/counselor/message";
+            return "redirect:/consigliere/message";
         }
 
         try {
@@ -57,6 +57,6 @@ public class ConsigliereController {
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
         }
 
-        return "redirect:/counselor/message";
+        return "redirect:/consigliere/message";
     }
 }
