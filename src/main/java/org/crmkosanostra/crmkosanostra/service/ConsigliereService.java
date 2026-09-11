@@ -12,6 +12,7 @@ import org.crmkosanostra.crmkosanostra.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -48,6 +49,7 @@ public class ConsigliereService {
         message.setRecipient(boss);
         message.setSubject(request.getSubject());
         message.setBody(request.getBody());
+        message.setSentAt(LocalDateTime.now());
 
         messageRepository.save(message);
     }

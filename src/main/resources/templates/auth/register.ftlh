@@ -269,7 +269,6 @@
                     <option value="SOLDIER" <#if (registerRequest.role!) == 'SOLDIER'>selected</#if>>Солдат (Soldier)</option>
                     <option value="CAPO" <#if (registerRequest.role!) == 'CAPO'>selected</#if>>Капореджиме (Capo)</option>
                     <option value="CONSIGLIERE" <#if (registerRequest.role!) == 'CONSIGLIERE'>selected</#if>>Консильери (Consigliere)</option>
-                    <option value="ASSOCIATE" <#if (registerRequest.role!) == 'ASSOCIATE'>selected</#if>>Соучастник (Associate)</option>
                 </select>
                 <span class="field-error"><@spring.showErrors "<br>"/></span>
             </div>

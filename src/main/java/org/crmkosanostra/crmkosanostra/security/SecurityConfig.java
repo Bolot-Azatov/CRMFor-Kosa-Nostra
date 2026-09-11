@@ -50,9 +50,9 @@ public class SecurityConfig {
 
                         .requestMatchers("/boss/**").hasRole("BOSS")
 
-                        .requestMatchers("/consigliere/**").hasRole("CONSIGLIERE")
+                        .requestMatchers("/consigliere/**").hasAnyRole("CONSIGLIERE", "BOSS")
 
-                        .requestMatchers("/capo/**").hasRole("CAPO")
+                        .requestMatchers("/capo/**").hasAnyRole("CAPO")
 
                         .requestMatchers("/hierarchy", "/profile").hasAnyRole("SOLDIER", "CAPO", "CONSIGLIERE", "BOSS")
 

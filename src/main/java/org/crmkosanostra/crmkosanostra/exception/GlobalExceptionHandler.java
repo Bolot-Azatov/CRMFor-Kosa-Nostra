@@ -23,7 +23,7 @@ public class GlobalExceptionHandler {
         log.warn("Resource not found [{}]: {}", request.getRequestURI(), ex.getMessage());
 
         populateErrorModel(model, HttpStatus.NOT_FOUND.value(), "Ресурс не найден", ex.getMessage(), request.getRequestURI());
-        return "error";
+        return "errors/error";
     }
 
     @ExceptionHandler(BadRequestException.class)
@@ -32,7 +32,7 @@ public class GlobalExceptionHandler {
         log.warn("Bad request [{}]: {}", request.getRequestURI(), ex.getMessage());
 
         populateErrorModel(model, HttpStatus.BAD_REQUEST.value(), "Некорректный запрос", ex.getMessage(), request.getRequestURI());
-        return "error";
+        return "errors/error";
     }
 
     @ExceptionHandler(BusinessLogicException.class)
@@ -41,7 +41,7 @@ public class GlobalExceptionHandler {
         log.warn("Business logic violation [{}]: {}", request.getRequestURI(), ex.getMessage());
 
         populateErrorModel(model, HttpStatus.BAD_REQUEST.value(), "Ошибка бизнес-логики", ex.getMessage(), request.getRequestURI());
-        return "error";
+        return "errors/error";
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
@@ -50,7 +50,7 @@ public class GlobalExceptionHandler {
         log.warn("Invalid argument [{}]: {}", request.getRequestURI(), ex.getMessage());
 
         populateErrorModel(model, HttpStatus.BAD_REQUEST.value(), "Некорректный запрос", ex.getMessage(), request.getRequestURI());
-        return "error";
+        return "errors/error";
     }
 
     @ExceptionHandler(RuntimeException.class)
@@ -59,7 +59,7 @@ public class GlobalExceptionHandler {
         log.error("Runtime exception [{}]: {}", request.getRequestURI(), ex.getMessage());
 
         populateErrorModel(model, HttpStatus.BAD_REQUEST.value(), "Ошибка выполнения", ex.getMessage(), request.getRequestURI());
-        return "error";
+        return "errors/error";
     }
 
     @ExceptionHandler(Exception.class)
@@ -68,7 +68,7 @@ public class GlobalExceptionHandler {
         log.error("Unhandled exception on [{}]", request.getRequestURI(), ex);
 
         populateErrorModel(model, HttpStatus.INTERNAL_SERVER_ERROR.value(), "Внутренняя ошибка сервера", "Произошла непредвиденная ошибка. Обратитесь к администратору.", request.getRequestURI());
-        return "error";
+        return "errors/error";
     }
 
     private void populateErrorModel(Model model, int status, String title, String message, String path) {

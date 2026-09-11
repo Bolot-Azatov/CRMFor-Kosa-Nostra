@@ -131,14 +131,22 @@ public class BossService {
             throw new BusinessLogicException("Cannot change relations with your own family");
         }
 
-        Family targetFamily = familyRepository.findById(targetFamilyId)
-                .orElseThrow(() -> new ResourceNotFoundException("Target family not found"));
+        Long min = Math.min(boss.getFamily().getId(), targetFamilyId);
+        Long max = Math.max(boss.getFamily().getId(), targetFamilyId);
+
+        Family minIdFamily = familyRepository.findById(min).orElseThrow(
+                () -> new ResourceNotFoundException("Target family not found")
+        );
+
+        Family maxIdFamily = familyRepository.findById(max).orElseThrow(
+                () -> new ResourceNotFoundException("Target family not found")
+        );
 
         FamilyRelation relation = relationRepository.findRelationBetween(
                         boss.getFamily().getId(), targetFamilyId)
                 .orElseGet(() -> FamilyRelation.builder()
-                        .family1(boss.getFamily())
-                        .family2(targetFamily)
+                        .family1(minIdFamily)
+                        .family2(maxIdFamily)
                         .build());
 
         relation.setStatus(newStatus);

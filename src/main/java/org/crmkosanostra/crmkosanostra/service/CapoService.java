@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
@@ -66,6 +67,7 @@ public class CapoService {
         entry.setFamily(family);
         entry.setCapo(capo);
         entry.setAmount(familyCut);
+        entry.setContributedAt(LocalDateTime.now());
         entry.setDescription(request.getDescription() != null && !request.getDescription().isBlank()
                 ? request.getDescription()
                 : "Еженедельный взнос с бизнеса: " + business.getName());
