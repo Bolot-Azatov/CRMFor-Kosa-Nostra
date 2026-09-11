@@ -2,6 +2,8 @@ package org.crmkosanostra.crmkosanostra.service;
 
 import lombok.RequiredArgsConstructor;
 import org.crmkosanostra.crmkosanostra.dto.response.ArticleResponse;
+import org.crmkosanostra.crmkosanostra.entity.Article;
+import org.crmkosanostra.crmkosanostra.exception.exceptions.ResourceNotFoundException;
 import org.crmkosanostra.crmkosanostra.repository.ArticleRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,5 +26,13 @@ public class ArticleService {
                         .familyName(article.getFamily() != null ? article.getFamily().getName() : null)
                         .build())
                 .toList();
+    }
+
+    public ArticleResponse getArticleById(Long id) {
+        Article article = articleRepository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("Статья с этим id не была найдена")
+        );
+
+        return ArticleResponse.mapToDto(article);
     }
 }
