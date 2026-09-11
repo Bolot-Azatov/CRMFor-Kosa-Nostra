@@ -62,17 +62,17 @@ INSERT INTO businesses (id, name, type, weekly_revenue, capo_id, family_id) VALU
 -- =================================================================
 -- 4. ДИПЛОМАТИЯ МЕЖДУ СЕМЬЯМИ (10 ПАР)
 -- =================================================================
-INSERT INTO family_relations (id, family_1_id, family_2_id, status) VALUES
-(1, 1, 2, 'PEACE'),
-(2, 1, 3, 'PEACE'),
-(3, 1, 4, 'WAR'),
-(4, 1, 5, 'PEACE'),
-(5, 2, 3, 'PEACE'),
-(6, 2, 4, 'PENDING_PEACE', 2),
-(7, 2, 5, 'PEACE'),
-(8, 3, 4, 'PEACE'),
-(9, 3, 5, 'PEACE'),
-(10, 4, 5, 'PEACE');
+INSERT INTO family_relations (id, family_1_id, family_2_id, status, initiator_family_id) VALUES
+                                                                                             (1, 1, 2, 'PEACE', NULL),
+                                                                                             (2, 1, 3, 'PEACE', NULL),
+                                                                                             (3, 1, 4, 'WAR', NULL),
+                                                                                             (4, 1, 5, 'PEACE', NULL),
+                                                                                             (5, 2, 3, 'PEACE', NULL),
+                                                                                             (6, 2, 4, 'PENDING_PEACE', 2),
+                                                                                             (7, 2, 5, 'PEACE', NULL),
+                                                                                             (8, 3, 4, 'PEACE', NULL),
+                                                                                             (9, 3, 5, 'PEACE', NULL),
+                                                                                             (10, 4, 5, 'PEACE', NULL);
 
 -- =================================================================
 -- 5. ИСТОРИЧЕСКИЕ СТАТЬИ (ОБЩИЕ + ВСЕ 5 СЕМЕЙ НЬЮ-ЙОРКА)

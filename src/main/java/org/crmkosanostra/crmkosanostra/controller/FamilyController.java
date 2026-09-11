@@ -31,9 +31,5 @@ public class FamilyController {
         return "family/other-family";
     }
 
-    @GetMapping("/hierarchy")
-    public String getFullHierarchy(Model model) {
-        model.addAttribute("families", hierarchyService.getAllFamiliesHierarchy());
-        return "hierarchy/index";
-    }
+
 }

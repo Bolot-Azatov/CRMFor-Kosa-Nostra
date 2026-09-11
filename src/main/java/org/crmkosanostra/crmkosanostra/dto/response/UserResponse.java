@@ -23,8 +23,8 @@ public class UserResponse {
                 .id(user.getId())
                 .username(user.getUsername())
                 .role(user.getRole().name())
-                .familyId(user.getFamily().getId())
-                .familyName(user.getFamily().getName())
+                .familyId(user.getFamily() != null ? user.getFamily().getId() : null)
+                .familyName(user.getFamily() != null ? user.getFamily().getName() : null)
                 .photoUrl(user.getPhotoUrl())
                 .bio(user.getBio())
                 .build();

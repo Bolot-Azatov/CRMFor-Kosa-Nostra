@@ -2,6 +2,7 @@ package org.crmkosanostra.crmkosanostra.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.crmkosanostra.crmkosanostra.dto.request.RegisterRequest;
 import org.crmkosanostra.crmkosanostra.dto.response.UserResponse;
@@ -58,7 +59,7 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public String register(@ModelAttribute("registerRequest") RegisterRequest registerDto,
+    public String register( @Valid @ModelAttribute("registerRequest") RegisterRequest registerDto,
                            BindingResult bindingResult,
                            Model model,
                            HttpServletRequest request) {
