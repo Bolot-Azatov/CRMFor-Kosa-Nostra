@@ -4,7 +4,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.crmkosanostra.crmkosanostra.dto.request.MessageRequest;
 import org.crmkosanostra.crmkosanostra.security.CustomUserDetails;
-import org.crmkosanostra.crmkosanostra.service.CounselorService;
+import org.crmkosanostra.crmkosanostra.service.ConsigliereService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -14,17 +14,17 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
-@RequestMapping("/counselor")
-@PreAuthorize("hasAnyRole('COUNSELOR', 'BOSS')")
+@RequestMapping("/consigliere")
+@PreAuthorize("hasAnyRole('CONSIGLIERE', 'BOSS')")
 @RequiredArgsConstructor
-public class CounselorController {
+public class ConsigliereController {
 
-    private final CounselorService counselorService;
+    private final ConsigliereService consigliereService;
 
     // Просмотр финансовой книги семьи
     @GetMapping("/ledger")
     public String getLedger(@AuthenticationPrincipal CustomUserDetails userDetails, Model model) {
-        model.addAttribute("ledger", counselorService.getFamilyLedger(userDetails.getFamilyId()));
+        model.addAttribute("ledger", consigliereService.getFamilyLedger(userDetails.getFamilyId()));
         return "counselor/ledger";
     }
 
@@ -51,7 +51,7 @@ public class CounselorController {
         }
 
         try {
-            counselorService.sendMessageToBoss(userDetails.getUserId(), userDetails.getFamilyId(), request);
+            consigliereService.sendMessageToBoss(userDetails.getUserId(), userDetails.getFamilyId(), request);
             redirectAttributes.addFlashAttribute("successMessage", "Зашифрованное письмо отправлено Боссу.");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());

@@ -16,7 +16,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class CounselorService {
+public class ConsigliereService {
 
     private final FinancialLedgerRepository ledgerRepository;
     private final MessageRepository messageRepository;
