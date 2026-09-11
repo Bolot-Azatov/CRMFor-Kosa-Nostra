@@ -20,33 +20,33 @@ INSERT INTO families (id, name, treasury_balance) VALUES
 -- Семья Gambino
 INSERT INTO users (id, username, password_hash, role, family_id, photo_url, bio) VALUES
 (1, 'carlo_gambino', '$2a$12$k16E8hqINj/u.sB4MPKH3uXqBM1Zr3uBepxXP/bXwiqJ4lT56AiIK', 'BOSS', 1, 'https://images.example.com/gambino.jpg', 'Босс семьи Гамбино. Хитрый и рассудительный стратег.'),
-(2, 'joseph_biondo', '$2a$12$k16E8hqINj/u.sB4MPKH3uXqBM1Zr3uBepxXP/bXwiqJ4lT56AiIK', 'COUNSELOR', 1, 'https://images.example.com/biondo.jpg', 'Правая рука Карло Гамбино, советник по финансовым вопросам.'),
+(2, 'joseph_biondo', '$2a$12$k16E8hqINj/u.sB4MPKH3uXqBM1Zr3uBepxXP/bXwiqJ4lT56AiIK', 'CONSIGLIERE', 1, 'https://images.example.com/biondo.jpg', 'Правая рука Карло Гамбино, советник по финансовым вопросам.'),
 (3, 'aniello_dellacroce', '$2a$12$k16E8hqINj/u.sB4MPKH3uXqBM1Zr3uBepxXP/bXwiqJ4lT56AiIK', 'CAPO', 1, 'https://images.example.com/dellacroce.jpg', 'Влиятельный капо, контролирующий порты Манхэттена.'),
 (4, 'paul_castellano', '$2a$12$k16E8hqINj/u.sB4MPKH3uXqBM1Zr3uBepxXP/bXwiqJ4lT56AiIK', 'SOLDIER', 1, 'https://images.example.com/castellano.jpg', 'Преданный солдат семьи, занимается белыми воротничками.');
 
 -- Семья Genovese
 INSERT INTO users (id, username, password_hash, role, family_id, photo_url, bio) VALUES
 (5, 'vito_genovese', '$2a$12$k16E8hqINj/u.sB4MPKH3uXqBM1Zr3uBepxXP/bXwiqJ4lT56AiIK', 'BOSS', 2, 'https://images.example.com/genovese.jpg', 'Босс семьи Дженовезе. Жестокий и амбициозный лидер.'),
-(6, 'michele_miranda', '$2a$12$k16E8hqINj/u.sB4MPKH3uXqBM1Zr3uBepxXP/bXwiqJ4lT56AiIK', 'COUNSELOR', 2, 'https://images.example.com/miranda.jpg', 'Опытный консильери семьи Дженовезе.'),
+(6, 'michele_miranda', '$2a$12$k16E8hqINj/u.sB4MPKH3uXqBM1Zr3uBepxXP/bXwiqJ4lT56AiIK', 'CONSIGLIERE', 2, 'https://images.example.com/miranda.jpg', 'Опытный консильери семьи Дженовезе.'),
 (7, 'anthony_salerno', '$2a$12$k16E8hqINj/u.sB4MPKH3uXqBM1Zr3uBepxXP/bXwiqJ4lT56AiIK', 'CAPO', 2, 'https://images.example.com/salerno.jpg', 'Капо по кличке "Толстый Тони", держит рэкет в Гарлеме.'),
 (8, 'vincent_gigante', '$2a$12$k16E8hqINj/u.sB4MPKH3uXqBM1Zr3uBepxXP/bXwiqJ4lT56AiIK', 'SOLDIER', 2, 'https://images.example.com/gigante.jpg', 'Боец семьи, силовой исполнитель специальных поручений.');
 
 -- Семья Lucchese
 INSERT INTO users (id, username, password_hash, role, family_id, photo_url, bio) VALUES
 (9, 'tommy_lucchese', '$2a$12$k16E8hqINj/u.sB4MPKH3uXqBM1Zr3uBepxXP/bXwiqJ4lT56AiIK', 'BOSS', 3, 'https://images.example.com/lucchese.jpg', 'Босс семьи Луккезе. Мастер закулисных альянсов.'),
-(10, 'vincenzo_rao', '$2a$12$k16E8hqINj/u.sB4MPKH3uXqBM1Zr3uBepxXP/bXwiqJ4lT56AiIK', 'COUNSELOR', 3, 'https://images.example.com/rao.jpg', 'Консильери семьи Луккезе, юрист и медиатор.'),
+(10, 'vincenzo_rao', '$2a$12$k16E8hqINj/u.sB4MPKH3uXqBM1Zr3uBepxXP/bXwiqJ4lT56AiIK', 'CONSIGLIERE', 3, 'https://images.example.com/rao.jpg', 'Консильери семьи Луккезе, юрист и медиатор.'),
 (11, 'anthony_corallo', '$2a$12$k16E8hqINj/u.sB4MPKH3uXqBM1Zr3uBepxXP/bXwiqJ4lT56AiIK', 'CAPO', 3, 'https://images.example.com/corallo.jpg', 'Капо по кличке "Утка", держит профсоюзы грузоперевозок.');
 
 -- Семья Bonanno
 INSERT INTO users (id, username, password_hash, role, family_id, photo_url, bio) VALUES
 (12, 'joseph_bonanno', '$2a$12$k16E8hqINj/u.sB4MPKH3uXqBM1Zr3uBepxXP/bXwiqJ4lT56AiIK', 'BOSS', 4, 'https://images.example.com/bonanno.jpg', 'Босс семьи Бонанно по кличке "Джо Бананас".'),
-(13, 'john_tartamella', '$2a$12$k16E8hqINj/u.sB4MPKH3uXqBM1Zr3uBepxXP/bXwiqJ4lT56AiIK', 'COUNSELOR', 4, 'https://images.example.com/tartamella.jpg', 'Старый консильери семьи Бонанно.'),
+(13, 'john_tartamella', '$2a$12$k16E8hqINj/u.sB4MPKH3uXqBM1Zr3uBepxXP/bXwiqJ4lT56AiIK', 'CONSIGLIERE', 4, 'https://images.example.com/tartamella.jpg', 'Старый консильери семьи Бонанно.'),
 (14, 'carmine_galante', '$2a$12$k16E8hqINj/u.sB4MPKH3uXqBM1Zr3uBepxXP/bXwiqJ4lT56AiIK', 'CAPO', 4, 'https://images.example.com/galante.jpg', 'Агрессивный капо, контролирующий импорт и распределение.');
 
 -- Семья Colombo
 INSERT INTO users (id, username, password_hash, role, family_id, photo_url, bio) VALUES
 (15, 'joe_profaci', '$2a$12$k16E8hqINj/u.sB4MPKH3uXqBM1Zr3uBepxXP/bXwiqJ4lT56AiIK', 'BOSS', 5, 'https://images.example.com/profaci.jpg', 'Основатель семьи Профачи (позже Коломбо). Оливковый король.'),
-(16, 'joseph_magliocco', '$2a$12$k16E8hqINj/u.sB4MPKH3uXqBM1Zr3uBepxXP/bXwiqJ4lT56AiIK', 'COUNSELOR', 5, 'https://images.example.com/magliocco.jpg', 'Консильери семьи Коломбо/Профачи.'),
+(16, 'joseph_magliocco', '$2a$12$k16E8hqINj/u.sB4MPKH3uXqBM1Zr3uBepxXP/bXwiqJ4lT56AiIK', 'CONSIGLIERE', 5, 'https://images.example.com/magliocco.jpg', 'Консильери семьи Коломбо/Профачи.'),
 (17, 'carmine_persico', '$2a$12$k16E8hqINj/u.sB4MPKH3uXqBM1Zr3uBepxXP/bXwiqJ4lT56AiIK', 'CAPO', 5, 'https://images.example.com/persico.jpg', 'Молодой и дерзкий капо по кличке "Змея".');
 
 -- =================================================================
