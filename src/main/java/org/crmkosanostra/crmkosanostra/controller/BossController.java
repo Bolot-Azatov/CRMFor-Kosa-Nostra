@@ -186,6 +186,11 @@ public class BossController {
         return "redirect:/boss";
     }
 
+    @GetMapping("/messages/new")
+    public String getMessageSendForm(Model model) {
+        return "boss/message_new";
+    }
+
     // Отправка сообщений
     @PostMapping("/messages")
     public String sendMessage(
@@ -209,5 +214,11 @@ public class BossController {
         }
 
         return "redirect:/boss";
+    }
+
+    @PostMapping("/businesses/assign")
+    public String assignBusiness(@AuthenticationPrincipal CustomUserDetails userDetails,
+                                 @Valid @ModelAttribute("assignBusinessRequest") BossDto.AssignBusinessRequest request){
+
     }
 }

@@ -31,4 +31,9 @@ public class BossDto {
             @NotBlank(message = "Subject is required") String subject,
             @NotBlank(message = "Body is required") String body
     ) {}
+
+    public record AssignBusinessRequest(
+            @NotNull Long businessId,
+            @NotNull Long capoId
+    ) {}
 }
