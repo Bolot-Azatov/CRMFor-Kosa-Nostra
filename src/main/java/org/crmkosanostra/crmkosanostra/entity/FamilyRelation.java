@@ -32,4 +32,8 @@ public class FamilyRelation {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 50)
     private RelationStatus status;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "initiator_family_id")
+    private Family initiatorFamily;
 }

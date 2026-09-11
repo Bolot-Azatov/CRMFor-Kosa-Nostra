@@ -262,16 +262,14 @@
             </div>
 
             <!-- Role Select -->
-            <div class="form-group">
-                <label for="role" class="form-label">Статус в Семье *</label>
-                <select id="role" name="role" class="form-select" required>
-                    <option value="" disabled selected hidden>Выберите статус...</option>
-                    <option value="SOLDIER" <#if (registerRequest.role!) == 'SOLDIER'>selected</#if>>Солдат (Soldier)</option>
-                    <option value="CAPO" <#if (registerRequest.role!) == 'CAPO'>selected</#if>>Капореджиме (Capo)</option>
-                    <option value="CONSIGLIERE" <#if (registerRequest.role!) == 'CONSIGLIERE'>selected</#if>>Консильери (Consigliere)</option>
-                </select>
-                <span class="field-error"><@spring.showErrors "<br>"/></span>
-            </div>
+<#--            <div class="form-group">-->
+<#--                <label for="role" class="form-label">Статус в Семье *</label>-->
+<#--                <select id="role" name="role" class="form-select" required>-->
+<#--                    <option value="" disabled selected hidden>Выберите статус...</option>-->
+<#--                    <option value="SOLDIER" <#if (registerRequest.role!) == 'SOLDIER'>selected</#if>>Солдат (Soldier)</option>-->
+<#--                </select>-->
+<#--                <span class="field-error"><@spring.showErrors "<br>"/></span>-->
+<#--            </div>-->
         </div>
 
         <!-- Photo URL -->

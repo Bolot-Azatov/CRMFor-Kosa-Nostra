@@ -13,14 +13,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("profile")
+@RequestMapping("/profile")
 @RequiredArgsConstructor
 public class ProfileController {
 
     private final UserService userService;
 
     @GetMapping()
-    private String showCurrentUserProfilePage(Model model, @AuthenticationPrincipal CustomUserDetails userDetails) {
+    public String showCurrentUserProfilePage(Model model, @AuthenticationPrincipal CustomUserDetails userDetails) {
 
         UserResponse user = userService.findUserById(userDetails.getUserId());
 
@@ -29,7 +29,7 @@ public class ProfileController {
     }
 
     @GetMapping("/{id}")
-    private String showProfilePage(@PathVariable() Long id,
+    public String showProfilePage(@PathVariable() Long id,
                                    Model model) {
         UserResponse user = userService.findUserById(id);
         model.addAttribute("user", user);

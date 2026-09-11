@@ -36,13 +36,12 @@ public class AuthService {
 
     private User mapToUser(RegisterRequest registerRequest) {
 
-        Role role = userService.getRoleByName(registerRequest.getRole());
         Family family = familyService.getFamilyByName(registerRequest.getFamilyName());
 
         return User.builder()
                 .username(registerRequest.getUsername())
                 .passwordHash(passwordEncoder.encode(registerRequest.getPassword()))
-                .role(role)
+                .role(Role.SOLDIER)
                 .family(family)
                 .photoUrl(registerRequest.getPhotoUrl())
                 .bio(registerRequest.getBio())

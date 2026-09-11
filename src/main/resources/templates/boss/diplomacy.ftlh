@@ -23,6 +23,8 @@
         <tbody>
         <#list relations as rel>
             <#assign otherFamily = (rel.family1.id == currentFamily.id)?then(rel.family2, rel.family1)>
+            <#assign isOurProposal = (rel.initiatorFamily?? && rel.initiatorFamily.id == currentFamily.id)>
+
             <tr style="border-bottom: 1px solid rgba(197,160,89,0.15);">
                 <td style="padding: 1rem; font-family: 'Cinzel', serif; font-weight: bold; font-size: 1.1rem; color: var(--brass-gold);">
                     Семья ${otherFamily.name}
@@ -33,10 +35,15 @@
                     <#elseif rel.status == 'WAR'>
                         <span style="color: #FF5555; font-weight: bold;">🗡️ ВОЙНА</span>
                     <#elseif rel.status == 'PENDING_PEACE'>
-                        <span style="color: #FFB74D; font-weight: bold;">⏳ ЗАПРОС НА МИР</span>
+                        <#if isOurProposal>
+                            <span style="color: #FFB74D; font-weight: bold;">⏳ МИР ПРЕДЛОЖЕН (Ожидание)</span>
+                        <#else>
+                            <span style="color: #64B5F6; font-weight: bold;">✉️ ВХОДЯЩЕЕ ПРЕДЛОЖЕНИЕ МИРА</span>
+                        </#if>
                     </#if>
                 </td>
                 <td style="padding: 1rem; display: flex; gap: 0.6rem; align-items: center;">
+                    <#-- Кнопка объявления войны доступна, если война еще не идет -->
                     <#if rel.status != 'WAR'>
                         <form action="/boss/diplomacy/declare-war" method="POST" onsubmit="return confirm('Вы уверены, что хотите объявить войну семье ${otherFamily.name}?');">
                             <input type="hidden" name="${(_csrf.parameterName)!'_csrf'}" value="${(_csrf.token)!''}"/>
@@ -47,6 +54,7 @@
                         </form>
                     </#if>
 
+                    <#-- Предложить мир можно во время войны -->
                     <#if rel.status == 'WAR'>
                         <form action="/boss/diplomacy/propose-peace" method="POST">
                             <input type="hidden" name="${(_csrf.parameterName)!'_csrf'}" value="${(_csrf.token)!''}"/>
@@ -57,14 +65,19 @@
                         </form>
                     </#if>
 
+                    <#-- Принять мир может ТОЛЬКО принимающая сторона (не инициатор) -->
                     <#if rel.status == 'PENDING_PEACE'>
-                        <form action="/boss/diplomacy/accept-peace" method="POST">
-                            <input type="hidden" name="${(_csrf.parameterName)!'_csrf'}" value="${(_csrf.token)!''}"/>
-                            <input type="hidden" name="targetFamilyId" value="${otherFamily.id}"/>
-                            <button type="submit" style="background: #1B5E20; border: 1px solid #81C784; color: #FFF; padding: 0.4rem 0.8rem; font-family: 'Cinzel', serif; cursor: pointer; text-transform: uppercase;">
-                                Принять мир
-                            </button>
-                        </form>
+                        <#if isOurProposal>
+                            <span style="color: var(--text-muted); font-size: 0.8rem; font-style: italic;">Депеша отправлена</span>
+                        <#else>
+                            <form action="/boss/diplomacy/accept-peace" method="POST">
+                                <input type="hidden" name="${(_csrf.parameterName)!'_csrf'}" value="${(_csrf.token)!''}"/>
+                                <input type="hidden" name="targetFamilyId" value="${otherFamily.id}"/>
+                                <button type="submit" style="background: #1B5E20; border: 1px solid #81C784; color: #FFF; padding: 0.4rem 0.8rem; font-family: 'Cinzel', serif; cursor: pointer; text-transform: uppercase;">
+                                    Принять мир
+                                </button>
+                            </form>
+                        </#if>
                     </#if>
                 </td>
             </tr>

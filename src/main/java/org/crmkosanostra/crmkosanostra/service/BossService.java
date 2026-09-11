@@ -57,8 +57,15 @@ public class BossService {
             boolean counselorExists = userRepository.existsByFamilyIdAndRole(
                     boss.getFamily().getId(), Role.CONSIGLIERE);
             if (counselorExists && targetUser.getRole() != Role.CONSIGLIERE) {
-                throw new BusinessLogicException("Family already has a Counselor");
+                throw new BusinessLogicException("Family already has a Consigliere");
             }
+        }
+
+        if (targetUser.getRole() == Role.CAPO && request.newRole() != Role.CAPO) {
+            businessRepository.findByCapoId(targetUser.getId()).ifPresent(b -> {
+                b.setCapo(null);
+                businessRepository.save(b);
+            });
         }
 
         targetUser.setRole(request.newRole());
@@ -104,52 +111,70 @@ public class BossService {
     // --- 4. Дипломатия ---
     @Transactional
     public void declareWar(User boss, BossDto.DiplomacyRequest request) {
-        changeRelationStatus(boss, request.targetFamilyId(), RelationStatus.WAR);
+        changeRelationStatus(boss, request.targetFamilyId(), RelationStatus.WAR, null);
     }
 
     @Transactional
     public void proposePeace(User boss, BossDto.DiplomacyRequest request) {
-        changeRelationStatus(boss, request.targetFamilyId(), RelationStatus.PENDING_PEACE);
+        FamilyRelation relation = relationRepository.findRelationBetween(boss.getFamily().getId(), request.targetFamilyId())
+                .orElseThrow(() -> new ResourceNotFoundException("Дипломатические отношения не найдены"));
+
+        if (relation.getStatus() == RelationStatus.PEACE) {
+            throw new BusinessLogicException("С этой семьей уже заключен мир");
+        }
+
+        if (relation.getStatus() == RelationStatus.PENDING_PEACE) {
+            throw new BusinessLogicException("Запрос на перемирие уже отправлен");
+        }
+
+        changeRelationStatus(boss, request.targetFamilyId(), RelationStatus.PENDING_PEACE, boss.getFamily());
     }
 
     @Transactional
     public void acceptPeace(User boss, BossDto.DiplomacyRequest request) {
         FamilyRelation relation = relationRepository.findRelationBetween(
                         boss.getFamily().getId(), request.targetFamilyId())
-                .orElseThrow(() -> new ResourceNotFoundException("Relation not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Отношения между семьями не найдены"));
 
         if (relation.getStatus() != RelationStatus.PENDING_PEACE) {
-            throw new BusinessLogicException("There is no pending peace proposal from this family");
+            throw new BusinessLogicException("С этой семьей нет активного запроса на мир");
+        }
+
+        // Защита от принятия собственного мира
+        if (relation.getInitiatorFamily() != null
+                && relation.getInitiatorFamily().getId().equals(boss.getFamily().getId())) {
+            throw new BusinessLogicException("Вы не можете принять собственное предложение о мире. Ожидайте ответа Дона другой семьи.");
         }
 
         relation.setStatus(RelationStatus.PEACE);
+        relation.setInitiatorFamily(null);
         relationRepository.save(relation);
     }
 
-    private void changeRelationStatus(User boss, Long targetFamilyId, RelationStatus newStatus) {
+    private void changeRelationStatus(User boss, Long targetFamilyId, RelationStatus newStatus, Family initiator) {
         if (boss.getFamily().getId().equals(targetFamilyId)) {
-            throw new BusinessLogicException("Cannot change relations with your own family");
+            throw new BusinessLogicException("Нельзя изменять дипломатический статус с собственной семьей");
         }
 
         Long min = Math.min(boss.getFamily().getId(), targetFamilyId);
         Long max = Math.max(boss.getFamily().getId(), targetFamilyId);
 
         Family minIdFamily = familyRepository.findById(min).orElseThrow(
-                () -> new ResourceNotFoundException("Target family not found")
+                () -> new ResourceNotFoundException("Целевая семья не найдена")
         );
 
         Family maxIdFamily = familyRepository.findById(max).orElseThrow(
-                () -> new ResourceNotFoundException("Target family not found")
+                () -> new ResourceNotFoundException("Целевая семья не найдена")
         );
 
-        FamilyRelation relation = relationRepository.findRelationBetween(
-                        boss.getFamily().getId(), targetFamilyId)
+        FamilyRelation relation = relationRepository.findRelationBetween(boss.getFamily().getId(), targetFamilyId)
                 .orElseGet(() -> FamilyRelation.builder()
                         .family1(minIdFamily)
                         .family2(maxIdFamily)
                         .build());
 
         relation.setStatus(newStatus);
+        relation.setInitiatorFamily(initiator);
         relationRepository.save(relation);
     }
 

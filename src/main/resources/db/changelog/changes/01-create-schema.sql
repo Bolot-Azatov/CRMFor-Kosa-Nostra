@@ -57,6 +57,7 @@ CREATE TABLE family_relations (
                                   family_1_id BIGINT NOT NULL,
                                   family_2_id BIGINT NOT NULL,
                                   status VARCHAR(50) NOT NULL DEFAULT 'PEACE',
+                                  initiator_family_id BIGINT,
                                   CONSTRAINT fk_relations_family1 FOREIGN KEY (family_1_id) REFERENCES families(id) ON DELETE CASCADE,
                                   CONSTRAINT fk_relations_family2 FOREIGN KEY (family_2_id) REFERENCES families(id) ON DELETE CASCADE,
                                   CONSTRAINT uq_family_pair UNIQUE (family_1_id, family_2_id),
