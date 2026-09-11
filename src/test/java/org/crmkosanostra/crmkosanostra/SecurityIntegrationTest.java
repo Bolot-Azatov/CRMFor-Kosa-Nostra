@@ -9,6 +9,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrlPattern;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -21,15 +22,16 @@ class SecurityIntegrationTest {
     @Test
     @DisplayName("Публичные статьи доступны анониму (200 OK)")
     void publicArticles_ShouldBeAccessibleForAnonymous() throws Exception {
-        mockMvc.perform(get("/api/v1/public/articles"))
+        mockMvc.perform(get("/articles"))
                 .andExpect(status().isOk());
     }
 
     @Test
-    @DisplayName("Иерархия запрещена анониму (401 Unauthorized)")
-    void hierarchy_ShouldReturn401_ForAnonymous() throws Exception {
-        mockMvc.perform(get("/api/v1/hierarchy"))
-                .andExpect(status().isUnauthorized());
+    @DisplayName("Иерархия закрыта для анонима (редирект на /login)")
+    void hierarchy_ShouldRedirectToLogin_ForAnonymous() throws Exception {
+        mockMvc.perform(get("/family"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrlPattern("**/login"));
     }
 
     @Test
@@ -44,6 +46,7 @@ class SecurityIntegrationTest {
     @WithMockUser(roles = "CAPO")
     @DisplayName("Капо имеет доступ к своему кабинету (200 OK)")
     void capoAccess_Allowed() throws Exception {
-        mockMvc.perform(get("/api/v1/capo/business")).andExpect(status().isOk());
+        mockMvc.perform(get("/capo/business"))
+                .andExpect(status().isOk());
     }
 }

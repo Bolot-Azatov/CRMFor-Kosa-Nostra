@@ -45,16 +45,17 @@ public class SecurityConfig {
                                 "/h2-console/**",
                                 "/css/**",
                                 "/js/**",
-                                "/images/**"
+                                "/images/**",
+                                "/403"
                         ).permitAll()
 
                         .requestMatchers("/boss/**").hasRole("BOSS")
 
                         .requestMatchers("/consigliere/**").hasAnyRole("CONSIGLIERE", "BOSS")
 
-                        .requestMatchers("/capo/**").hasAnyRole("CAPO")
+                        .requestMatchers("/capo/**").hasAnyRole("CAPO", "BOSS")
 
-                        .requestMatchers("/hierarchy", "/profile").hasAnyRole("SOLDIER", "CAPO", "CONSIGLIERE", "BOSS")
+                        .requestMatchers("/family/**", "/family", "/profile/**", "/profile").hasAnyRole("SOLDIER", "CAPO", "CONSIGLIERE", "BOSS")
 
                         .anyRequest().authenticated()
                 )
