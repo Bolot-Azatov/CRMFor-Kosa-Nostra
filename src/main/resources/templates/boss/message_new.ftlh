@@ -67,6 +67,9 @@
         </p>
 
         <form action="/boss/messages" method="POST">
+
+            <input type="hidden" name="${(_csrf.parameterName)!'_csrf'}" value="${(_csrf.token)!''}"/>
+
             <div class="form-group">
                 <label class="form-label" for="recipientId">ID Получателя *</label>
                 <input type="number" id="recipientId" name="recipientId" class="form-input" placeholder="Идентификатор адресата" required />

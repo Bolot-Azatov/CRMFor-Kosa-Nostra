@@ -8,31 +8,55 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>${title}</title>
 
-        <!-- Шрифт Cinzel для премиальных золотых заголовков и Courier Prime для эффекта печатной машинки -->
+        <!-- Шрифт Cinzel для золотых заголовков и Courier Prime для эффекта печатной машинки -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800;900&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
 
+        <!-- Определение контекста пользователя и ролей Spring Security -->
         <#global known = SPRING_SECURITY_CONTEXT??>
+        <#global isBoss = false>
+        <#global isConsigliere = false>
+        <#global isCapo = false>
+        <#global isSoldier = false>
+
         <#if known>
-            <#assign user = SPRING_SECURITY_CONTEXT.authentication.principal>
-            <#assign username = user.username!>
+            <#assign principal = SPRING_SECURITY_CONTEXT.authentication.principal>
+            <#assign username = principal.username!>
             <#assign authorities = SPRING_SECURITY_CONTEXT.authentication.authorities!>
-            <#global isBoss = false>
-            <#global isConsigliere = false>
-            <#global isCapo = false>
-            <#global isSoldier = false>
+
             <#list authorities as auth>
-                <#if auth.authority == "BOSS"><#global isBoss = true></#if>
-                <#if auth.authority == "CONSIGLIERE"><#global isConsigliere = true></#if>
-                <#if auth.authority == "CAPO"><#global isCapo = true></#if>
-                <#if auth.authority == "SOLDIER"><#global isSoldier = true></#if>
+                <#if auth.authority == "ROLE_BOSS" || auth.authority == "BOSS">
+                    <#global isBoss = true>
+                </#if>
+                <#if auth.authority == "ROLE_CONSIGLIERE" || auth.authority == "CONSIGLIERE" || auth.authority == "ROLE_COUNSELOR">
+                    <#global isConsigliere = true>
+                </#if>
+                <#if auth.authority == "ROLE_CAPO" || auth.authority == "CAPO">
+                    <#global isCapo = true>
+                </#if>
+                <#if auth.authority == "ROLE_SOLDIER" || auth.authority == "SOLDIER">
+                    <#global isSoldier = true>
+                </#if>
             </#list>
-        <#else>
-            <#global isBoss = false>
-            <#global isConsigliere = false>
-            <#global isCapo = false>
-            <#global isSoldier = false>
+
+            <!-- Назначение бэйджа и ранга -->
+            <#if isBoss>
+                <#assign roleBadge = "DON">
+                <#assign roleTitle = "Capo di Tutti Capi">
+            <#elseif isConsigliere>
+                <#assign roleBadge = "CONS">
+                <#assign roleTitle = "Consigliere">
+            <#elseif isCapo>
+                <#assign roleBadge = "CAPO">
+                <#assign roleTitle = "Caporegime">
+            <#elseif isSoldier>
+                <#assign roleBadge = "SOLD">
+                <#assign roleTitle = "Soldier">
+            <#else>
+                <#assign roleBadge = "MBR">
+                <#assign roleTitle = "Associate">
+            </#if>
         </#if>
 
         <style>
@@ -64,7 +88,7 @@
                 flex-direction: column;
             }
 
-            /* --- Navbar Styles --- */
+            /* --- Navbar --- */
             .speakeasy-navbar {
                 background: linear-gradient(180deg, #1A1A1A 0%, #121212 100%);
                 border-bottom: 2px solid var(--brass-gold);
@@ -72,11 +96,13 @@
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
-                height: 70px;
+                min-height: 70px;
                 box-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
                 position: sticky;
                 top: 0;
                 z-index: 1000;
+                flex-wrap: wrap;
+                gap: 1rem;
             }
 
             .brand-logo {
@@ -101,23 +127,19 @@
             .nav-links {
                 display: flex;
                 list-style: none;
-                gap: 1.5rem;
-                height: 100%;
-            }
-
-            .nav-item {
-                display: flex;
+                gap: 1rem;
                 align-items: center;
+                flex-wrap: wrap;
             }
 
             .nav-link {
                 font-family: 'Cinzel', serif;
-                font-size: 0.9rem;
+                font-size: 0.82rem;
                 color: var(--text-muted);
                 text-decoration: none;
                 text-transform: uppercase;
                 letter-spacing: 1px;
-                padding: 0.5rem 0.8rem;
+                padding: 0.4rem 0.6rem;
                 transition: all 0.3s ease;
                 position: relative;
             }
@@ -130,21 +152,33 @@
             .nav-link.active::after {
                 content: '';
                 position: absolute;
-                bottom: -22px;
+                bottom: -6px;
                 left: 0;
                 width: 100%;
-                height: 3px;
+                height: 2px;
                 background-color: var(--brass-gold);
-                box-shadow: 0 0 10px var(--brass-gold);
+                box-shadow: 0 0 8px var(--brass-gold);
             }
 
             .user-status {
                 display: flex;
                 align-items: center;
-                gap: 14px;
+                gap: 12px;
                 font-size: 0.85rem;
                 border-left: var(--border-gold);
                 padding-left: 1.5rem;
+            }
+
+            .user-profile-link {
+                text-decoration: none;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                transition: opacity 0.2s;
+            }
+
+            .user-profile-link:hover {
+                opacity: 0.85;
             }
 
             .avatar-frame {
@@ -158,11 +192,10 @@
                 justify-content: center;
                 font-family: 'Cinzel', serif;
                 color: var(--brass-gold);
+                font-size: 0.85rem;
                 font-weight: bold;
-                filter: contrast(120%);
             }
 
-            /* --- Logout Button Styles --- */
             .logout-form {
                 margin: 0;
                 padding: 0;
@@ -193,7 +226,24 @@
                 box-shadow: 0 0 10px rgba(107, 19, 16, 0.8);
             }
 
-            /* --- Main Content Container --- */
+            .btn-auth-link {
+                font-family: 'Cinzel', serif;
+                font-size: 0.8rem;
+                color: var(--brass-gold);
+                text-decoration: none;
+                border: var(--border-gold);
+                padding: 0.4rem 0.8rem;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+                transition: all 0.2s ease;
+            }
+
+            .btn-auth-link:hover {
+                background: rgba(197, 160, 89, 0.1);
+                color: var(--brass-gold-hover);
+            }
+
+            /* --- Main Content --- */
             .main-container {
                 flex: 1;
                 max-width: 1200px;
@@ -202,7 +252,6 @@
                 padding: 0 1.5rem;
             }
 
-            /* --- Speakeasy Validation & Alert Banners --- */
             .alert-box {
                 background-color: var(--burgundy-dark);
                 border: var(--border-gold);
@@ -245,48 +294,96 @@
     </head>
     <body>
 
-    <!-- Навбар / Header -->
+    <!-- Навбар с динамическими правами -->
     <header class="speakeasy-navbar">
         <a href="/" class="brand-logo">Cosa Nostra</a>
 
         <nav>
             <ul class="nav-links">
-                <li class="nav-item">
-                    <a href="/family" class="nav-link <#if activeTab == 'capos'>active</#if>">Семья</a>
+                <!-- Общие пункты -->
+                <li>
+                    <a href="/" class="nav-link <#if activeTab == 'home'>active</#if>">Главная</a>
                 </li>
-                <li class="nav-item">
-                    <a href="/racket" class="nav-link <#if activeTab == 'racket'>active</#if>">Доходы & Рэкет</a>
+                <li>
+                    <a href="/articles" class="nav-link <#if activeTab == 'articles'>active</#if>">Сводки</a>
                 </li>
-                <li class="nav-item">
-                    <a href="/territories" class="nav-link <#if activeTab == 'territories'>active</#if>">Территории</a>
-                </li>
-                <li class="nav-item">
-                    <a href="/dossiers" class="nav-link <#if activeTab == 'dossiers'>active</#if>">Досье</a>
-                </li>
+
+                <#if known>
+                    <!-- Иерархия (для всех авторизованных) -->
+                    <li>
+                        <a href="/family" class="nav-link <#if activeTab == 'family'>active</#if>">Семья</a>
+                    </li>
+
+                    <!-- Пункты для КАПО -->
+                    <#if isCapo>
+                        <li>
+                            <a href="/capo/business" class="nav-link <#if activeTab == 'racket' || activeTab == 'business'>active</#if>">Мой Рэкет</a>
+                        </li>
+                        <li>
+                            <a href="/capo/tribute" class="nav-link <#if activeTab == 'tribute'>active</#if>">Сдать Дань</a>
+                        </li>
+                    </#if>
+
+                    <!-- Пункты для КОНСИЛЬЕРИ -->
+                    <#if isConsigliere>
+                        <li>
+                            <a href="/consigliere/ledger" class="nav-link <#if activeTab == 'ledger'>active</#if>">Книга Доходов</a>
+                        </li>
+                        <li>
+                            <a href="/consigliere/message" class="nav-link <#if activeTab == 'message'>active</#if>">Донесение Дону</a>
+                        </li>
+                    </#if>
+
+                    <!-- Пункты для БОССА -->
+                    <#if isBoss>
+                        <li>
+                            <a href="/boss" class="nav-link <#if activeTab == 'capos' || activeTab == 'boss'>active</#if>">Кабинет Дона</a>
+                        </li>
+                        <li>
+                            <a href="/boss/businesses" class="nav-link <#if activeTab == 'businesses'>active</#if>">Бизнесы</a>
+                        </li>
+                        <li>
+                            <a href="/boss/ledger" class="nav-link <#if activeTab == 'boss_ledger'>active</#if>">Общак</a>
+                        </li>
+                    </#if>
+                </#if>
             </ul>
         </nav>
 
+        <!-- Блок статуса пользователя справа -->
         <div class="user-status">
-            <div class="avatar-frame">DON</div>
-            <div>
-                <div style="color: var(--brass-gold); font-family: 'Cinzel', serif;">Дон Болот</div>
-                <div style="color: var(--text-muted); font-size: 0.75rem;">Capo di Tutti Capi</div>
-            </div>
+            <#if known>
+                <a href="/profile" class="user-profile-link" title="Перейти в личное досье">
+                    <div class="avatar-frame">${roleBadge!"MBR"}</div>
+                    <div>
+                        <div style="color: var(--brass-gold); font-family: 'Cinzel', serif; font-weight: bold;">
+                            ${username!"Неизвестный"}
+                        </div>
+                        <div style="color: var(--text-muted); font-size: 0.72rem; text-transform: uppercase;">
+                            ${roleTitle!"Участник"}
+                        </div>
+                    </div>
+                </a>
 
-            <!-- Форма и кнопка выхода (POST для Spring Security) -->
-            <form action="/logout" method="post" class="logout-form">
-
-                <button type="submit" class="logout-btn" title="Покинуть сходку">
-                    🚪 Выйти
-                </button>
-            </form>
+                <!-- Выход из системы с обязательным CSRF-токеном -->
+                <form action="/logout" method="post" class="logout-form">
+                    <#if _csrf??>
+                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                    </#if>
+                    <button type="submit" class="logout-btn" title="Покинуть сходку">
+                        🚪 Выйти
+                    </button>
+                </form>
+            <#else>
+                <a href="/login" class="btn-auth-link">Вход</a>
+                <a href="/register" class="btn-auth-link" style="border-color: rgba(197, 160, 89, 0.6); background: rgba(197, 160, 89, 0.1);">Присяга</a>
+            </#if>
         </div>
     </header>
 
-    <!-- Основной контент страницы -->
     <main class="main-container">
 
-        <!-- Глобальная обработка ошибок валидации через Spring Binding Result -->
+        <!-- Ошибки валидации Spring -->
         <#if spring.status?? && spring.status.errorMessages?has_content>
             <div class="alert-box">
                 <div class="alert-title">⚠️ Ошибки при заполнении протокола:</div>
@@ -298,7 +395,7 @@
             </div>
         </#if>
 
-        <!-- Ручные флэш-уведомления из контроллера (Model attributes) -->
+        <!-- Flash-уведомления контроллеров -->
         <#if errorMessage??>
             <div class="alert-box">
                 <div class="alert-title">⛔ Нарушение омерты:</div>
@@ -313,7 +410,6 @@
             </div>
         </#if>
 
-        <!-- Сюда вставляется содержимое конкретной страницы -->
         <#nested/>
 
     </main>

@@ -180,6 +180,9 @@
         <div class="action-card">
             <h2 class="card-heading">💰 Инвестиция из Казны</h2>
             <form action="/boss/treasury/invest" method="POST">
+
+                <input type="hidden" name="${(_csrf.parameterName)!'_csrf'}" value="${(_csrf.token)!''}"/>
+
                 <label class="form-label" for="amount">Сумма инвестиции ($) *</label>
                 <input type="number" step="0.01" min="0.01" name="amount" id="amount" class="form-input" placeholder="Например: 10000" required />
 
@@ -194,6 +197,9 @@
         <div class="action-card">
             <h2 class="card-heading">🎖 Назначение ранга</h2>
             <form action="/boss/members/assign-role" method="POST">
+
+                <input type="hidden" name="${(_csrf.parameterName)!'_csrf'}" value="${(_csrf.token)!''}"/>
+
                 <label class="form-label" for="userId">ID Участника семьи *</label>
                 <input type="number" name="userId" id="userId" class="form-input" placeholder="Идентификатор бойца" required />
 
@@ -212,6 +218,9 @@
         <div class="action-card">
             <h2 class="card-heading" style="color: #FF7777;">🗡 Объявить войну</h2>
             <form action="/boss/diplomacy/declare-war" method="POST" id="warForm">
+
+                <input type="hidden" name="${(_csrf.parameterName)!'_csrf'}" value="${(_csrf.token)!''}"/>
+
                 <label class="form-label" for="warTarget">ID Враждебной Семьи *</label>
                 <input type="number" name="targetFamilyId" id="warTarget" class="form-input" placeholder="Например: 2 (Genovese)" required />
 
@@ -223,6 +232,9 @@
         <div class="action-card">
             <h2 class="card-heading">🕊 Перемирие</h2>
             <form action="/boss/diplomacy/propose-peace" method="POST">
+
+                <input type="hidden" name="${(_csrf.parameterName)!'_csrf'}" value="${(_csrf.token)!''}"/>
+
                 <label class="form-label" for="peaceTarget">ID Семьи для договора *</label>
                 <input type="number" name="targetFamilyId" id="peaceTarget" class="form-input" placeholder="Например: 4 (Bonanno)" required />
 

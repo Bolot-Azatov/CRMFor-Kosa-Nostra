@@ -254,6 +254,7 @@
 
     <!-- Форма авторизации -->
     <form action="/login" method="POST">
+        <input type="hidden" name="${(_csrf.parameterName)!'_csrf'}" value="${(_csrf.token)!''}"/>
 
         <div class="form-group">
             <label for="username" class="form-label">Псевдоним / Имя</label>

@@ -185,6 +185,8 @@
 
             <form action="/capo/tribute" method="POST" id="tributeForm">
 
+                <input type="hidden" name="${(_csrf.parameterName)!'_csrf'}" value="${(_csrf.token)!''}"/>
+
                 <!-- Поле суммы -->
                 <div class="form-group">
                     <label for="amountInput" class="form-label">Сумма к сдаче ($) *</label>

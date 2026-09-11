@@ -86,7 +86,7 @@
             <h1 class="title-text">Бухгалтерская Книга Семьи</h1>
             <p style="color: var(--text-muted); font-size: 0.85rem; text-transform: uppercase;">Контроль финансовых поступлений и расходов общака</p>
         </div>
-        <a href="/counselor/message" class="btn-action">✉ Донесение Дону</a>
+        <a href="/consigliere/message" class="btn-action">✉ Донесение Дону</a>
     </div>
 
     <#if ledger?? && ledger?has_content>

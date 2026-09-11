@@ -101,7 +101,10 @@
                 Зашифрованный канал связи Советника с Главой Семьи
             </p>
 
-            <form action="/counselor/message" method="POST">
+            <form action="/consigliere/message" method="POST">
+
+                <input type="hidden" name="${(_csrf.parameterName)!'_csrf'}" value="${(_csrf.token)!''}"/>
+
                 <div class="form-group">
                     <label for="subject" class="form-label">Тема доклада *</label>
                     <input type="text" id="subject" name="subject" class="form-input" placeholder="Например: Аудит верфей Бруклина..." required />

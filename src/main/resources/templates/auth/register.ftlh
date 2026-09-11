@@ -235,6 +235,7 @@
 
     <!-- Форма регистрации -->
     <form action="/register" method="POST">
+        <input type="hidden" name="${(_csrf.parameterName)!'_csrf'}" value="${(_csrf.token)!''}"/>
 
         <div class="form-row">
             <!-- Username -->

@@ -1,7 +1,7 @@
 <#import "/spring.ftl" as spring/>
 <#import "../layout/layout.ftlh" as layout/>
 
-<@layout.page_layout title="Досье: ${(user.username)!'Неизвестный'} | Cosa Nostra" activeTab="dossiers">
+<@layout.page_layout title="Досье: ${(user.username)!'Неизвестный'} | Cosa Nostra" activeTab="profile">
 
     <style>
         .dossier-container {
@@ -17,7 +17,6 @@
             box-shadow: 0 0 40px rgba(0, 0, 0, 0.9), inset 0 0 20px rgba(61, 12, 2, 0.4);
         }
 
-        /* Декоративные уголки */
         .dossier-card::before, .dossier-card::after {
             content: '';
             position: absolute;
@@ -28,7 +27,6 @@
         .dossier-card::before { top: 8px; left: 8px; border-right: none; border-bottom: none; }
         .dossier-card::after { bottom: 8px; right: 8px; border-left: none; border-top: none; }
 
-        /* Печать картотеки */
         .file-stamp {
             position: absolute;
             top: 1.5rem;
@@ -54,7 +52,6 @@
             margin-bottom: 2rem;
         }
 
-        /* Аватар в форме винтажной рамки */
         .avatar-box {
             width: 110px;
             height: 110px;
@@ -69,6 +66,13 @@
             box-shadow: 0 0 15px rgba(197, 160, 89, 0.2);
             flex-shrink: 0;
             text-shadow: 0 2px 5px rgba(0, 0, 0, 0.8);
+            overflow: hidden;
+        }
+
+        .avatar-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         .user-title-group {
@@ -98,12 +102,11 @@
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
         }
 
-        /* Сетка характеристик */
         .info-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 1.5rem;
-            margin-bottom: 2.5rem;
+            margin-bottom: 2rem;
         }
 
         @media (max-width: 580px) {
@@ -133,7 +136,7 @@
         }
 
         .info-value {
-            font-size: 1.1rem;
+            font-size: 1.05rem;
             color: var(--text-main);
             font-weight: bold;
             word-break: break-all;
@@ -144,7 +147,13 @@
             font-family: 'Cinzel', serif;
         }
 
-        /* Нижние действия */
+        .bio-panel {
+            background-color: #121212;
+            border: 1px solid rgba(197, 160, 89, 0.2);
+            padding: 1.2rem;
+            margin-bottom: 2rem;
+        }
+
         .actions-panel {
             display: flex;
             gap: 1rem;
@@ -166,50 +175,31 @@
             align-items: center;
             gap: 8px;
             cursor: pointer;
-        }
-
-        .btn-secondary {
             background: transparent;
             color: var(--brass-gold);
             border: var(--border-gold);
         }
 
-        .btn-secondary:hover {
+        .btn-action:hover {
             background: rgba(197, 160, 89, 0.1);
             color: var(--brass-gold-hover);
             border-color: var(--brass-gold-hover);
         }
-
-        .btn-danger {
-            background: transparent;
-            color: #FF6B6B;
-            border: 1px solid var(--burgundy-light);
-        }
-
-        .btn-danger:hover {
-            background: var(--burgundy-dark);
-            color: #FF8888;
-        }
-
-        .empty-dossier {
-            text-align: center;
-            padding: 3rem;
-            background: var(--bg-card);
-            border: var(--border-gold);
-            color: var(--text-muted);
-        }
     </style>
 
     <div class="dossier-container">
-
         <#if user??>
             <div class="dossier-card">
                 <span class="file-stamp">ЛИЧНОЕ ДЕЛО №${user.id}</span>
 
                 <div class="dossier-header">
-                    <!-- Первая буква имени в качестве винтажной иконки -->
+                    <!-- Фотография бойца или винтажная литера -->
                     <div class="avatar-box">
-                        ${user.username[0]!u}
+                        <#if (user.photoUrl)?? && user.photoUrl?has_content>
+                            <img src="${user.photoUrl}" alt="${user.username}" class="avatar-img" onerror="this.style.display='none'; this.parentElement.innerText='${(user.username[0..0])!'U'}';"/>
+                        <#else>
+                            ${(user.username[0..0])!'U'}
+                        </#if>
                     </div>
 
                     <div class="user-title-group">
@@ -218,60 +208,60 @@
                     </div>
                 </div>
 
-                <!-- Подробные атрибуты из UserResponse -->
+                <!-- Характеристики участника -->
                 <div class="info-grid">
-
                     <div class="info-item">
                         <span class="info-label">Идентификатор (ID)</span>
                         <span class="info-value">#${user.id}</span>
                     </div>
 
                     <div class="info-item">
-                        <span class="info-label">Псевдоним в системе</span>
+                        <span class="info-label">Псевдоним в синдикате</span>
                         <span class="info-value gold">${user.username}</span>
                     </div>
 
                     <div class="info-item">
-                        <span class="info-label">Статус / Ранг</span>
+                        <span class="info-label">Статус в иерархии</span>
                         <span class="info-value">${user.role!"Не назначен"}</span>
                     </div>
 
                     <div class="info-item">
                         <span class="info-label">Принадлежность к Семье</span>
-                        <#if user.familyId??>
-                            <span class="info-value gold">Семья #${user.familyId}</span>
+                        <#if (user.familyName)?? && user.familyName?has_content>
+                            <span class="info-value gold">Семья ${user.familyName}</span>
                         <#else>
                             <span class="info-value" style="color: var(--text-muted);">Без семьи</span>
                         </#if>
                     </div>
-
                 </div>
 
-                <!-- Панель кнопок / Действий -->
+                <!-- Досье / Биография -->
+                <div class="bio-panel">
+                    <span class="info-label">Досье / Характеристика</span>
+                    <p style="color: var(--text-main); font-size: 0.92rem; line-height: 1.6; margin-top: 0.5rem; white-space: pre-wrap;">
+                        ${(user.bio)!"Записи в архиве отсутствуют..."}
+                    </p>
+                </div>
+
+                <!-- Действия -->
                 <div class="actions-panel">
-                    <#if user.familyId??>
-                        <a href="/families/${user.familyId}" class="btn-action btn-secondary">
-                            🏛️ К клану семьи
-                        </a>
-                    </#if>
-                    <a href="/dossiers" class="btn-action btn-secondary">
-                        ← В архив досье
+                    <a href="/family" class="btn-action">
+                        🏛️ К Древу Семьи
+                    </a>
+                    <a href="/articles" class="btn-action">
+                        📜 К Архивам
                     </a>
                 </div>
-
             </div>
         <#else>
-            <div class="empty-dossier">
+            <div style="text-align: center; padding: 3rem; background: var(--bg-card); border: var(--border-gold);">
                 <h2 style="font-family: 'Cinzel', serif; color: var(--brass-gold); margin-bottom: 1rem;">
                     ⛔ Досье не найдено
                 </h2>
-                <p>Запрошенная карточка участника отсутствует в архиве Cosa Nostra.</p>
-                <a href="/dossiers" class="btn-action btn-secondary" style="margin-top: 1.5rem;">
-                    Вернуться к картотеке
-                </a>
+                <p style="color: var(--text-muted);">Запрошенная карточка участника отсутствует в архиве Cosa Nostra.</p>
+                <a href="/" class="btn-action" style="margin-top: 1.5rem;">Вернуться на главную</a>
             </div>
         </#if>
-
     </div>
 
 </@layout.page_layout>

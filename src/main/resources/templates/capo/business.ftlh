@@ -161,6 +161,9 @@
                 </h2>
 
                 <form action="/capo/tribute" method="POST" id="tributeForm">
+
+                    <input type="hidden" name="${(_csrf.parameterName)!'_csrf'}" value="${(_csrf.token)!''}"/>
+
                     <label class="biz-label" for="amount">Сумма взноса ($) *</label>
                     <input type="number" step="0.01" min="100.00" name="amount" id="amount" class="form-input" placeholder="Например: 5000" required autofocus />
 
