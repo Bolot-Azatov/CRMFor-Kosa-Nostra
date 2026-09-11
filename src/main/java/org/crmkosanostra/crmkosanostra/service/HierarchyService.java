@@ -1,3 +1,5 @@
+// src/main/java/org/crmkosanostra/crmkosanostra/service/HierarchyService.java
+
 package org.crmkosanostra.crmkosanostra.service;
 
 import lombok.RequiredArgsConstructor;
@@ -8,14 +10,11 @@ import org.crmkosanostra.crmkosanostra.entity.Role;
 import org.crmkosanostra.crmkosanostra.entity.User;
 import org.crmkosanostra.crmkosanostra.repository.FamilyRepository;
 import org.crmkosanostra.crmkosanostra.repository.UserRepository;
-import org.jspecify.annotations.Nullable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -24,15 +23,11 @@ public class HierarchyService {
     private final UserRepository userRepository;
     private final FamilyRepository familyRepository;
 
-    public Map<Long, FamilyHierarchyResponse> getAllFamiliesHierarchy() {
-        Map<Long, FamilyHierarchyResponse> totalHierarchy = new HashMap();
-
-        for (long i = 1; i < 6; i++) {
-            FamilyHierarchyResponse oneFamilyHierarchy = getFamilyHierarchy(i);
-            totalHierarchy.put(i, oneFamilyHierarchy);
-        }
-
-        return totalHierarchy;
+    @Transactional(readOnly = true)
+    public List<FamilyHierarchyResponse> getAllFamiliesHierarchy() {
+        return familyRepository.findAll(Sort.by(Sort.Direction.ASC, "id")).stream()
+                .map(family -> getFamilyHierarchy(family.getId()))
+                .toList();
     }
 
     @Transactional(readOnly = true)
@@ -68,11 +63,10 @@ public class HierarchyService {
 
     private MemberDto mapToDto(User user) {
         return MemberDto.builder()
+                .id(user.getId())
                 .username(user.getUsername())
                 .photoUrl(user.getPhotoUrl())
                 .bio(user.getBio())
                 .build();
     }
-
-
 }

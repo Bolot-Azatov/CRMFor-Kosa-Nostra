@@ -1,3 +1,5 @@
+// src/main/java/org/crmkosanostra/crmkosanostra/security/SecurityConfig.java
+
 package org.crmkosanostra.crmkosanostra.security;
 
 import lombok.RequiredArgsConstructor;
@@ -6,7 +8,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -31,9 +32,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf
                         .ignoringRequestMatchers("/h2-console/**")
                 )
-
                 .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
-
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
                                 "/",
@@ -46,20 +45,16 @@ public class SecurityConfig {
                                 "/css/**",
                                 "/js/**",
                                 "/images/**",
-                                "/403"
+                                "/403",
+                                "/error"
                         ).permitAll()
-
                         .requestMatchers("/boss/**").hasRole("BOSS")
-
                         .requestMatchers("/consigliere/**").hasAnyRole("CONSIGLIERE", "BOSS")
-
                         .requestMatchers("/capo/**").hasAnyRole("CAPO", "BOSS")
-
-                        .requestMatchers("/family/**", "/family", "/profile/**", "/profile").hasAnyRole("SOLDIER", "CAPO", "CONSIGLIERE", "BOSS")
-
+                        .requestMatchers("/family/**", "/family", "/hierarchy", "/hierarchy/**", "/profile/**", "/profile")
+                        .hasAnyRole("SOLDIER", "CAPO", "CONSIGLIERE", "BOSS")
                         .anyRequest().authenticated()
                 )
-
                 .formLogin(form -> form
                         .loginPage("/login")
                         .loginProcessingUrl("/login")
@@ -71,7 +66,6 @@ public class SecurityConfig {
                         .failureUrl("/login?error=true")
                         .permitAll()
                 )
-
                 .logout(logout -> logout
                         .logoutUrl("/logout")
                         .logoutSuccessUrl("/login?logout=true")
@@ -79,11 +73,9 @@ public class SecurityConfig {
                         .deleteCookies("JSESSIONID")
                         .permitAll()
                 )
-
                 .exceptionHandling(ex -> ex
                         .accessDeniedPage("/403")
                 )
-
                 .userDetailsService(customUserDetailsService);
 
         return http.build();
