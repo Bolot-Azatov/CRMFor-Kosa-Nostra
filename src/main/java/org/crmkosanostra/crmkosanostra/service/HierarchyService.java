@@ -8,10 +8,14 @@ import org.crmkosanostra.crmkosanostra.entity.Role;
 import org.crmkosanostra.crmkosanostra.entity.User;
 import org.crmkosanostra.crmkosanostra.repository.FamilyRepository;
 import org.crmkosanostra.crmkosanostra.repository.UserRepository;
+import org.jspecify.annotations.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -19,6 +23,17 @@ public class HierarchyService {
 
     private final UserRepository userRepository;
     private final FamilyRepository familyRepository;
+
+    public Map<Long, FamilyHierarchyResponse> getAllFamiliesHierarchy() {
+        Map<Long, FamilyHierarchyResponse> totalHierarchy = new HashMap();
+
+        for (long i = 1; i < 6; i++) {
+            FamilyHierarchyResponse oneFamilyHierarchy = getFamilyHierarchy(i);
+            totalHierarchy.put(i, oneFamilyHierarchy);
+        }
+
+        return totalHierarchy;
+    }
 
     @Transactional(readOnly = true)
     public FamilyHierarchyResponse getFamilyHierarchy(Long familyId) {
@@ -58,4 +73,6 @@ public class HierarchyService {
                 .bio(user.getBio())
                 .build();
     }
+
+
 }
