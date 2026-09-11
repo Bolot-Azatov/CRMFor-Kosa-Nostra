@@ -11,13 +11,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/hierarchy")
+@RequestMapping("/family")
 @RequiredArgsConstructor
-public class HierarchyController {
+public class FamilyController {
 
     private final HierarchyService hierarchyService;
 
-    @GetMapping
+    @GetMapping()
     public String getMyFamilyHierarchy(@AuthenticationPrincipal CustomUserDetails userDetails, Model model) {
         Long familyId = userDetails.getFamilyId();
 
@@ -25,9 +25,9 @@ public class HierarchyController {
         return "hierarchy/my-family";
     }
 
-    @GetMapping("/{familyId}")
-    public String getFamilyHierarchyById(@PathVariable Long familyId, Model model) {
-        model.addAttribute("hierarchy", hierarchyService.getFamilyHierarchy(familyId));
+    @GetMapping("/{id}")
+    public String getFamilyHierarchyById(@PathVariable Long id, Model model) {
+        model.addAttribute("hierarchy", hierarchyService.getFamilyHierarchy(id));
         return "hierarchy/other-family";
     }
 }
