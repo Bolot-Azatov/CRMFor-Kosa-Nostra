@@ -36,6 +36,14 @@ public class CapoController {
         return "capo/business";
     }
 
+    @GetMapping("/tribute")
+    public String getTributePage(Model model) {
+        if (!model.containsAttribute("tributeRequest")) {
+            model.addAttribute("tributeRequest", new TributeRequest());
+        }
+        return "capo/tribute";
+    }
+
     @PostMapping("/tribute")
     public String submitTribute(@AuthenticationPrincipal CustomUserDetails userDetails,
                                 @Valid @ModelAttribute("tributeRequest") TributeRequest request,
