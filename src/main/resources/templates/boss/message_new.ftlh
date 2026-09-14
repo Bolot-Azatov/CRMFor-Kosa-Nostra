@@ -20,7 +20,7 @@
                     <option value="" disabled <#if !(messageRequest.recipientId)??>selected</#if>>-- <@spring.message "boss.message_new.recipient"/> --</option>
                     <#if recipients?? && recipients?has_content>
                         <#list recipients as r>
-                            <option value="${r.id}" <#if (messageRequest.recipientId)?? && messageRequest.recipientId == r.id>selected</#if>>
+                            <option value="${r.id}" <#if (messageRequest.recipientId!0) == r.id>selected</#if>>
                                 ${r.username} — ${r.role} (${(r.family.name)!springMacroRequestContext.getMessage('profile.no_family')})
                             </option>
                         </#list>

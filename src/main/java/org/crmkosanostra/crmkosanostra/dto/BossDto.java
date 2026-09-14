@@ -4,6 +4,10 @@ import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.crmkosanostra.crmkosanostra.entity.Role;
 
 import java.math.BigDecimal;
@@ -34,14 +38,21 @@ public class BossDto {
             Long targetFamilyId
     ) {}
 
-    public record BossMessageRequest(
-            @NotNull(message = "Recipient ID is required")
-            @Positive(message = "ID получателя должен быть больше нуля")
-            Long recipientId,
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class BossMessageRequest {
+        @NotNull(message = "Recipient ID is required")
+        @Positive(message = "ID получателя должен быть больше нуля")
+        private Long recipientId;
 
-            @NotBlank(message = "{validation.message.subject.notblank}") String subject,
-            @NotBlank(message = "{validation.message.body.notblank}") String body
-    ) {}
+        @NotBlank(message = "{validation.message.subject.notblank}")
+        private String subject;
+
+        @NotBlank(message = "{validation.message.body.notblank}")
+        private String body;
+    }
 
     public record AssignBusinessRequest(
             @NotNull @Positive(message = "ID бизнеса должен быть больше нуля") Long businessId,
