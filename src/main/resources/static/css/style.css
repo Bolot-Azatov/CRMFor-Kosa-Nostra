@@ -1,9 +1,9 @@
 /* ==========================================================================
-   COSA NOSTRA 1950s CRM — MASTER NOIR STYLESHEET
+   COSA NOSTRA 1950s CRM — MASTER NOIR STYLESHEET (ZERO HORIZONTAL SCROLL)
    Breakpoints:
      - Desktop: > 1024px
      - Tablet:  768px - 1024px
-     - Mobile:  < 768px (with optimizations for <= 480px)
+     - Mobile:  < 768px (оптимизировано под 360px - 480px)
    ========================================================================== */
 
 :root {
@@ -29,7 +29,7 @@
 }
 
 /* --------------------------------------------------------------------------
-   RESET & BASE TYPOGRAPHY
+   ЖЕСТКИЙ СБРОС И ЗАПРЕТ ГОРИЗОНТАЛЬНОГО СКРОЛЛА
    -------------------------------------------------------------------------- */
 *, *::before, *::after {
     box-sizing: border-box;
@@ -37,8 +37,15 @@
     padding: 0;
 }
 
-html, body {
+html {
     width: 100%;
+    max-width: 100%;
+    overflow-x: hidden; /* Запрещает скролл на уровне окна */
+}
+
+body {
+    width: 100%;
+    max-width: 100%;
     min-height: 100vh;
     background-color: var(--bg-charcoal);
     color: var(--text-main);
@@ -47,7 +54,8 @@ html, body {
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    overflow-x: hidden;
+    overflow-x: hidden; /* Запрещает скролл на уровне тела */
+    position: relative;
 }
 
 body.landing-page {
@@ -55,7 +63,7 @@ body.landing-page {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 1.5rem;
+    padding: 1rem;
 }
 
 a {
@@ -75,7 +83,7 @@ img {
 }
 
 /* --------------------------------------------------------------------------
-   LAYOUT CONTAINER & ALERTS
+   ОСНОВНОЙ КОНТЕЙНЕР
    -------------------------------------------------------------------------- */
 .main-container {
     flex: 1;
@@ -95,6 +103,7 @@ img {
     border-radius: 2px;
     box-shadow: 0 4px 15px rgba(61, 12, 2, 0.5);
     font-size: 0.9rem;
+    word-break: break-word;
 }
 
 .alert-title {
@@ -125,69 +134,7 @@ img {
 }
 
 /* --------------------------------------------------------------------------
-   RESPONSIVE TABLE WRAPPER (Critical for mobile table views)
-   -------------------------------------------------------------------------- */
-.table-responsive {
-    width: 100%;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    margin-bottom: 1.5rem;
-}
-
-.table-responsive::-webkit-scrollbar {
-    height: 6px;
-}
-
-.table-responsive::-webkit-scrollbar-thumb {
-    background: rgba(197, 160, 89, 0.4);
-    border-radius: 3px;
-}
-
-.speakeasy-table {
-    width: 100%;
-    min-width: 600px; /* Предотвращает сплющивание колонок */
-    border-collapse: collapse;
-    background: var(--bg-card);
-    border: var(--border-gold);
-    font-size: 0.9rem;
-}
-
-.speakeasy-table th {
-    background-color: var(--burgundy-dark);
-    color: var(--brass-gold);
-    font-family: var(--font-heading);
-    text-transform: uppercase;
-    padding: 0.85rem 1rem;
-    letter-spacing: 1px;
-    border-bottom: 1px solid var(--brass-gold);
-    text-align: left;
-    white-space: nowrap;
-}
-
-.speakeasy-table td {
-    padding: 0.85rem 1rem;
-    border-bottom: var(--border-gold-light);
-    color: var(--text-main);
-}
-
-.speakeasy-table tbody tr:hover {
-    background: rgba(197, 160, 89, 0.05);
-}
-
-.amount-positive {
-    color: #81C784;
-    font-weight: bold;
-    font-family: var(--font-heading);
-}
-
-.amount-negative {
-    color: #FF7777;
-    font-weight: bold;
-    font-family: var(--font-heading);
-}
-
-/* --------------------------------------------------------------------------
-   HEADER & NAVBAR
+   ШАПКА И НАВБАР (БЕЗ ГОРИЗОНТАЛЬНОГО СКРОЛЛА)
    -------------------------------------------------------------------------- */
 .speakeasy-navbar {
     width: 100%;
@@ -197,16 +144,17 @@ img {
     position: sticky;
     top: 0;
     z-index: 1000;
-    padding: 0.6rem 1.5rem 0.4rem 1.5rem;
+    padding: 0.6rem 1.5rem 0.5rem 1.5rem;
 }
 
 .navbar-top {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-bottom: 0.6rem;
+    padding-bottom: 0.5rem;
     border-bottom: 1px solid rgba(197, 160, 89, 0.2);
-    gap: 1rem;
+    gap: 0.8rem;
+    flex-wrap: wrap;
 }
 
 .brand-logo {
@@ -231,7 +179,7 @@ img {
 .user-status {
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: 0.8rem;
     font-size: 0.85rem;
     flex-shrink: 0;
 }
@@ -239,7 +187,7 @@ img {
 .user-profile-link {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
     transition: opacity 0.2s;
 }
 
@@ -248,8 +196,8 @@ img {
 }
 
 .avatar-frame {
-    width: 36px;
-    height: 36px;
+    width: 34px;
+    height: 34px;
     border-radius: 50%;
     border: 1px solid var(--brass-gold);
     background: var(--burgundy-dark);
@@ -276,8 +224,8 @@ img {
     border: var(--border-burgundy);
     color: var(--text-muted);
     font-family: var(--font-heading);
-    font-size: 0.75rem;
-    padding: 0.35rem 0.75rem;
+    font-size: 0.72rem;
+    padding: 0.3rem 0.6rem;
     cursor: pointer;
     transition: all 0.3s ease;
     text-transform: uppercase;
@@ -300,15 +248,10 @@ img {
     font-size: 0.8rem;
     color: var(--brass-gold);
     border: var(--border-gold);
-    padding: 0.4rem 0.8rem;
+    padding: 0.35rem 0.75rem;
     text-transform: uppercase;
     letter-spacing: 1px;
     white-space: nowrap;
-}
-
-.btn-auth-link:hover {
-    background: rgba(197, 160, 89, 0.1);
-    color: var(--brass-gold-hover);
 }
 
 .navbar-menu {
@@ -317,13 +260,6 @@ img {
     justify-content: center;
     align-items: center;
     padding-top: 0.5rem;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-}
-
-.navbar-menu::-webkit-scrollbar {
-    display: none;
 }
 
 .nav-links {
@@ -332,9 +268,9 @@ img {
     gap: 0.5rem;
     align-items: center;
     margin: 0;
-    padding: 0 0.5rem;
-    flex-wrap: nowrap;
-    white-space: nowrap;
+    padding: 0;
+    flex-wrap: wrap; /* Разрешает аккуратный перенос строк */
+    justify-content: center;
 }
 
 .nav-link {
@@ -343,7 +279,7 @@ img {
     color: var(--text-muted);
     text-transform: uppercase;
     letter-spacing: 1px;
-    padding: 0.4rem 0.7rem;
+    padding: 0.35rem 0.65rem;
     transition: all 0.25s ease;
     white-space: nowrap;
     border-bottom: 2px solid transparent;
@@ -356,13 +292,65 @@ img {
 }
 
 /* --------------------------------------------------------------------------
-   FORM CONTROLS & SHARED SPEAKEASY CARDS
+   ТАБЛИЦЫ (БЕЗ ГОРИЗОНТАЛЬНОГО ВЫЛЕТА)
+   -------------------------------------------------------------------------- */
+.table-responsive {
+    width: 100%;
+    margin-bottom: 1.5rem;
+    overflow-x: hidden; /* Никакого скролла наружу */
+}
+
+.speakeasy-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--bg-card);
+    border: var(--border-gold);
+    font-size: 0.88rem;
+    table-layout: auto;
+}
+
+.speakeasy-table th {
+    background-color: var(--burgundy-dark);
+    color: var(--brass-gold);
+    font-family: var(--font-heading);
+    text-transform: uppercase;
+    padding: 0.75rem 0.8rem;
+    letter-spacing: 1px;
+    border-bottom: 1px solid var(--brass-gold);
+    text-align: left;
+}
+
+.speakeasy-table td {
+    padding: 0.75rem 0.8rem;
+    border-bottom: var(--border-gold-light);
+    color: var(--text-main);
+    word-break: break-word; /* Предотвращает раздувание колонок */
+}
+
+.speakeasy-table tbody tr:hover {
+    background: rgba(197, 160, 89, 0.05);
+}
+
+.amount-positive {
+    color: #81C784;
+    font-weight: bold;
+    font-family: var(--font-heading);
+}
+
+.amount-negative {
+    color: #FF7777;
+    font-weight: bold;
+    font-family: var(--font-heading);
+}
+
+/* --------------------------------------------------------------------------
+   ФОРМЫ И КАРТОЧКИ
    -------------------------------------------------------------------------- */
 .speakeasy-card {
     background-color: rgba(26, 26, 26, 0.95);
     border: var(--border-gold);
     box-shadow: 0 0 40px rgba(0, 0, 0, 0.9), inset 0 0 20px rgba(61, 12, 2, 0.5);
-    padding: 3rem 2.5rem;
+    padding: 2.5rem 2rem;
     max-width: 460px;
     width: 100%;
     position: relative;
@@ -385,15 +373,15 @@ img {
 .speakeasy-card::after { bottom: 8px; right: 8px; border-left: none; border-top: none; }
 
 .logo-emblem {
-    width: 68px;
-    height: 68px;
+    width: 64px;
+    height: 64px;
     margin: 0 auto 1.2rem auto;
     border: 2px solid var(--brass-gold);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 2rem;
+    font-size: 1.8rem;
     background: var(--burgundy-dark);
     color: var(--brass-gold);
     box-shadow: 0 0 15px rgba(197, 160, 89, 0.25);
@@ -401,14 +389,15 @@ img {
 
 .brand-title {
     font-family: var(--font-heading);
-    font-size: 2.2rem;
+    font-size: 2rem;
     font-weight: 800;
     color: var(--brass-gold);
-    letter-spacing: 3px;
+    letter-spacing: 2px;
     text-transform: uppercase;
     text-align: center;
     text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9);
     margin-bottom: 0.3rem;
+    word-break: break-word;
 }
 
 .brand-subtitle {
@@ -417,19 +406,20 @@ img {
     text-transform: uppercase;
     letter-spacing: 2px;
     text-align: center;
-    margin-bottom: 2rem;
+    margin-bottom: 1.8rem;
     border-bottom: 1px solid rgba(197, 160, 89, 0.2);
     padding-bottom: 0.8rem;
 }
 
 .form-group {
-    margin-bottom: 1.3rem;
+    margin-bottom: 1.2rem;
+    width: 100%;
 }
 
 .form-label {
     display: block;
     font-family: var(--font-heading);
-    font-size: 0.82rem;
+    font-size: 0.8rem;
     color: var(--brass-gold);
     letter-spacing: 1px;
     margin-bottom: 0.4rem;
@@ -438,12 +428,13 @@ img {
 
 .form-input, .form-select, .form-textarea {
     width: 100%;
-    padding: 0.8rem 0.9rem;
+    max-width: 100%;
+    padding: 0.75rem 0.85rem;
     background-color: var(--bg-input);
     border: var(--border-gold);
     color: var(--text-main);
     font-family: var(--font-mono);
-    font-size: 0.95rem;
+    font-size: 0.92rem;
     outline: none;
     transition: all 0.3s ease;
 }
@@ -467,6 +458,7 @@ img {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 1.2rem;
+    width: 100%;
 }
 
 .field-error {
@@ -479,7 +471,7 @@ img {
 .btn-submit, .btn-gold, .btn-speakeasy {
     display: block;
     width: 100%;
-    padding: 0.9rem 1.4rem;
+    padding: 0.85rem 1.2rem;
     font-family: var(--font-heading);
     font-size: 0.9rem;
     font-weight: 700;
@@ -529,7 +521,7 @@ img {
 }
 
 /* --------------------------------------------------------------------------
-   PAGE HEADERS
+   ЗАГОЛОВКИ СТРАНИЦ
    -------------------------------------------------------------------------- */
 .page-header-bar {
     display: flex;
@@ -540,40 +532,44 @@ img {
     padding-bottom: 1rem;
     flex-wrap: wrap;
     gap: 1rem;
+    width: 100%;
 }
 
 .page-header-bar .title-text,
 .page-header-bar h1 {
     font-family: var(--font-heading);
-    font-size: 2rem;
+    font-size: clamp(1.4rem, 4vw, 2rem);
     color: var(--brass-gold);
     text-transform: uppercase;
     letter-spacing: 2px;
     margin: 0;
+    word-break: break-word;
 }
 
 .page-header-bar .subtitle-text,
 .page-header-bar p {
     color: var(--text-muted);
-    font-size: 0.85rem;
+    font-size: 0.82rem;
     text-transform: uppercase;
     margin: 0.2rem 0 0 0;
 }
 
 /* --------------------------------------------------------------------------
-   DOSSIER / PROFILE & MODAL (Profile Fix)
+   ДОСЬЕ / ПРОФИЛЬ
    -------------------------------------------------------------------------- */
 .dossier-container {
     max-width: 780px;
+    width: 100%;
     margin: 0 auto;
 }
 
 .dossier-card {
     background-color: var(--bg-card);
     border: var(--border-gold);
-    padding: 2.5rem;
+    padding: 2.2rem;
     position: relative;
     box-shadow: 0 0 40px rgba(0, 0, 0, 0.9), inset 0 0 20px rgba(61, 12, 2, 0.4);
+    width: 100%;
 }
 
 .dossier-card::before, .dossier-card::after {
@@ -593,7 +589,7 @@ img {
     border: 2px dashed var(--burgundy-light);
     color: #FF5555;
     padding: 0.3rem 0.8rem;
-    font-size: 0.75rem;
+    font-size: 0.72rem;
     font-family: var(--font-heading);
     letter-spacing: 2px;
     text-transform: uppercase;
@@ -605,23 +601,22 @@ img {
 .dossier-header {
     display: flex;
     align-items: center;
-    gap: 2rem;
-    padding-bottom: 2rem;
+    gap: 1.5rem;
+    padding-bottom: 1.8rem;
     border-bottom: 1px solid rgba(197, 160, 89, 0.2);
-    margin-bottom: 2rem;
-    padding-right: 140px;
+    margin-bottom: 1.8rem;
 }
 
 .avatar-box {
-    width: 110px;
-    height: 110px;
+    width: 100px;
+    height: 100px;
     border: 2px solid var(--brass-gold);
     background-color: var(--burgundy-dark);
     display: flex;
     align-items: center;
     justify-content: center;
     font-family: var(--font-heading);
-    font-size: 2.5rem;
+    font-size: 2.2rem;
     color: var(--brass-gold);
     box-shadow: 0 0 15px rgba(197, 160, 89, 0.2);
     flex-shrink: 0;
@@ -642,7 +637,7 @@ img {
 
 .username-title {
     font-family: var(--font-heading);
-    font-size: 2.2rem;
+    font-size: 2rem;
     font-weight: 800;
     color: var(--brass-gold);
     letter-spacing: 2px;
@@ -655,11 +650,11 @@ img {
 .role-badge {
     display: inline-block;
     font-family: var(--font-heading);
-    font-size: 0.8rem;
+    font-size: 0.78rem;
     font-weight: bold;
     color: #0A0A0A;
     background: var(--gold-gradient);
-    padding: 0.25rem 0.8rem;
+    padding: 0.25rem 0.75rem;
     letter-spacing: 1.5px;
     text-transform: uppercase;
 }
@@ -667,19 +662,21 @@ img {
 .info-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 1.5rem;
-    margin-bottom: 2rem;
+    gap: 1.2rem;
+    margin-bottom: 1.8rem;
+    width: 100%;
 }
 
 .info-item {
     background-color: var(--bg-charcoal);
     border: 1px solid rgba(197, 160, 89, 0.2);
-    padding: 1rem 1.2rem;
+    padding: 0.9rem 1rem;
+    word-break: break-word;
 }
 
 .info-label {
     font-family: var(--font-heading);
-    font-size: 0.75rem;
+    font-size: 0.72rem;
     color: var(--text-muted);
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -688,7 +685,7 @@ img {
 }
 
 .info-value {
-    font-size: 1.05rem;
+    font-size: 1rem;
     color: var(--text-main);
     font-weight: bold;
     word-break: break-word;
@@ -702,15 +699,16 @@ img {
 .bio-panel {
     background-color: var(--bg-charcoal);
     border: 1px solid rgba(197, 160, 89, 0.2);
-    padding: 1.2rem 1.5rem;
-    margin-bottom: 2rem;
+    padding: 1.2rem;
+    margin-bottom: 1.8rem;
+    width: 100%;
 }
 
 .bio-text {
     color: var(--text-main);
-    font-size: 0.95rem;
-    line-height: 1.7;
-    margin-top: 0.6rem;
+    font-size: 0.92rem;
+    line-height: 1.6;
+    margin-top: 0.5rem;
     white-space: pre-line;
     word-break: break-word;
     text-align: left;
@@ -723,12 +721,13 @@ img {
     padding-top: 1.5rem;
     border-top: 1px dashed rgba(197, 160, 89, 0.2);
     flex-wrap: wrap;
+    width: 100%;
 }
 
 .btn-action {
-    padding: 0.75rem 1.4rem;
+    padding: 0.65rem 1.2rem;
     font-family: var(--font-heading);
-    font-size: 0.82rem;
+    font-size: 0.8rem;
     font-weight: bold;
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -749,34 +748,36 @@ img {
 }
 
 /* --------------------------------------------------------------------------
-   BOSS DASHBOARD & CARDS
+   ДАШБОРД БОССА
    -------------------------------------------------------------------------- */
 .stats-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 1.5rem;
-    margin-bottom: 2.5rem;
+    gap: 1.2rem;
+    margin-bottom: 2.2rem;
+    width: 100%;
 }
 
 .stat-card {
     background: var(--bg-card);
     border: var(--border-gold);
-    padding: 1.5rem;
+    padding: 1.2rem;
     text-align: center;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.8);
+    word-break: break-word;
 }
 
 .stat-value {
     font-family: var(--font-heading);
-    font-size: 2rem;
+    font-size: 1.8rem;
     color: var(--brass-gold);
     font-weight: bold;
-    margin: 0.5rem 0;
+    margin: 0.4rem 0;
     word-break: break-word;
 }
 
 .stat-label {
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     color: var(--text-muted);
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -784,15 +785,16 @@ img {
 
 .quick-nav-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1.2rem;
-    margin-bottom: 2.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2.2rem;
+    width: 100%;
 }
 
 .quick-btn {
     background: #161616;
     border: var(--border-gold);
-    padding: 1.2rem;
+    padding: 1.1rem;
     text-align: center;
     color: var(--text-main);
     transition: all 0.3s ease;
@@ -808,13 +810,13 @@ img {
 .quick-btn h3 {
     font-family: var(--font-heading);
     color: var(--brass-gold);
-    font-size: 1rem;
-    margin-bottom: 0.4rem;
+    font-size: 0.95rem;
+    margin-bottom: 0.3rem;
     text-transform: uppercase;
 }
 
 .quick-btn p {
-    font-size: 0.75rem;
+    font-size: 0.72rem;
     color: var(--text-muted);
     margin: 0;
 }
@@ -822,26 +824,27 @@ img {
 .boss-members-grid {
     display: grid;
     grid-template-columns: 2fr 1fr;
-    gap: 2rem;
+    gap: 1.8rem;
+    width: 100%;
 }
 
 /* --------------------------------------------------------------------------
-   HIERARCHY & FAMILY TREES
+   ИЕРАРХИЯ И ДРЕВО СЕМЕЙ
    -------------------------------------------------------------------------- */
 .tree-container, .tree-box {
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 100%;
-    max-width: 1100px;
+    max-width: 1000px;
     margin: 0 auto;
-    padding: 1rem 0 3rem 0;
+    padding: 0.5rem 0 2.5rem 0;
 }
 
 .card-node, .card-member {
     background: var(--bg-card);
     border: var(--border-gold);
-    padding: 1.2rem 1.5rem;
+    padding: 1.1rem 1.2rem;
     width: 280px;
     max-width: 100%;
     text-align: center;
@@ -852,6 +855,7 @@ img {
     display: block;
     color: inherit;
     cursor: pointer;
+    word-break: break-word;
 }
 
 .card-node:hover, .card-member:hover {
@@ -861,7 +865,7 @@ img {
 }
 
 .card-node.don-node, .card-don {
-    width: 310px;
+    width: 300px;
     max-width: 100%;
     background: linear-gradient(180deg, #221410 0%, var(--bg-card) 100%);
     border: 2px solid var(--brass-gold);
@@ -870,7 +874,7 @@ img {
 
 .line-vertical, .v-line {
     width: 2px;
-    height: 2rem;
+    height: 1.8rem;
     background: var(--brass-gold);
     opacity: 0.5;
     margin: 0 auto;
@@ -880,7 +884,7 @@ img {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 1.5rem;
+    gap: 1.2rem;
     width: 100%;
     flex-wrap: wrap;
 }
@@ -890,21 +894,22 @@ img {
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
-    gap: 1.2rem;
+    gap: 1rem;
     width: 100%;
 }
 
 .soldier-card, .soldier-card-link {
     background-color: #121212;
     border: 1px solid rgba(197, 160, 89, 0.2);
-    padding: 0.8rem 1.2rem;
-    width: 250px;
+    padding: 0.7rem 1rem;
+    width: 240px;
     max-width: 100%;
     display: flex;
     align-items: center;
     gap: 0.8rem;
     color: inherit;
     transition: all 0.3s ease;
+    word-break: break-word;
 }
 
 .soldier-card:hover, .soldier-card-link:hover {
@@ -914,42 +919,46 @@ img {
 }
 
 /* --------------------------------------------------------------------------
-   ARTICLES & LANDING
+   СТАТЬИ
    -------------------------------------------------------------------------- */
 .articles-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 1.8rem;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+    width: 100%;
 }
 
 .article-card {
     background-color: var(--bg-card);
     border: var(--border-gold);
-    padding: 1.8rem;
+    padding: 1.5rem;
     position: relative;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     transition: all 0.3s ease;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+    word-break: break-word;
 }
 
 .article-paper {
     background: var(--bg-card);
     border: var(--border-gold);
-    padding: 3rem;
+    padding: 2.5rem;
     position: relative;
     box-shadow: 0 0 50px rgba(0, 0, 0, 0.9), inset 0 0 25px rgba(61, 12, 2, 0.3);
+    width: 100%;
+    word-break: break-word;
 }
 
 /* ==========================================================================
-   MEDIA QUERIES (RESPONSIVENESS)
+   АДАПТИВНОСТЬ: ПОЛНОЕ УНИЧТОЖЕНИЕ БОКОВОГО СКРОЛЛА
    ========================================================================== */
 
-/* 1. ПЛАНШЕТЫ И НОУТБУКИ (<= 1024px) */
+/* 1. ПЛАНШЕТЫ (<= 1024px) */
 @media (max-width: 1024px) {
     .main-container {
-        padding: 0 1.2rem;
+        padding: 0 1rem;
         margin: 1.5rem auto;
     }
 
@@ -958,22 +967,22 @@ img {
     }
 
     .columns-grid {
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
+        grid-template-columns: 1fr !important;
+        gap: 1.5rem !important;
     }
 
     .capo-grid {
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
+        grid-template-columns: 1fr !important;
+        gap: 1.5rem !important;
     }
 
     .stats-grid {
         grid-template-columns: repeat(3, 1fr);
-        gap: 1rem;
+        gap: 0.8rem;
     }
 
     .article-paper {
-        padding: 2rem;
+        padding: 1.8rem;
     }
 }
 
@@ -984,41 +993,93 @@ img {
     }
 
     .main-container {
-        padding: 0 0.8rem;
-        margin: 1rem auto;
+        padding: 0 0.6rem;
+        margin: 0.8rem auto;
     }
 
+    /* Навбар: компактный и без переполнения */
     .speakeasy-navbar {
-        padding: 0.5rem 0.8rem 0.3rem 0.8rem;
+        padding: 0.5rem 0.6rem;
     }
 
     .navbar-top {
         flex-direction: row;
-        flex-wrap: wrap;
-        gap: 0.5rem;
+        justify-content: space-between;
+        align-items: center;
+        gap: 0.4rem;
+        padding-bottom: 0.4rem;
     }
 
     .brand-logo {
-        font-size: 1.2rem;
+        font-size: 1.15rem;
     }
 
     .user-status {
-        gap: 0.5rem;
+        gap: 0.4rem;
     }
 
+    .user-profile-link div:last-child {
+        display: none; /* Скрываем подпись "Capo di tutti capi" на маленьких экранах */
+    }
+
+    .avatar-frame {
+        width: 30px;
+        height: 30px;
+        font-size: 0.72rem;
+    }
+
+    .logout-btn {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.68rem;
+    }
+
+    /* Вкладки меню превращаются в аккуратную сетку плашек */
+    .navbar-menu {
+        padding-top: 0.4rem;
+    }
+
+    .nav-links {
+        flex-wrap: wrap;
+        gap: 0.35rem;
+        justify-content: center;
+    }
+
+    .nav-link {
+        font-size: 0.72rem;
+        padding: 0.25rem 0.5rem;
+        border: 1px solid rgba(197, 160, 89, 0.25);
+        background: rgba(26, 26, 26, 0.7);
+        border-radius: 2px;
+    }
+
+    .nav-link.active {
+        background: var(--burgundy-dark);
+        border-color: var(--brass-gold);
+    }
+
+    /* Таблицы: аккуратное уплотнение без бокового скролла */
+    .speakeasy-table {
+        font-size: 0.75rem;
+        table-layout: auto;
+    }
+
+    .speakeasy-table th,
+    .speakeasy-table td {
+        padding: 0.45rem 0.3rem;
+        word-break: break-word;
+    }
+
+    /* Заголовки */
     .page-header-bar {
         flex-direction: column;
         align-items: flex-start;
-        gap: 0.6rem;
-    }
-
-    .page-header-bar .title-text,
-    .page-header-bar h1 {
-        font-size: 1.5rem;
+        gap: 0.5rem;
+        margin-bottom: 1.2rem;
     }
 
     .stats-grid {
         grid-template-columns: 1fr;
+        gap: 0.8rem;
     }
 
     .form-row {
@@ -1028,33 +1089,34 @@ img {
 
     .info-grid {
         grid-template-columns: 1fr;
-        gap: 1rem;
+        gap: 0.8rem;
     }
 
     .dossier-card {
-        padding: 1.5rem 1.2rem;
+        padding: 1.4rem 1rem;
     }
 
     .dossier-header {
         flex-direction: column;
         text-align: center;
         padding-right: 0;
-        gap: 1rem;
+        gap: 0.8rem;
     }
 
     .file-stamp {
         position: static;
         display: inline-block;
-        margin-bottom: 1rem;
+        margin-bottom: 0.8rem;
         transform: none;
     }
 
     .username-title {
-        font-size: 1.6rem;
+        font-size: 1.5rem;
     }
 
     .actions-panel {
         justify-content: center;
+        gap: 0.6rem;
     }
 
     .btn-action {
@@ -1063,63 +1125,74 @@ img {
     }
 
     .article-paper {
-        padding: 1.5rem 1rem;
+        padding: 1.4rem 0.9rem;
     }
 
     .article-title {
-        font-size: 1.5rem;
+        font-size: 1.4rem;
     }
 
-    .stamp-top-right {
-        position: static;
-        display: inline-block;
-        margin-bottom: 1rem;
-        transform: none;
-    }
-
+    /* Карточки древа семьи на 100% ширины */
     .card-node, .card-member, .card-node.don-node, .card-don {
         width: 100%;
+        max-width: 320px;
     }
 
     .soldier-card, .soldier-card-link {
         width: 100%;
+        max-width: 320px;
     }
 }
 
-/* 3. МАЛЕНЬКИЕ ЭКРАНЫ (<= 480px) */
+/* 3. ОЧЕНЬ МАЛЕНЬКИЕ СМАРТФОНЫ (<= 480px) */
 @media (max-width: 480px) {
     .speakeasy-card {
-        padding: 2rem 1.2rem;
+        padding: 1.8rem 1rem;
     }
 
     .brand-title {
-        font-size: 1.7rem;
+        font-size: 1.6rem;
     }
 
     .stat-value {
-        font-size: 1.5rem;
+        font-size: 1.4rem;
     }
 
     .calculator-preview, .ledger-preview {
         grid-template-columns: 1fr !important;
         gap: 0.8rem !important;
     }
+
+    /* На ультра-узких экранах уменьшаем шрифты таблиц для идеальной посадки */
+    .speakeasy-table {
+        font-size: 0.7rem;
+    }
+
+    .speakeasy-table th,
+    .speakeasy-table td {
+        padding: 0.35rem 0.2rem;
+    }
 }
 
-/* Модальное окно увеличения фотографии */
+/* --------------------------------------------------------------------------
+   МОДАЛЬНОЕ ОКНО ЗУМА ФОТО (БЕЗ 100vw И БЕЗ ВЫЛЕТОВ)
+   -------------------------------------------------------------------------- */
 .photo-modal {
     display: none;
     position: fixed;
     z-index: 9999;
-    left: 0;
     top: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(0, 0, 0, 0.85);
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.88);
     backdrop-filter: blur(5px);
     align-items: center;
     justify-content: center;
     animation: fadeInModal 0.2s ease-out;
+    padding: 1rem;
 }
 
 .photo-modal.active {
@@ -1130,18 +1203,19 @@ img {
     position: relative;
     background: var(--bg-card);
     border: 2px solid var(--brass-gold);
-    padding: 1.2rem;
+    padding: 1rem;
     box-shadow: 0 0 50px rgba(0, 0, 0, 0.95), inset 0 0 20px rgba(61, 12, 2, 0.5);
     text-align: center;
     animation: scaleInModal 0.25s ease-out;
-    max-width: 95vw;
+    max-width: 95%;
+    max-height: 90vh;
 }
 
 .photo-modal-img {
     width: 440px;
     height: 440px;
-    max-width: 85vw;
-    max-height: 70vh;
+    max-width: 80vw;
+    max-height: 65vh;
     object-fit: cover;
     display: block;
     border: 1px solid rgba(197, 160, 89, 0.4);
@@ -1149,20 +1223,20 @@ img {
 }
 
 .photo-modal-caption {
-    margin-top: 0.9rem;
+    margin-top: 0.8rem;
     font-family: var(--font-heading);
     color: var(--brass-gold);
-    font-size: 0.85rem;
+    font-size: 0.82rem;
     letter-spacing: 1.5px;
     text-transform: uppercase;
 }
 
 .photo-modal-close {
     position: absolute;
-    top: -14px;
-    right: -14px;
-    width: 32px;
-    height: 32px;
+    top: -12px;
+    right: -12px;
+    width: 30px;
+    height: 30px;
     background: var(--burgundy-dark);
     border: 1px solid var(--brass-gold);
     border-radius: 50%;
