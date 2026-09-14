@@ -9,7 +9,7 @@
             <p class="subtitle-text"><@spring.message "boss.messages.subtitle"/></p>
         </div>
         <a href="/boss/messages/new" class="btn-gold" style="width: auto; padding: 0.7rem 1.4rem;">
-            <@spring.message "boss.messages.btn.new"/>
+            ✉ <@spring.message "boss.messages.btn.new"/>
         </a>
     </div>
 
@@ -36,7 +36,7 @@
                             <#if m.read>
                                 <span style="color: var(--text-muted);"><@spring.message "boss.messages.status.read"/></span>
                             <#else>
-                                <span style="color: #FF5555; font-weight: bold;"><@spring.message "boss.messages.status.new"/></span>
+                                <span style="color: #FF5555; font-weight: bold;">● <@spring.message "boss.messages.status.new"/></span>
                             </#if>
                         </td>
                         <td style="color: var(--brass-gold);">${m.sender.username} (${m.sender.role})</td>
@@ -44,7 +44,7 @@
                         <td style="color: var(--text-muted); font-size: 0.85rem;">${m.sentAt}</td>
                         <td>
                             <a href="/boss/messages/${m.id}" style="font-family: var(--font-heading);">
-                                <@spring.message "boss.messages.open_envelope"/>
+                                <@spring.message "boss.messages.open_envelope"/> →
                             </a>
                         </td>
                     </tr>
@@ -79,7 +79,7 @@
                         <td style="color: var(--text-muted); font-size: 0.85rem;">${m.sentAt}</td>
                         <td>
                             <a href="/boss/messages/${m.id}" style="font-family: var(--font-heading);">
-                                <@spring.message "boss.messages.view_btn"/>
+                                <@spring.message "boss.messages.view_btn"/> →
                             </a>
                         </td>
                     </tr>

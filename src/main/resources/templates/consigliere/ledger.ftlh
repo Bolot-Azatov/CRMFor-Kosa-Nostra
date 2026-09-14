@@ -9,7 +9,7 @@
             <p class="subtitle-text"><@spring.message "consigliere.ledger.subtitle"/></p>
         </div>
         <a href="/consigliere/messages/new" class="btn-gold" style="width: auto; padding: 0.7rem 1.4rem;">
-            <@spring.message "consigliere.ledger.btn_report"/>
+            ✉ <@spring.message "consigliere.ledger.btn_report"/>
         </a>
     </div>
 

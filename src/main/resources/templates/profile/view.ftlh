@@ -61,13 +61,13 @@
                     <p class="bio-text">${((user.bio)!springMacroRequestContext.getMessage("profile.bio_empty"))?trim}</p>
                 </div>
 
-                <!-- Действия -->
+                <!-- Действия с безопасными эмодзи в шаблоне -->
                 <div class="actions-panel">
                     <a href="/family" class="btn-action">
-                        <@spring.message "profile.btn.to_family"/>
+                        🏛️ <@spring.message "profile.btn.to_family"/>
                     </a>
                     <a href="/articles" class="btn-action">
-                        <@spring.message "profile.btn.to_articles"/>
+                        📜 <@spring.message "profile.btn.to_articles"/>
                     </a>
                 </div>
             </div>
@@ -77,7 +77,7 @@
                 <div class="photo-modal-card">
                     <button type="button" class="photo-modal-close" onclick="closeModalDirect()" title="Закрыть">&times;</button>
                     <img id="modalImage" src="" alt="${user.username}" class="photo-modal-img"/>
-                    <div class="photo-modal-caption">${user.username} <@spring.message "profile.modal_caption"/></div>
+                    <div class="photo-modal-caption">${user.username} • <@spring.message "profile.modal_caption"/></div>
                 </div>
             </div>
 
