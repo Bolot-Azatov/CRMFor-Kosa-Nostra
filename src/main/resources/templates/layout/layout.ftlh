@@ -1,8 +1,8 @@
 <#import "/spring.ftl" as spring/>
 
-<#macro page_layout title="Cosa Nostra CRM" activeTab="">
+<#macro page_layout title=springMacroRequestContext.getMessage("app.title") activeTab="">
     <!DOCTYPE html>
-    <html lang="ru">
+    <html lang="${springMacroRequestContext.locale.language!'ru'}">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
@@ -46,20 +46,20 @@
             </#list>
 
             <#if isBoss>
-                <#assign roleBadge = "DON">
-                <#assign roleTitle = "Capo di Tutti Capi">
+                <#assign roleBadge = springMacroRequestContext.getMessage("role.boss.badge")>
+                <#assign roleTitle = springMacroRequestContext.getMessage("role.boss.title")>
             <#elseif isConsigliere>
-                <#assign roleBadge = "CONS">
-                <#assign roleTitle = "Consigliere">
+                <#assign roleBadge = springMacroRequestContext.getMessage("role.consigliere.badge")>
+                <#assign roleTitle = springMacroRequestContext.getMessage("role.consigliere.title")>
             <#elseif isCapo>
-                <#assign roleBadge = "CAPO">
-                <#assign roleTitle = "Caporegime">
+                <#assign roleBadge = springMacroRequestContext.getMessage("role.capo.badge")>
+                <#assign roleTitle = springMacroRequestContext.getMessage("role.capo.title")>
             <#elseif isSoldier>
-                <#assign roleBadge = "SOLD">
-                <#assign roleTitle = "Soldier">
+                <#assign roleBadge = springMacroRequestContext.getMessage("role.soldier.badge")>
+                <#assign roleTitle = springMacroRequestContext.getMessage("role.soldier.title")>
             <#else>
-                <#assign roleBadge = "MBR">
-                <#assign roleTitle = "Associate">
+                <#assign roleBadge = springMacroRequestContext.getMessage("role.associate.badge")>
+                <#assign roleTitle = springMacroRequestContext.getMessage("role.associate.title")>
             </#if>
         </#if>
     </head>
@@ -67,18 +67,25 @@
 
     <header class="speakeasy-navbar">
         <div class="navbar-top">
-            <a href="/" class="brand-logo">Cosa Nostra</a>
+            <a href="/" class="brand-logo"><@spring.message "app.brand"/></a>
 
             <div class="user-status">
+                <!-- Переключатель языка -->
+                <div class="lang-switch">
+                    <a href="?lang=ru" class="lang-btn <#if (springMacroRequestContext.locale.language == 'ru')!true>active</#if>">RU</a>
+                    <span class="lang-divider">/</span>
+                    <a href="?lang=en" class="lang-btn <#if (springMacroRequestContext.locale.language == 'en')!false>active</#if>">EN</a>
+                </div>
+
                 <#if known>
-                    <a href="/profile" class="user-profile-link" title="Личное досье">
+                    <a href="/profile" class="user-profile-link" title="<@spring.message 'user.profile.title'/>">
                         <div class="avatar-frame">${roleBadge!"MBR"}</div>
                         <div>
                             <div style="color: var(--brass-gold); font-family: var(--font-heading); font-weight: bold; font-size: 0.85rem;">
-                                ${username!"Неизвестный"}
+                                ${username!springMacroRequestContext.getMessage("user.anonymous")}
                             </div>
                             <div style="color: var(--text-muted); font-size: 0.68rem; text-transform: uppercase;">
-                                ${roleTitle!"Участник"}
+                                ${roleTitle!springMacroRequestContext.getMessage("user.associate")}
                             </div>
                         </div>
                     </a>
@@ -87,13 +94,13 @@
                         <#if _csrf??>
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         </#if>
-                        <button type="submit" class="logout-btn" title="Покинуть сходку">
-                            🚪 Выйти
+                        <button type="submit" class="logout-btn" title="<@spring.message 'user.logout'/>">
+                            🚪 <@spring.message "user.logout"/>
                         </button>
                     </form>
                 <#else>
-                    <a href="/login" class="btn-auth-link">Вход</a>
-                    <a href="/register" class="btn-auth-link" style="border-color: rgba(197, 160, 89, 0.6); background: rgba(197, 160, 89, 0.1);">Присяга</a>
+                    <a href="/login" class="btn-auth-link"><@spring.message "user.login"/></a>
+                    <a href="/register" class="btn-auth-link" style="border-color: rgba(197, 160, 89, 0.6); background: rgba(197, 160, 89, 0.1);"><@spring.message "user.register"/></a>
                 </#if>
             </div>
         </div>
@@ -101,53 +108,53 @@
         <nav class="navbar-menu">
             <ul class="nav-links">
                 <li>
-                    <a href="/" class="nav-link <#if activeTab == 'home'>active</#if>">Главная</a>
+                    <a href="/" class="nav-link <#if activeTab == 'home'>active</#if>"><@spring.message "nav.home"/></a>
                 </li>
                 <li>
-                    <a href="/articles" class="nav-link <#if activeTab == 'articles'>active</#if>">Сводки</a>
+                    <a href="/articles" class="nav-link <#if activeTab == 'articles'>active</#if>"><@spring.message "nav.articles"/></a>
                 </li>
 
                 <#if known>
                     <li>
-                        <a href="/hierarchy" class="nav-link <#if activeTab == 'family'>active</#if>">Иерархия 5 Семей</a>
+                        <a href="/hierarchy" class="nav-link <#if activeTab == 'family'>active</#if>"><@spring.message "nav.hierarchy"/></a>
                     </li>
 
                     <#if isCapo>
                         <li>
-                            <a href="/capo/business" class="nav-link <#if activeTab == 'racket' || activeTab == 'business'>active</#if>">Мой Рэкет</a>
+                            <a href="/capo/business" class="nav-link <#if activeTab == 'racket' || activeTab == 'business'>active</#if>"><@spring.message "nav.capo.racket"/></a>
                         </li>
                         <li>
-                            <a href="/capo/tribute" class="nav-link <#if activeTab == 'tribute'>active</#if>">Сдать Дань</a>
+                            <a href="/capo/tribute" class="nav-link <#if activeTab == 'tribute'>active</#if>"><@spring.message "nav.capo.tribute"/></a>
                         </li>
                     </#if>
 
                     <#if isConsigliere>
                         <li>
-                            <a href="/consigliere/ledger" class="nav-link <#if activeTab == 'ledger'>active</#if>">Книга Доходов</a>
+                            <a href="/consigliere/ledger" class="nav-link <#if activeTab == 'ledger'>active</#if>"><@spring.message "nav.consigliere.ledger"/></a>
                         </li>
                         <li>
-                            <a href="/consigliere/messages" class="nav-link <#if activeTab == 'message'>active</#if>">Почта</a>
+                            <a href="/consigliere/messages" class="nav-link <#if activeTab == 'message'>active</#if>"><@spring.message "nav.consigliere.messages"/></a>
                         </li>
                     </#if>
 
                     <#if isBoss>
                         <li>
-                            <a href="/boss/dashboard" class="nav-link <#if activeTab == 'dashboard'>active</#if>">Штаб Дона</a>
+                            <a href="/boss/dashboard" class="nav-link <#if activeTab == 'dashboard'>active</#if>"><@spring.message "nav.boss.dashboard"/></a>
                         </li>
                         <li>
-                            <a href="/boss/members" class="nav-link <#if activeTab == 'capos'>active</#if>">Кадры</a>
+                            <a href="/boss/members" class="nav-link <#if activeTab == 'capos'>active</#if>"><@spring.message "nav.boss.members"/></a>
                         </li>
                         <li>
-                            <a href="/boss/businesses" class="nav-link <#if activeTab == 'businesses'>active</#if>">Бизнесы</a>
+                            <a href="/boss/businesses" class="nav-link <#if activeTab == 'businesses'>active</#if>"><@spring.message "nav.boss.businesses"/></a>
                         </li>
                         <li>
-                            <a href="/boss/treasury" class="nav-link <#if activeTab == 'boss_ledger'>active</#if>">Казна</a>
+                            <a href="/boss/treasury" class="nav-link <#if activeTab == 'boss_ledger'>active</#if>"><@spring.message "nav.boss.treasury"/></a>
                         </li>
                         <li>
-                            <a href="/boss/diplomacy" class="nav-link <#if activeTab == 'diplomacy'>active</#if>">Дипломатия</a>
+                            <a href="/boss/diplomacy" class="nav-link <#if activeTab == 'diplomacy'>active</#if>"><@spring.message "nav.boss.diplomacy"/></a>
                         </li>
                         <li>
-                            <a href="/boss/messages" class="nav-link <#if activeTab == 'messages'>active</#if>">Депеши</a>
+                            <a href="/boss/messages" class="nav-link <#if activeTab == 'messages'>active</#if>"><@spring.message "nav.boss.messages"/></a>
                         </li>
                     </#if>
                 </#if>
@@ -159,7 +166,7 @@
 
         <#if spring.status?? && spring.status.errorMessages?has_content>
             <div class="alert-box">
-                <div class="alert-title">⚠️ Ошибки при заполнении протокола:</div>
+                <div class="alert-title">⚠️ <@spring.message "alert.errors.title"/></div>
                 <ul>
                     <#list spring.status.errorMessages as error>
                         <li>${error}</li>
@@ -170,14 +177,14 @@
 
         <#if errorMessage??>
             <div class="alert-box">
-                <div class="alert-title">⛔ Нарушение омерты:</div>
+                <div class="alert-title">⛔ <@spring.message "alert.omerta.violation"/></div>
                 <p>${errorMessage}</p>
             </div>
         </#if>
 
         <#if successMessage??>
             <div class="alert-box alert-success">
-                <div class="alert-title" style="color: #81C784;">🗡️ Дело закрыто:</div>
+                <div class="alert-title" style="color: #81C784;">🗡️ <@spring.message "alert.case.closed"/></div>
                 <p>${successMessage}</p>
             </div>
         </#if>

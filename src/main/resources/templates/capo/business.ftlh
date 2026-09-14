@@ -1,13 +1,13 @@
 <#import "/spring.ftl" as spring/>
 <#import "../layout/layout.ftlh" as layout/>
 
-<@layout.page_layout title="Контроль Рэкета | Капореджиме" activeTab="racket">
+<@layout.page_layout title="${springMacroRequestContext.getMessage('capo.business.title')} | ${springMacroRequestContext.getMessage('role.capo.title')}" activeTab="racket">
 
     <div style="max-width: 950px; margin: 0 auto;">
         <div class="page-header-bar">
             <div>
-                <h1 class="title-text">Кабинет Капореджиме</h1>
-                <p class="subtitle-text">Управление доверенной территорией и сдача еженедельной дани</p>
+                <h1 class="title-text"><@spring.message "capo.business.title"/></h1>
+                <p class="subtitle-text"><@spring.message "capo.business.subtitle"/></p>
             </div>
         </div>
 
@@ -15,44 +15,44 @@
             <!-- Левая колонка: Карточка Бизнеса -->
             <div style="background: var(--bg-card); border: var(--border-gold); padding: 2rem; position: relative; box-shadow: var(--box-shadow-card);">
                 <h2 style="font-family: var(--font-heading); color: var(--brass-gold); font-size: 1.3rem; margin-bottom: 1.5rem; text-transform: uppercase;">
-                    🏛 Закрепленный Бизнес
+                    🏛 <@spring.message "capo.business.card_title"/>
                 </h2>
 
                 <#if business??>
-                    <div class="info-label">Название предприятия:</div>
+                    <div class="info-label"><@spring.message "capo.business.name_label"/></div>
                     <div style="font-size: 1.3rem; color: var(--brass-gold); font-weight: bold; margin-bottom: 1.2rem; word-break: break-word;">
                         ${business.name}
                     </div>
 
-                    <div class="info-label">Тип рэкета / Отрасль:</div>
+                    <div class="info-label"><@spring.message "capo.business.type_label"/></div>
                     <div style="font-size: 1.1rem; color: var(--text-main); font-weight: bold; margin-bottom: 1.2rem; word-break: break-word;">
                         ${business.type}
                     </div>
 
-                    <div class="info-label">Средненедельный доход:</div>
+                    <div class="info-label"><@spring.message "capo.business.revenue_label"/></div>
                     <div style="font-size: 1.3rem; color: #81C784; font-family: var(--font-heading); font-weight: bold; margin-bottom: 1.2rem;">
                         $${business.weeklyRevenue?string[",##0.00"]}
                     </div>
 
                     <div style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.6; border-top: 1px solid rgba(197,160,89,0.2); padding-top: 1rem;">
-                        * По правилам Синдиката, ровно 80% от внесенной дани направляется в общак Семьи, а 20% остается на содержание ваших бойцов.
+                        <@spring.message "capo.business.rule_note"/>
                     </div>
                 <#else>
-                    <p style="color: #FF7777;">За вами не закреплено ни одно предприятие. Обратитесь к Дону.</p>
+                    <p style="color: #FF7777;"><@spring.message "capo.business.no_business"/></p>
                 </#if>
             </div>
 
             <!-- Правая колонка: Форма сдачи дани -->
             <div style="background: var(--bg-card); border: var(--border-gold); padding: 2rem; position: relative; box-shadow: var(--box-shadow-card);">
                 <h2 style="font-family: var(--font-heading); color: var(--brass-gold); font-size: 1.3rem; margin-bottom: 1.5rem; text-transform: uppercase;">
-                    💰 Внести дань в общак
+                    💰 <@spring.message "capo.business.tribute_title"/>
                 </h2>
 
                 <form action="/capo/tribute" method="POST" id="tributeForm">
                     <input type="hidden" name="${(_csrf.parameterName)!'_csrf'}" value="${(_csrf.token)!''}"/>
 
                     <div class="form-group">
-                        <label class="form-label" for="amount">Сумма взноса ($) *</label>
+                        <label class="form-label" for="amount"><@spring.message "capo.business.amount_label"/></label>
                         <input type="number"
                                step="0.01"
                                min="100.00"
@@ -69,21 +69,21 @@
                     <!-- Интерактивный предпросмотр долей (JS) -->
                     <div class="calculator-preview" style="background: #121212; border: 1px dashed rgba(197, 160, 89, 0.3); padding: 1rem; margin: 1.2rem 0; display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; text-align: center;">
                         <div>
-                            <div style="font-size: 0.72rem; text-transform: uppercase; color: var(--text-muted);">В казну (80%):</div>
+                            <div style="font-size: 0.72rem; text-transform: uppercase; color: var(--text-muted);"><@spring.message "capo.business.calc.treasury"/></div>
                             <div id="treasuryShare" style="font-family: var(--font-heading); font-size: 1.2rem; font-weight: bold; margin-top: 0.3rem; color: #81C784;">$0.00</div>
                         </div>
                         <div>
-                            <div style="font-size: 0.72rem; text-transform: uppercase; color: var(--text-muted);">Капо (20%):</div>
+                            <div style="font-size: 0.72rem; text-transform: uppercase; color: var(--text-muted);"><@spring.message "capo.business.calc.capo"/></div>
                             <div id="capoShare" style="font-family: var(--font-heading); font-size: 1.2rem; font-weight: bold; margin-top: 0.3rem; color: var(--brass-gold);">$0.00</div>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label" for="description">Комментарий к переводу</label>
-                        <textarea name="description" id="description" rows="3" class="form-textarea" placeholder="Укажите период или статьи расхода..." style="resize: vertical;"></textarea>
+                        <label class="form-label" for="description"><@spring.message "capo.business.desc_label"/></label>
+                        <textarea name="description" id="description" rows="3" class="form-textarea" placeholder="<@spring.message 'capo.tribute.desc_placeholder'/>" style="resize: vertical;"></textarea>
                     </div>
 
-                    <button type="submit" class="btn-submit">Передать конверт Дона</button>
+                    <button type="submit" class="btn-submit"><@spring.message "capo.business.submit"/></button>
                 </form>
             </div>
         </div>

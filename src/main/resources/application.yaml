@@ -41,5 +41,10 @@ spring:
     settings:
       number_format: "0.##"
 
+  messages:
+    basename: messages
+    encoding: UTF-8
+    fallback-to-system-locale: false
+
 server:
   port: 8080

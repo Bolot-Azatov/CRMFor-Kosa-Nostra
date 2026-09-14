@@ -1,13 +1,13 @@
 <#import "/spring.ftl" as spring/>
 <#import "../layout/layout.ftlh" as layout/>
 
-<@layout.page_layout title="Кабинет Дона | Cosa Nostra" activeTab="dashboard">
+<@layout.page_layout title="${springMacroRequestContext.getMessage('boss.dashboard.title')} | Cosa Nostra" activeTab="dashboard">
 
     <div class="page-header-bar">
         <div>
-            <h1 class="title-text">Ставка Дона</h1>
+            <h1 class="title-text"><@spring.message "boss.dashboard.title"/></h1>
             <p class="subtitle-text">
-                Семья ${(family.name)!'Cosa Nostra'} • Сводная оперативная сводка
+                <@spring.message "family.other.family_prefix"/> ${(family.name)!'Cosa Nostra'} • <@spring.message "boss.dashboard.subtitle"/>
             </p>
         </div>
     </div>
@@ -15,49 +15,49 @@
     <!-- Ключевые показатели семьи -->
     <div class="stats-grid">
         <div class="stat-card" style="border-color: var(--brass-gold);">
-            <div class="stat-label">Казначейство (Общак)</div>
+            <div class="stat-label"><@spring.message "boss.dashboard.treasury"/></div>
             <div class="stat-value">$${(family.treasuryBalance?string[",##0.00"])!'0.00'}</div>
-            <a href="/boss/treasury" style="font-size: 0.75rem;">Управление казной →</a>
+            <a href="/boss/treasury" style="font-size: 0.75rem;"><@spring.message "boss.dashboard.manage_treasury"/></a>
         </div>
         <div class="stat-card">
-            <div class="stat-label">Бойцов под присягой</div>
+            <div class="stat-label"><@spring.message "boss.dashboard.sworn_members"/></div>
             <div class="stat-value">${membersCount!0}</div>
-            <a href="/boss/members" style="font-size: 0.75rem;">Кадровый учет →</a>
+            <a href="/boss/members" style="font-size: 0.75rem;"><@spring.message "boss.dashboard.personnel_records"/></a>
         </div>
         <div class="stat-card">
-            <div class="stat-label">Контролируемый рэкет</div>
+            <div class="stat-label"><@spring.message "boss.dashboard.controlled_rackets"/></div>
             <div class="stat-value">${businessesCount!0}</div>
-            <a href="/boss/businesses" style="font-size: 0.75rem;">Предприятия →</a>
+            <a href="/boss/businesses" style="font-size: 0.75rem;"><@spring.message "boss.dashboard.businesses"/></a>
         </div>
     </div>
 
     <!-- Быстрая навигация Дона -->
     <div class="quick-nav-grid">
         <a href="/boss/members" class="quick-btn">
-            <h3>🎖 Личный состав</h3>
-            <p>Назначение Капо и Консильери</p>
+            <h3>🎖 <@spring.message "boss.dashboard.nav.members.title"/></h3>
+            <p><@spring.message "boss.dashboard.nav.members.desc"/></p>
         </a>
         <a href="/boss/businesses" class="quick-btn">
-            <h3>🏛 Предприятия</h3>
-            <p>Закрепление точек за Капо</p>
+            <h3>🏛 <@spring.message "boss.dashboard.nav.businesses.title"/></h3>
+            <p><@spring.message "boss.dashboard.nav.businesses.desc"/></p>
         </a>
         <a href="/boss/treasury" class="quick-btn">
-            <h3>💰 Инвестиции</h3>
-            <p>Списание средств из общака</p>
+            <h3>💰 <@spring.message "boss.dashboard.nav.treasury.title"/></h3>
+            <p><@spring.message "boss.dashboard.nav.treasury.desc"/></p>
         </a>
         <a href="/boss/diplomacy" class="quick-btn">
-            <h3>🕊 Дипломатия</h3>
-            <p>Отношения с 4 семьями</p>
+            <h3>🕊 <@spring.message "boss.dashboard.nav.diplomacy.title"/></h3>
+            <p><@spring.message "boss.dashboard.nav.diplomacy.desc"/></p>
         </a>
         <a href="/boss/messages" class="quick-btn">
-            <h3>✉ Тайная Почта</h3>
-            <p>Депеши и переписка Дона</p>
+            <h3>✉ <@spring.message "boss.dashboard.nav.messages.title"/></h3>
+            <p><@spring.message "boss.dashboard.nav.messages.desc"/></p>
         </a>
     </div>
 
     <!-- Последние транзакции общака -->
     <h2 style="font-family: var(--font-heading); color: var(--brass-gold); font-size: 1.3rem; margin-bottom: 1rem; text-transform: uppercase;">
-        📜 Последние операции казны
+        📜 <@spring.message "boss.dashboard.recent_operations"/>
     </h2>
 
     <#if recentLedger?? && recentLedger?has_content>
@@ -65,18 +65,18 @@
             <table class="speakeasy-table">
                 <thead>
                 <tr>
-                    <th>ID</th>
-                    <th>Инициатор</th>
-                    <th>Сумма</th>
-                    <th>Дата</th>
-                    <th>Назначение</th>
+                    <th><@spring.message "boss.treasury.table.id"/></th>
+                    <th><@spring.message "boss.treasury.table.initiator"/></th>
+                    <th><@spring.message "boss.treasury.table.amount"/></th>
+                    <th><@spring.message "boss.treasury.table.date"/></th>
+                    <th><@spring.message "boss.treasury.table.description"/></th>
                 </tr>
                 </thead>
                 <tbody>
                 <#list recentLedger as item>
                     <tr>
                         <td>#${item.id}</td>
-                        <td style="color: var(--brass-gold); font-weight: bold;">${(item.capo.username)!'Семья'}</td>
+                        <td style="color: var(--brass-gold); font-weight: bold;">${(item.capo.username)!springMacroRequestContext.getMessage('family.other.family_prefix')}</td>
                         <td>
                             <#if (item.amount >= 0)>
                                 <span class="amount-positive">+$${item.amount?string[",##0.00"]}</span>
@@ -92,7 +92,7 @@
             </table>
         </div>
     <#else>
-        <p style="color: var(--text-muted);">Транзакций пока нет.</p>
+        <p style="color: var(--text-muted);"><@spring.message "boss.dashboard.no_transactions"/></p>
     </#if>
 
 </@layout.page_layout>

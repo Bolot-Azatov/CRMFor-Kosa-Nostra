@@ -1271,3 +1271,41 @@ img {
     from { transform: scale(0.85); opacity: 0; }
     to { transform: scale(1); opacity: 1; }
 }
+
+/* --------------------------------------------------------------------------
+   ПЕРЕКЛЮЧАТЕЛЬ ЯЗЫКОВ (I18N LANGUAGE SWITCHER)
+   -------------------------------------------------------------------------- */
+.lang-switch {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-family: var(--font-heading);
+    font-size: 0.72rem;
+    letter-spacing: 1px;
+    padding: 0.25rem 0.55rem;
+    border: 1px solid rgba(197, 160, 89, 0.3);
+    background: rgba(18, 18, 18, 0.7);
+    border-radius: 2px;
+    user-select: none;
+}
+
+.lang-btn {
+    color: var(--text-muted);
+    font-weight: 700;
+    transition: all 0.2s ease;
+}
+
+.lang-btn:hover {
+    color: var(--brass-gold-hover);
+}
+
+.lang-btn.active {
+    color: var(--brass-gold);
+    text-shadow: 0 0 8px rgba(197, 160, 89, 0.5);
+    border-bottom: 1px solid var(--brass-gold);
+}
+
+.lang-divider {
+    color: rgba(197, 160, 89, 0.3);
+    font-size: 0.7rem;
+}

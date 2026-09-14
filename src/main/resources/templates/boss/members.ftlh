@@ -1,14 +1,14 @@
 <#import "/spring.ftl" as spring/>
 <#import "../layout/layout.ftlh" as layout/>
 
-<@layout.page_layout title="Кадровый Учет | Дон" activeTab="capos">
+<@layout.page_layout title="${springMacroRequestContext.getMessage('boss.members.title')} | ${springMacroRequestContext.getMessage('role.boss.badge')}" activeTab="capos">
 
     <div class="page-header-bar">
         <div>
-            <h1 class="title-text">Состав и Кадры Семьи</h1>
-            <p class="subtitle-text">Послужной список бойцов и присвоение званий</p>
+            <h1 class="title-text"><@spring.message "boss.members.title"/></h1>
+            <p class="subtitle-text"><@spring.message "boss.members.subtitle"/></p>
         </div>
-        <a href="/boss" style="font-family: var(--font-heading);">← В Кабинет Дона</a>
+        <a href="/boss" style="font-family: var(--font-heading);"><@spring.message "boss.back_to_hq"/></a>
     </div>
 
     <div class="boss-members-grid">
@@ -17,10 +17,10 @@
             <table class="speakeasy-table">
                 <thead>
                 <tr>
-                    <th>ID</th>
-                    <th>Псевдоним</th>
-                    <th>Ранг</th>
-                    <th>Действие</th>
+                    <th><@spring.message "boss.members.table.id"/></th>
+                    <th><@spring.message "boss.members.table.alias"/></th>
+                    <th><@spring.message "boss.members.table.rank"/></th>
+                    <th><@spring.message "boss.members.table.action"/></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -35,7 +35,7 @@
                         </td>
                         <td>
                             <button type="button" onclick="selectUserForRole(${m.id}, '${m.username}')" class="btn-action" style="padding: 0.25rem 0.6rem; font-size: 0.75rem;">
-                                Выбрать
+                                <@spring.message "boss.members.btn.select"/>
                             </button>
                         </td>
                     </tr>
@@ -47,13 +47,13 @@
         <!-- Форма смены роли -->
         <div style="background: var(--bg-card); border: var(--border-gold); padding: 1.8rem; height: fit-content; box-shadow: var(--box-shadow-card);">
             <h3 style="font-family: var(--font-heading); color: var(--brass-gold); font-size: 1.1rem; text-transform: uppercase; margin-bottom: 1.2rem;">
-                🎖 Присвоение звания
+                🎖 <@spring.message "boss.members.assign_rank.title"/>
             </h3>
             <form action="/boss/members/assign" method="POST">
                 <input type="hidden" name="${(_csrf.parameterName)!'_csrf'}" value="${(_csrf.token)!''}"/>
 
                 <div class="form-group">
-                    <label class="form-label">ID Бойца *</label>
+                    <label class="form-label"><@spring.message "boss.members.target_id"/></label>
                     <input type="number"
                            id="targetUserId"
                            name="userId"
@@ -67,16 +67,16 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label">Новое звание *</label>
+                    <label class="form-label"><@spring.message "boss.members.new_rank"/></label>
                     <select name="newRole" class="form-select" required>
-                        <option value="SOLDIER">Солдат (Soldier)</option>
-                        <option value="CAPO">Капореджиме (Capo)</option>
-                        <option value="CONSIGLIERE">Консильери (Consigliere - макс. 1)</option>
+                        <option value="SOLDIER"><@spring.message "role.soldier.title"/> (Soldier)</option>
+                        <option value="CAPO"><@spring.message "role.capo.title"/> (Capo)</option>
+                        <option value="CONSIGLIERE"><@spring.message "role.consigliere.title"/> (Consigliere)</option>
                     </select>
                 </div>
 
                 <button type="submit" class="btn-submit">
-                    Издать приказ
+                    <@spring.message "boss.members.btn.order"/>
                 </button>
             </form>
         </div>
