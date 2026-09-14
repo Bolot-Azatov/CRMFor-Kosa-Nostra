@@ -7,9 +7,10 @@ import java.util.Optional;
 
 public interface FamilyRepository extends JpaRepository<Family, Long> {
 
-
     @Override
     Optional<Family> findById(Long aLong);
 
     Optional<Family> getFamilyByName(String name);
+
+    Optional<Family> findByNameIgnoreCase(String name);
 }

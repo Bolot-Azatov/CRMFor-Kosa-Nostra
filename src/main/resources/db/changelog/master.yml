@@ -3,3 +3,7 @@ databaseChangeLog:
       file: db/changelog/changes/01-create-schema.sql
   - include:
       file: db/changelog/changes/02-insert-initial-data.sql
+  - include:
+      file: db/changelog/changes/03-add-i18n-data.sql
+  - include:
+      file: db/changelog/changes/04-enrich-data.sql

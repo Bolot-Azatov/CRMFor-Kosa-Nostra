@@ -2,6 +2,7 @@ package org.crmkosanostra.crmkosanostra.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.context.i18n.LocaleContextHolder;
 
 import java.math.BigDecimal;
 
@@ -24,6 +25,9 @@ public class Business {
     @Column(nullable = false, length = 100)
     private String type;
 
+    @Column(name = "type_ru", length = 100)
+    private String typeRu;
+
     @Column(name = "weekly_revenue", nullable = false, precision = 15, scale = 2)
     private BigDecimal weeklyRevenue;
 
@@ -34,4 +38,11 @@ public class Business {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "family_id", nullable = false)
     private Family family;
+
+    public String getType() {
+        if ("ru".equalsIgnoreCase(LocaleContextHolder.getLocale().getLanguage()) && typeRu != null && !typeRu.isBlank()) {
+            return typeRu;
+        }
+        return type;
+    }
 }

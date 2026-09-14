@@ -45,6 +45,7 @@ public class BossController {
     @GetMapping("/members")
     public String getMembers(@AuthenticationPrincipal CustomUserDetails userDetails, Model model) {
         User boss = bossService.getBossById(userDetails.getUserId());
+        model.addAttribute("boss", boss);
         model.addAttribute("members", bossService.getFamilyMembers(boss));
         if (!model.containsAttribute("assignRoleRequest")) {
             model.addAttribute("assignRoleRequest", new BossDto.AssignRoleRequest(null, null));
@@ -60,14 +61,14 @@ public class BossController {
             RedirectAttributes redirectAttributes) {
 
         if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("errorMessage", "Заполните все поля корректно");
+            redirectAttributes.addFlashAttribute("errorMessage", "flash.role.error");
             return "redirect:/boss/members";
         }
 
         try {
             User boss = bossService.getBossById(userDetails.getUserId());
             bossService.assignRole(boss, request);
-            redirectAttributes.addFlashAttribute("successMessage", "Ранг бойца успешно изменен");
+            redirectAttributes.addFlashAttribute("successMessage", "flash.role.assigned");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
         }
@@ -92,20 +93,21 @@ public class BossController {
             RedirectAttributes redirectAttributes) {
 
         if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("errorMessage", "Неверные параметры закрепления");
+            redirectAttributes.addFlashAttribute("errorMessage", "flash.business.error");
             return "redirect:/boss/businesses";
         }
 
         try {
             User boss = bossService.getBossById(userDetails.getUserId());
             bossService.assignBusinessToCapo(boss, request);
-            redirectAttributes.addFlashAttribute("successMessage", "Предприятие успешно закреплено за Капо!");
+            redirectAttributes.addFlashAttribute("successMessage", "flash.business.assigned");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
         }
 
         return "redirect:/boss/businesses";
     }
+
 
     // 4. Казначейство и Инвестиции
     @GetMapping({"/treasury", "/ledger"})
@@ -127,20 +129,21 @@ public class BossController {
             RedirectAttributes redirectAttributes) {
 
         if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("errorMessage", "Неверная сумма или описание инвестиции");
+            redirectAttributes.addFlashAttribute("errorMessage", "flash.invest.error");
             return "redirect:/boss/treasury";
         }
 
         try {
             User boss = bossService.getBossById(userDetails.getUserId());
             bossService.investFromTreasury(boss, request);
-            redirectAttributes.addFlashAttribute("successMessage", "Инвестиция успешно проведена!");
+            redirectAttributes.addFlashAttribute("successMessage", "flash.invest.success");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
         }
 
         return "redirect:/boss/treasury";
     }
+
 
     // 5. Дипломатия
     @GetMapping("/diplomacy")
@@ -153,12 +156,17 @@ public class BossController {
 
     @PostMapping("/diplomacy/declare-war")
     public String declareWar(@AuthenticationPrincipal CustomUserDetails userDetails,
-                             @ModelAttribute("diplomacyRequest") BossDto.DiplomacyRequest request,
+                             @Valid @ModelAttribute("diplomacyRequest") BossDto.DiplomacyRequest request,
+                             BindingResult bindingResult,
                              RedirectAttributes redirectAttributes) {
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Некорректный идентификатор целевой семьи");
+            return "redirect:/boss/diplomacy";
+        }
         try {
             User boss = bossService.getBossById(userDetails.getUserId());
             bossService.declareWar(boss, request);
-            redirectAttributes.addFlashAttribute("successMessage", "Война объявлена!");
+            redirectAttributes.addFlashAttribute("successMessage", "flash.war.declared");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
         }
@@ -167,12 +175,17 @@ public class BossController {
 
     @PostMapping("/diplomacy/propose-peace")
     public String proposePeace(@AuthenticationPrincipal CustomUserDetails userDetails,
-                               @ModelAttribute("diplomacyRequest") BossDto.DiplomacyRequest request,
+                               @Valid @ModelAttribute("diplomacyRequest") BossDto.DiplomacyRequest request,
+                               BindingResult bindingResult,
                                RedirectAttributes redirectAttributes) {
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Некорректный идентификатор целевой семьи");
+            return "redirect:/boss/diplomacy";
+        }
         try {
             User boss = bossService.getBossById(userDetails.getUserId());
             bossService.proposePeace(boss, request);
-            redirectAttributes.addFlashAttribute("successMessage", "Предложение о мире направлено");
+            redirectAttributes.addFlashAttribute("successMessage", "flash.peace.proposed");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
         }
@@ -181,12 +194,17 @@ public class BossController {
 
     @PostMapping("/diplomacy/accept-peace")
     public String acceptPeace(@AuthenticationPrincipal CustomUserDetails userDetails,
-                              @ModelAttribute("diplomacyRequest") BossDto.DiplomacyRequest request,
+                              @Valid @ModelAttribute("diplomacyRequest") BossDto.DiplomacyRequest request,
+                              BindingResult bindingResult,
                               RedirectAttributes redirectAttributes) {
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Некорректный идентификатор целевой семьи");
+            return "redirect:/boss/diplomacy";
+        }
         try {
             User boss = bossService.getBossById(userDetails.getUserId());
             bossService.acceptPeace(boss, request);
-            redirectAttributes.addFlashAttribute("successMessage", "Мирный договор подписан");
+            redirectAttributes.addFlashAttribute("successMessage", "flash.peace.accepted");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
         }
@@ -206,6 +224,9 @@ public class BossController {
     public String getMessageNewForm(@AuthenticationPrincipal CustomUserDetails userDetails, Model model) {
         User boss = bossService.getBossById(userDetails.getUserId());
         model.addAttribute("recipients", bossService.getAllowedRecipientsForBoss(boss));
+        if (!model.containsAttribute("messageRequest")) {
+            model.addAttribute("messageRequest", new BossDto.BossMessageRequest(null, "", ""));
+        }
         return "boss/message_new";
     }
 
@@ -217,16 +238,18 @@ public class BossController {
             RedirectAttributes redirectAttributes) {
 
         if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("errorMessage", "Заполните все поля депеши");
+            redirectAttributes.addFlashAttribute("errorMessage", "flash.message.error");
+            redirectAttributes.addFlashAttribute("messageRequest", request);
             return "redirect:/boss/messages/new";
         }
 
         try {
             User boss = bossService.getBossById(userDetails.getUserId());
             bossService.sendMessage(boss, request);
-            redirectAttributes.addFlashAttribute("successMessage", "Депеша опечатана сургучом и отправлена");
+            redirectAttributes.addFlashAttribute("successMessage", "flash.message.sent");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+            redirectAttributes.addFlashAttribute("messageRequest", request);
             return "redirect:/boss/messages/new";
         }
 

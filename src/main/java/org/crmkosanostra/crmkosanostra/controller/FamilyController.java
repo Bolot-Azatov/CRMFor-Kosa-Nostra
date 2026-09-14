@@ -21,6 +21,10 @@ public class FamilyController {
     public String getMyFamilyHierarchy(@AuthenticationPrincipal CustomUserDetails userDetails, Model model) {
         Long familyId = userDetails.getFamilyId();
 
+        if (familyId == null) {
+            return "redirect:/hierarchy";
+        }
+
         model.addAttribute("hierarchy", hierarchyService.getFamilyHierarchy(familyId));
         return "family/my-family";
     }
@@ -30,6 +34,4 @@ public class FamilyController {
         model.addAttribute("hierarchy", hierarchyService.getFamilyHierarchy(id));
         return "family/other-family";
     }
-
-
 }

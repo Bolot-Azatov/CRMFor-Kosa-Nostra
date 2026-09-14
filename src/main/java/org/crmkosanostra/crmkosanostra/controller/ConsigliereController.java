@@ -20,7 +20,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/consigliere")
-@PreAuthorize("hasAnyRole('CONSIGLIERE', 'BOSS')")
+@PreAuthorize("hasRole('CONSIGLIERE')")
 @RequiredArgsConstructor
 public class ConsigliereController {
 
@@ -58,15 +58,17 @@ public class ConsigliereController {
             RedirectAttributes redirectAttributes) {
 
         if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("errorMessage", "Заполните тему и текст донесения");
+            redirectAttributes.addFlashAttribute("errorMessage", "flash.consigliere.message.error");
+            redirectAttributes.addFlashAttribute("messageRequest", request);
             return "redirect:/consigliere/messages/new";
         }
 
         try {
             consigliereService.sendMessageToBoss(userDetails.getUserId(), userDetails.getFamilyId(), request);
-            redirectAttributes.addFlashAttribute("successMessage", "Зашифрованное послание передано Дону.");
+            redirectAttributes.addFlashAttribute("successMessage", "flash.consigliere.message.sent");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+            redirectAttributes.addFlashAttribute("messageRequest", request);
             return "redirect:/consigliere/messages/new";
         }
 

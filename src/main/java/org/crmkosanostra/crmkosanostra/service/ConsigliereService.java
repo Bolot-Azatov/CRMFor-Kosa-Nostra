@@ -6,6 +6,8 @@ import org.crmkosanostra.crmkosanostra.dto.request.MessageRequest;
 import org.crmkosanostra.crmkosanostra.entity.Message;
 import org.crmkosanostra.crmkosanostra.entity.Role;
 import org.crmkosanostra.crmkosanostra.entity.User;
+import org.crmkosanostra.crmkosanostra.exception.exceptions.BusinessLogicException;
+import org.crmkosanostra.crmkosanostra.exception.exceptions.ResourceNotFoundException;
 import org.crmkosanostra.crmkosanostra.repository.FinancialLedgerRepository;
 import org.crmkosanostra.crmkosanostra.repository.MessageRepository;
 import org.crmkosanostra.crmkosanostra.repository.UserRepository;
@@ -39,10 +41,18 @@ public class ConsigliereService {
     @Transactional
     public void sendMessageToBoss(Long senderId, Long familyId, MessageRequest request) {
         User sender = userRepository.findById(senderId)
-                .orElseThrow(() -> new IllegalArgumentException("Отправитель не найден"));
+                .orElseThrow(() -> new ResourceNotFoundException("Отправитель не найден"));
+
+        if (sender.getRole() != Role.CONSIGLIERE) {
+            throw new BusinessLogicException("error.consigliere.only");
+        }
 
         User boss = userRepository.findByFamilyIdAndRole(familyId, Role.BOSS)
                 .orElseThrow(() -> new IllegalStateException("В вашей семье еще не назначен Босс"));
+
+        if (sender.getId().equals(boss.getId())) {
+            throw new BusinessLogicException("error.consigliere.self");
+        }
 
         Message message = new Message();
         message.setSender(sender);

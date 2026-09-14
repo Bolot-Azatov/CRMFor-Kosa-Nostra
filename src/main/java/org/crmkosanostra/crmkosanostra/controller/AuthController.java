@@ -9,6 +9,8 @@ import org.crmkosanostra.crmkosanostra.dto.response.UserResponse;
 import org.crmkosanostra.crmkosanostra.security.CustomUserDetails;
 import org.crmkosanostra.crmkosanostra.security.CustomUserDetailsService;
 import org.crmkosanostra.crmkosanostra.service.AuthService;
+import org.crmkosanostra.crmkosanostra.service.FamilyService;
+import org.crmkosanostra.crmkosanostra.service.UserService;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -30,6 +32,8 @@ public class AuthController {
 
     private final AuthService authService;
     private final CustomUserDetailsService userDetailsService;
+    private final UserService userService;
+    private final FamilyService familyService;
 
     @GetMapping("/login")
     public String loginPage(
@@ -54,25 +58,37 @@ public class AuthController {
 
     @GetMapping("/register")
     public String register(Model model) {
-        model.addAttribute("registerRequest", new RegisterRequest());
+        if (!model.containsAttribute("registerRequest")) {
+            model.addAttribute("registerRequest", new RegisterRequest());
+        }
+        model.addAttribute("families", familyService.getAllFamilies());
         return "auth/register";
     }
 
     @PostMapping("/register")
-    public String register( @Valid @ModelAttribute("registerRequest") RegisterRequest registerDto,
+    public String register(@Valid @ModelAttribute("registerRequest") RegisterRequest registerDto,
                            BindingResult bindingResult,
                            Model model,
                            HttpServletRequest request) {
 
-        if(bindingResult.hasErrors()) {
+        if (userService.isUserExistsByUsername(registerDto.getUsername())) {
+            bindingResult.rejectValue("username", "validation.username.exists");
+        }
+
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("families", familyService.getAllFamilies());
             return "auth/register";
         }
 
-        UserResponse user = authService.register(registerDto);
-
-        authenticateUser(registerDto.getUsername(), request);
-
-        return "redirect:/profile/" + user.getId();
+        try {
+            UserResponse user = authService.register(registerDto);
+            authenticateUser(registerDto.getUsername(), request);
+            return "redirect:/profile/" + user.getId();
+        } catch (Exception e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            model.addAttribute("families", familyService.getAllFamilies());
+            return "auth/register";
+        }
     }
 
     @GetMapping("/403")

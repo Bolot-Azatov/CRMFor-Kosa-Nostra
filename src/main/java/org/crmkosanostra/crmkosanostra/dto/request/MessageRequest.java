@@ -7,10 +7,10 @@ import lombok.Data;
 @Data
 public class MessageRequest {
 
-    @NotBlank(message = "Тема сообщения не может быть пустой")
-    @Size(max = 255, message = "Тема слишком длинная")
+    @NotBlank(message = "{validation.message.subject.notblank}")
+    @Size(max = 255, message = "{validation.message.subject.size}")
     private String subject;
 
-    @NotBlank(message = "Текст сообщения не может быть пустым")
+    @NotBlank(message = "{validation.message.body.notblank}")
     private String body;
 }

@@ -63,4 +63,17 @@ class BossServiceTest {
 
         assertThrows(BusinessLogicException.class, () -> bossService.sendMessage(boss, request));
     }
+
+    @Test
+    @DisplayName("Ошибка при попытке Босса изменить роль самому себе")
+    void assignRole_ShouldThrowException_WhenTargetIsBossHimself() {
+        Family family = Family.builder().id(1L).build();
+        User boss = User.builder().id(1L).role(Role.BOSS).family(family).build();
+
+        when(userRepository.findById(1L)).thenReturn(Optional.of(boss));
+
+        BossDto.AssignRoleRequest request = new BossDto.AssignRoleRequest(1L, Role.SOLDIER);
+
+        assertThrows(BusinessLogicException.class, () -> bossService.assignRole(boss, request));
+    }
 }
