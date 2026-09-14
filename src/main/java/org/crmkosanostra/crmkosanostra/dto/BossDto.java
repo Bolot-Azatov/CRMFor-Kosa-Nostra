@@ -11,20 +11,20 @@ import java.math.BigDecimal;
 public class BossDto {
 
     public record AssignRoleRequest(
-            @NotNull(message = "ID бойца обязателен")
-            @Positive(message = "ID бойца должен быть больше нуля")
+            @NotNull(message = "{validation.role.userid.notnull}")
+            @Positive(message = "{validation.role.userid.positive}")
             Long userId,
 
-            @NotNull(message = "Укажите роль")
+            @NotNull(message = "{validation.role.newrole.notnull}")
             Role newRole
     ) {}
 
     public record InvestRequest(
-            @NotNull(message = "Укажите сумму")
-            @DecimalMin(value = "0.01", message = "Сумма инвестиции должна быть строго больше нуля")
+            @NotNull(message = "{validation.invest.amount.notnull}")
+            @DecimalMin(value = "0.01", message = "{validation.invest.amount.min}")
             BigDecimal amount,
 
-            @NotBlank(message = "Укажите назначение средств")
+            @NotBlank(message = "{validation.invest.desc.notblank}")
             String description
     ) {}
 
@@ -39,8 +39,8 @@ public class BossDto {
             @Positive(message = "ID получателя должен быть больше нуля")
             Long recipientId,
 
-            @NotBlank(message = "Subject is required") String subject,
-            @NotBlank(message = "Body is required") String body
+            @NotBlank(message = "{validation.message.subject.notblank}") String subject,
+            @NotBlank(message = "{validation.message.body.notblank}") String body
     ) {}
 
     public record AssignBusinessRequest(

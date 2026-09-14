@@ -58,7 +58,7 @@ public class CapoController {
 
         try {
             capoService.payTribute(userDetails.getUserId(), userDetails.getFamilyId(), request);
-            redirectAttributes.addFlashAttribute("successMessage", "Взнос успешно зачислен в общак семьи!");
+            redirectAttributes.addFlashAttribute("successMessage", "flash.tribute.success");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
         }

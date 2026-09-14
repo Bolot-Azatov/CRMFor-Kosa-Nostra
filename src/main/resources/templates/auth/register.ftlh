@@ -1,4 +1,5 @@
 <#import "/spring.ftl" as spring/>
+<#assign bioPlaceholder = springMacroRequestContext.getMessage('auth.register.bio.placeholder')>
 <!DOCTYPE html>
 <html lang="${springMacroRequestContext.locale.language!'ru'}">
 <head>
@@ -64,7 +65,7 @@
 
         <div class="form-group">
             <label for="bio" class="form-label"><@spring.message "auth.register.bio"/></label>
-            <@spring.formTextarea "registerRequest.bio" 'id="bio" class="form-textarea" placeholder="${springMacroRequestContext.getMessage(\"auth.register.bio.placeholder\")}" maxlength="2500" required style="min-height: 90px; resize: vertical;"' />
+            <@spring.formTextarea "registerRequest.bio" 'id="bio" class="form-textarea" placeholder="' + bioPlaceholder + '" maxlength="2500" required style="min-height: 90px; resize: vertical;"' />
             <span class="field-error"><@spring.showErrors "<br>"/></span>
         </div>
 

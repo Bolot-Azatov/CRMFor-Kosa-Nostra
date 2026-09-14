@@ -9,8 +9,8 @@ import java.math.BigDecimal;
 @Data
 public class TributeRequest {
 
-    @NotNull(message = "Укажите сумму взноса")
-    @DecimalMin(value = "100.00", message = "Минимальный взнос — $100.00")
+    @NotNull(message = "{validation.tribute.amount.notnull}")
+    @DecimalMin(value = "100.00", message = "{validation.tribute.amount.min}")
     private BigDecimal amount;
 
     private String description;

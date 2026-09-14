@@ -71,6 +71,14 @@ public class GlobalExceptionHandler {
         return "errors/error";
     }
 
+    @ExceptionHandler(org.springframework.web.servlet.resource.NoResourceFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public String handleNoResourceFound(org.springframework.web.servlet.resource.NoResourceFoundException ex, HttpServletRequest request, Model model) {
+        log.debug("Resource not found: {}", request.getRequestURI());
+        populateErrorModel(model, HttpStatus.NOT_FOUND.value(), "404", ex.getMessage(), request.getRequestURI());
+        return "errors/404";
+    }
+
     private void populateErrorModel(Model model, int status, String title, String message, String path) {
         model.addAttribute("status", status);
         model.addAttribute("errorTitle", title);

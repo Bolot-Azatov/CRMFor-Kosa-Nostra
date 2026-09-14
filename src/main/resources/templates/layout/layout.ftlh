@@ -178,14 +178,14 @@
         <#if errorMessage??>
             <div class="alert-box">
                 <div class="alert-title">⛔ <@spring.message "alert.omerta.violation"/></div>
-                <p>${errorMessage}</p>
+                <p><@spring.messageText errorMessage, errorMessage/></p>
             </div>
         </#if>
 
         <#if successMessage??>
             <div class="alert-box alert-success">
                 <div class="alert-title" style="color: #81C784;">🗡️ <@spring.message "alert.case.closed"/></div>
-                <p>${successMessage}</p>
+                <p><@spring.messageText successMessage, successMessage/></p>
             </div>
         </#if>
 
