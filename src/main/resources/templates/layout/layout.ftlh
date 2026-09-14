@@ -4,15 +4,20 @@
     <!DOCTYPE html>
     <html lang="ru">
     <head>
-        <link rel="icon" href="data:,">
         <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
         <title>${title}</title>
 
-        <!-- Шрифт Cinzel для золотых заголовков и Courier Prime для эффекта печатной машинки -->
+        <!-- Тематический фавикон: золотые весы на темно-бордовой сургучной печати -->
+        <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%233D0C02' stroke='%23C5A059' stroke-width='1.5'/%3E%3Ctext x='50%25' y='55%25' font-size='18' dominant-baseline='middle' text-anchor='middle'%3E%E2%9A%96%3C/text%3E%3C/svg%3E">
+
+        <!-- Шрифты Cinzel и Courier Prime -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800;900&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+
+        <!-- Единый мастер-стиль -->
+        <link rel="stylesheet" href="/css/style.css">
 
         <!-- Определение контекста пользователя и ролей Spring Security -->
         <#global known = SPRING_SECURITY_CONTEXT??>
@@ -41,7 +46,6 @@
                 </#if>
             </#list>
 
-            <!-- Назначение бэйджа и ранга -->
             <#if isBoss>
                 <#assign roleBadge = "DON">
                 <#assign roleTitle = "Capo di Tutti Capi">
@@ -59,256 +63,10 @@
                 <#assign roleTitle = "Associate">
             </#if>
         </#if>
-
-        <style>
-            :root {
-                --bg-charcoal: #121212;
-                --bg-card: #1A1A1A;
-                --burgundy-dark: #3D0C02;
-                --burgundy-light: #6B1310;
-                --brass-gold: #C5A059;
-                --brass-gold-hover: #E5C17C;
-                --text-main: #E5E5E5;
-                --text-muted: #9E9E9E;
-                --border-gold: 1px solid rgba(197, 160, 89, 0.3);
-                --border-burgundy: 1px solid rgba(107, 19, 16, 0.6);
-            }
-
-            * {
-                box-sizing: border-box;
-                margin: 0;
-                padding: 0;
-            }
-
-            body {
-                background-color: var(--bg-charcoal);
-                color: var(--text-main);
-                font-family: 'Courier Prime', monospace;
-                min-height: 100vh;
-                display: flex;
-                flex-direction: column;
-            }
-
-            /* --- Speakeasy Header & Navbar --- */
-            .speakeasy-navbar {
-                width: 100%;
-                background: linear-gradient(180deg, #1C1C1C 0%, #121212 100%);
-                border-bottom: 2px solid var(--brass-gold);
-                box-shadow: 0 6px 25px rgba(0, 0, 0, 0.9);
-                position: sticky;
-                top: 0;
-                z-index: 1000;
-                padding: 0.7rem 2rem 0.5rem 2rem;
-                overflow: visible;
-            }
-
-            .navbar-top {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                padding-bottom: 0.6rem;
-                border-bottom: 1px solid rgba(197, 160, 89, 0.2);
-            }
-
-            .brand-logo {
-                font-family: 'Cinzel', serif;
-                font-size: 1.45rem;
-                font-weight: 900;
-                color: var(--brass-gold);
-                text-decoration: none;
-                letter-spacing: 2px;
-                text-transform: uppercase;
-                display: flex;
-                align-items: center;
-                gap: 10px;
-                text-shadow: 0 0 10px rgba(197, 160, 89, 0.3);
-                flex-shrink: 0;
-            }
-
-            .brand-logo::before {
-                content: '⚖';
-                font-size: 1.25rem;
-            }
-
-            .navbar-menu {
-                width: 100%;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                padding-top: 0.5rem;
-                overflow: visible;
-            }
-
-            .nav-links {
-                display: flex;
-                list-style: none;
-                gap: 0.8rem;
-                align-items: center;
-                margin: 0;
-                padding: 0;
-                flex-wrap: nowrap;
-            }
-
-            .nav-link {
-                font-family: 'Cinzel', serif;
-                font-size: 0.82rem;
-                color: var(--text-muted);
-                text-decoration: none;
-                text-transform: uppercase;
-                letter-spacing: 1px;
-                padding: 0.4rem 0.7rem;
-                transition: all 0.25s ease;
-                white-space: nowrap;
-                border-bottom: 2px solid transparent;
-            }
-
-            .nav-link:hover {
-                color: var(--brass-gold);
-                text-shadow: 0 0 8px rgba(197, 160, 89, 0.4);
-            }
-
-            .nav-link.active {
-                color: var(--brass-gold);
-                border-bottom: 2px solid var(--brass-gold);
-                text-shadow: 0 0 8px rgba(197, 160, 89, 0.4);
-            }
-
-            .user-status {
-                display: flex;
-                align-items: center;
-                gap: 1.2rem;
-                font-size: 0.85rem;
-                flex-shrink: 0;
-            }
-
-            .user-profile-link {
-                text-decoration: none;
-                display: flex;
-                align-items: center;
-                gap: 10px;
-                transition: opacity 0.2s;
-            }
-
-            .user-profile-link:hover {
-                opacity: 0.85;
-            }
-
-            .avatar-frame {
-                width: 36px;
-                height: 36px;
-                border-radius: 50%;
-                border: 1px solid var(--brass-gold);
-                background: var(--burgundy-dark);
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-family: 'Cinzel', serif;
-                color: var(--brass-gold);
-                font-size: 0.8rem;
-                font-weight: bold;
-                overflow: hidden;
-            }
-
-            .logout-form {
-                margin: 0;
-                padding: 0;
-                display: flex;
-                align-items: center;
-            }
-
-            .logout-btn {
-                background: transparent;
-                border: var(--border-burgundy);
-                color: var(--text-muted);
-                font-family: 'Cinzel', serif;
-                font-size: 0.75rem;
-                padding: 0.35rem 0.75rem;
-                cursor: pointer;
-                transition: all 0.3s ease;
-                text-transform: uppercase;
-                letter-spacing: 1px;
-                display: flex;
-                align-items: center;
-                gap: 5px;
-            }
-
-            .logout-btn:hover {
-                background-color: var(--burgundy-dark);
-                color: #FF8A80;
-                border-color: #FF5252;
-                box-shadow: 0 0 10px rgba(107, 19, 16, 0.8);
-            }
-
-            .btn-auth-link {
-                font-family: 'Cinzel', serif;
-                font-size: 0.8rem;
-                color: var(--brass-gold);
-                text-decoration: none;
-                border: var(--border-gold);
-                padding: 0.4rem 0.8rem;
-                text-transform: uppercase;
-                letter-spacing: 1px;
-                transition: all 0.2s ease;
-            }
-
-            .btn-auth-link:hover {
-                background: rgba(197, 160, 89, 0.1);
-                color: var(--brass-gold-hover);
-            }
-
-            /* --- Main Content --- */
-            .main-container {
-                flex: 1;
-                max-width: 1250px;
-                width: 100%;
-                margin: 2rem auto;
-                padding: 0 1.5rem;
-            }
-
-            .alert-box {
-                background-color: var(--burgundy-dark);
-                border: var(--border-gold);
-                border-left: 5px solid var(--burgundy-light);
-                color: #FFD2D2;
-                padding: 1rem 1.2rem;
-                margin-bottom: 1.5rem;
-                border-radius: 2px;
-                box-shadow: 0 4px 15px rgba(61, 12, 2, 0.5);
-                font-size: 0.9rem;
-            }
-
-            .alert-title {
-                font-family: 'Cinzel', serif;
-                color: var(--brass-gold);
-                font-weight: bold;
-                margin-bottom: 0.5rem;
-                text-transform: uppercase;
-                letter-spacing: 1px;
-                display: flex;
-                align-items: center;
-                gap: 8px;
-            }
-
-            .alert-box ul {
-                list-style-type: square;
-                margin-left: 1.5rem;
-            }
-
-            .alert-box li {
-                margin-bottom: 0.2rem;
-            }
-
-            .alert-success {
-                background-color: #0E241B;
-                border-left-color: #1B5E20;
-                color: #D4EDDA;
-            }
-        </style>
     </head>
     <body>
 
     <header class="speakeasy-navbar">
-        <!-- Верхняя линия: Логотип слева, Профиль и Выход справа -->
         <div class="navbar-top">
             <a href="/" class="brand-logo">Cosa Nostra</a>
 
@@ -317,7 +75,7 @@
                     <a href="/profile" class="user-profile-link" title="Личное досье">
                         <div class="avatar-frame">${roleBadge!"MBR"}</div>
                         <div>
-                            <div style="color: var(--brass-gold); font-family: 'Cinzel', serif; font-weight: bold; font-size: 0.85rem;">
+                            <div style="color: var(--brass-gold); font-family: var(--font-heading); font-weight: bold; font-size: 0.85rem;">
                                 ${username!"Неизвестный"}
                             </div>
                             <div style="color: var(--text-muted); font-size: 0.68rem; text-transform: uppercase;">
@@ -341,7 +99,6 @@
             </div>
         </div>
 
-        <!-- Нижняя линия: Все 9 вкладок без скроллбаров -->
         <nav class="navbar-menu">
             <ul class="nav-links">
                 <li>
@@ -356,7 +113,6 @@
                         <a href="/hierarchy" class="nav-link <#if activeTab == 'family'>active</#if>">Иерархия 5 Семей</a>
                     </li>
 
-                <#-- Капо -->
                     <#if isCapo>
                         <li>
                             <a href="/capo/business" class="nav-link <#if activeTab == 'racket' || activeTab == 'business'>active</#if>">Мой Рэкет</a>
@@ -366,7 +122,6 @@
                         </li>
                     </#if>
 
-                <#-- Консильери -->
                     <#if isConsigliere>
                         <li>
                             <a href="/consigliere/ledger" class="nav-link <#if activeTab == 'ledger'>active</#if>">Книга Доходов</a>
@@ -376,7 +131,6 @@
                         </li>
                     </#if>
 
-                <#-- Дон (Босс) -->
                     <#if isBoss>
                         <li>
                             <a href="/boss/dashboard" class="nav-link <#if activeTab == 'dashboard'>active</#if>">Штаб Дона</a>
@@ -404,7 +158,6 @@
 
     <main class="main-container">
 
-        <!-- Ошибки валидации Spring -->
         <#if spring.status?? && spring.status.errorMessages?has_content>
             <div class="alert-box">
                 <div class="alert-title">⚠️ Ошибки при заполнении протокола:</div>
@@ -416,7 +169,6 @@
             </div>
         </#if>
 
-        <!-- Flash-уведомления контроллеров -->
         <#if errorMessage??>
             <div class="alert-box">
                 <div class="alert-title">⛔ Нарушение омерты:</div>
