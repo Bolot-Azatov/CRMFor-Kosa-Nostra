@@ -79,6 +79,11 @@ public class GlobalExceptionHandler {
         return "errors/404";
     }
 
+    @ExceptionHandler(org.springframework.security.access.AccessDeniedException.class)
+    public void handleAccessDenied(org.springframework.security.access.AccessDeniedException ex) {
+        throw ex;
+    }
+
     private void populateErrorModel(Model model, int status, String title, String message, String path) {
         model.addAttribute("status", status);
         model.addAttribute("errorTitle", title);
