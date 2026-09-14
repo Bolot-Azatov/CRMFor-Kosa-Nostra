@@ -27,7 +27,15 @@
 
             <div style="margin-bottom: 1rem;">
                 <label style="display:block; font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; margin-bottom: 0.3rem;">Сумма ($) *</label>
-                <input type="number" step="0.01" min="0.01" name="amount" style="width: 100%; padding: 0.7rem; background: #121212; border: var(--border-gold); color: var(--text-main);" required />
+                <input type="number"
+                       step="0.01"
+                       min="0.01"
+                       name="amount"
+                       onkeydown="if(event.key === '-' || event.key === '+' || event.key === 'e' || event.key === 'E') event.preventDefault();"
+                       oninput="if(this.value !== '' && this.value <= 0) this.value = Math.abs(this.value) || 0.01;"
+                       placeholder="100.00"
+                       style="width: 100%; padding: 0.7rem; background: #121212; border: var(--border-gold); color: var(--text-main);"
+                       required />
             </div>
 
             <div style="margin-bottom: 1.5rem;">

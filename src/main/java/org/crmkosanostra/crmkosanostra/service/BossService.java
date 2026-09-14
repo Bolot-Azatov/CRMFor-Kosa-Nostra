@@ -10,6 +10,7 @@ import org.crmkosanostra.crmkosanostra.repository.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -39,6 +40,11 @@ public class BossService {
     // --- 1. Управление кадрами ---
     @Transactional
     public void assignRole(User boss, BossDto.AssignRoleRequest request) {
+
+        if (request.userId() == null || request.userId() <= 0) {
+            throw new BusinessLogicException("ID бойца должен быть положительным числом больше нуля");
+        }
+
         User targetUser = userRepository.findById(request.userId())
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
@@ -86,6 +92,11 @@ public class BossService {
     // --- 3. Инвестиции из общака ---
     @Transactional
     public Family investFromTreasury(User boss, BossDto.InvestRequest request) {
+
+        if (request.amount() == null || request.amount().compareTo(BigDecimal.ZERO) <= 0) {
+            throw new BusinessLogicException("Сумма инвестиции должна быть строго больше нуля");
+        }
+
         Family family = boss.getFamily();
 
         if (family.getTreasuryBalance().compareTo(request.amount()) < 0) {
