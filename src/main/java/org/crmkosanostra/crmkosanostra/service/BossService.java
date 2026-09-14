@@ -226,8 +226,7 @@ public class BossService {
                 && boss.getFamily() != null
                 && recipient.getFamily().getId().equals(boss.getFamily().getId());
 
-        boolean isAllowedSubordinate = isOwnFamilyMember &&
-                (recipient.getRole() == Role.CAPO || recipient.getRole() == Role.CONSIGLIERE);
+        boolean isAllowedSubordinate = isOwnFamilyMember && recipient.getRole() == Role.CONSIGLIERE;
         boolean isOtherFamilyBoss = !isOwnFamilyMember && recipient.getRole() == Role.BOSS;
 
         if (!isAllowedSubordinate && !isOtherFamilyBoss) {
@@ -299,9 +298,9 @@ public class BossService {
     public List<User> getAllowedRecipientsForBoss(User boss) {
         Long bossFamilyId = boss.getFamily().getId();
 
-        // 1. Капо и Консильери своей семьи
+        // 1. Консильери своей семьи
         List<User> ownSubordinates = userRepository.findByFamilyId(bossFamilyId).stream()
-                .filter(u -> u.getRole() == Role.CAPO || u.getRole() == Role.CONSIGLIERE)
+                .filter(u -> u.getRole() == Role.CONSIGLIERE)
                 .toList();
 
         // 2. Боссы других семей
