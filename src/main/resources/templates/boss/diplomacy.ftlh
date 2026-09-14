@@ -47,7 +47,7 @@
                     <td>
                         <div style="display: flex; gap: 0.6rem; align-items: center; flex-wrap: wrap;">
                             <#if rel.status != 'WAR'>
-                                <form action="/boss/diplomacy/declare-war" method="POST" onsubmit="return confirm('${confirmWarMsg} ${otherFamily.name}?');" style="margin: 0;">
+                                <form action="/boss/diplomacy/declare-war" method="POST" onsubmit="return confirm('${confirmWarMsg?js_string} ${(otherFamily.name)?js_string}?');" style="margin: 0;">
                                     <input type="hidden" name="${(_csrf.parameterName)!'_csrf'}" value="${(_csrf.token)!''}"/>
                                     <input type="hidden" name="targetFamilyId" value="${otherFamily.id}"/>
                                     <button type="submit" style="background: #6B1310; border: 1px solid #FF5555; color: #FFF; padding: 0.4rem 0.8rem; font-family: var(--font-heading); cursor: pointer; text-transform: uppercase; font-size: 0.75rem;">

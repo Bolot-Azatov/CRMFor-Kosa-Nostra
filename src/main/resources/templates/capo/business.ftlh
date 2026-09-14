@@ -48,43 +48,51 @@
                     💰 <@spring.message "capo.business.tribute_title"/>
                 </h2>
 
-                <form action="/capo/tribute" method="POST" id="tributeForm">
-                    <input type="hidden" name="${(_csrf.parameterName)!'_csrf'}" value="${(_csrf.token)!''}"/>
+                <#if business??>
+                    <form action="/capo/tribute" method="POST" id="tributeForm">
+                        <input type="hidden" name="${(_csrf.parameterName)!'_csrf'}" value="${(_csrf.token)!''}"/>
+                        <input type="hidden" name="source" value="business"/>
 
-                    <div class="form-group">
-                        <label class="form-label" for="amount"><@spring.message "capo.business.amount_label"/></label>
-                        <input type="number"
-                               step="0.01"
-                               min="100.00"
-                               name="amount"
-                               id="amount"
-                               class="form-input"
-                               placeholder="5000.00"
-                               onkeydown="if(event.key === '-' || event.key === '+' || event.key === 'e' || event.key === 'E') event.preventDefault();"
-                               oninput="if(this.value !== '' && this.value < 0) this.value = Math.abs(this.value);"
-                               required
-                               autofocus />
-                    </div>
-
-                    <!-- Интерактивный предпросмотр долей (JS) -->
-                    <div class="calculator-preview" style="background: #121212; border: 1px dashed rgba(197, 160, 89, 0.3); padding: 1rem; margin: 1.2rem 0; display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; text-align: center;">
-                        <div>
-                            <div style="font-size: 0.72rem; text-transform: uppercase; color: var(--text-muted);"><@spring.message "capo.business.calc.treasury"/></div>
-                            <div id="treasuryShare" style="font-family: var(--font-heading); font-size: 1.2rem; font-weight: bold; margin-top: 0.3rem; color: #81C784;">$0.00</div>
+                        <div class="form-group">
+                            <label class="form-label" for="amount"><@spring.message "capo.business.amount_label"/></label>
+                            <input type="number"
+                                   step="0.01"
+                                   min="100.00"
+                                   name="amount"
+                                   id="amount"
+                                   class="form-input"
+                                   placeholder="5000.00"
+                                   value="${(tributeRequest.amount)!''}"
+                                   onkeydown="if(event.key === '-' || event.key === '+' || event.key === 'e' || event.key === 'E') event.preventDefault();"
+                                   oninput="if(this.value !== '' && this.value < 0) this.value = Math.abs(this.value);"
+                                   required
+                                   autofocus />
                         </div>
-                        <div>
-                            <div style="font-size: 0.72rem; text-transform: uppercase; color: var(--text-muted);"><@spring.message "capo.business.calc.capo"/></div>
-                            <div id="capoShare" style="font-family: var(--font-heading); font-size: 1.2rem; font-weight: bold; margin-top: 0.3rem; color: var(--brass-gold);">$0.00</div>
+
+                        <!-- Интерактивный предпросмотр долей (JS) -->
+                        <div class="calculator-preview" style="background: #121212; border: 1px dashed rgba(197, 160, 89, 0.3); padding: 1rem; margin: 1.2rem 0; display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; text-align: center;">
+                            <div>
+                                <div style="font-size: 0.72rem; text-transform: uppercase; color: var(--text-muted);"><@spring.message "capo.business.calc.treasury"/></div>
+                                <div id="treasuryShare" style="font-family: var(--font-heading); font-size: 1.2rem; font-weight: bold; margin-top: 0.3rem; color: #81C784;">$0.00</div>
+                            </div>
+                            <div>
+                                <div style="font-size: 0.72rem; text-transform: uppercase; color: var(--text-muted);"><@spring.message "capo.business.calc.capo"/></div>
+                                <div id="capoShare" style="font-family: var(--font-heading); font-size: 1.2rem; font-weight: bold; margin-top: 0.3rem; color: var(--brass-gold);">$0.00</div>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="form-group">
-                        <label class="form-label" for="description"><@spring.message "capo.business.desc_label"/></label>
-                        <textarea name="description" id="description" rows="3" class="form-textarea" placeholder="<@spring.message 'capo.tribute.desc_placeholder'/>" style="resize: vertical;"></textarea>
-                    </div>
+                        <div class="form-group">
+                            <label class="form-label" for="description"><@spring.message "capo.business.desc_label"/></label>
+                            <textarea name="description" id="description" rows="3" class="form-textarea" placeholder="<@spring.message 'capo.tribute.desc_placeholder'/>" style="resize: vertical;">${(tributeRequest.description)!''}</textarea>
+                        </div>
 
-                    <button type="submit" class="btn-submit"><@spring.message "capo.business.submit"/></button>
-                </form>
+                        <button type="submit" class="btn-submit"><@spring.message "capo.business.submit"/></button>
+                    </form>
+                <#else>
+                    <div style="background: #121212; border: 1px solid rgba(255,119,119,0.3); padding: 1.5rem; text-align: center; color: var(--text-muted);">
+                        <p style="color: #FF7777; margin-bottom: 0.5rem;">⛔ <@spring.message "capo.business.tribute_locked"/></p>
+                    </div>
+                </#if>
             </div>
         </div>
     </div>
@@ -94,9 +102,11 @@
             const amountInput = document.getElementById('amount');
             const treasuryShareEl = document.getElementById('treasuryShare');
             const capoShareEl = document.getElementById('capoShare');
+            const tributeForm = document.getElementById('tributeForm');
 
-            amountInput.addEventListener('input', function(event) {
-                const rawValue = parseFloat(event.target.value);
+            function updateShares() {
+                if (!amountInput) return;
+                const rawValue = parseFloat(amountInput.value);
 
                 if (isNaN(rawValue) || rawValue <= 0) {
                     treasuryShareEl.innerText = '$0.00';
@@ -109,7 +119,29 @@
 
                 treasuryShareEl.innerText = '$' + Number(familyPart).toLocaleString();
                 capoShareEl.innerText = '$' + Number(capoPart).toLocaleString();
-            });
+            }
+
+            if (amountInput) {
+                amountInput.addEventListener('input', updateShares);
+                updateShares(); // Первоначальный расчет при перезагрузке с заполненным значением
+            }
+
+            if (tributeForm) {
+                tributeForm.addEventListener('submit', function(event) {
+                    const val = parseFloat(amountInput.value);
+                    if (val < 100) {
+                        alert("${springMacroRequestContext.getMessage('capo.tribute.js.min_alert')?js_string}");
+                        event.preventDefault();
+                        return;
+                    }
+
+                    const confirmTemplate = "${springMacroRequestContext.getMessage('capo.tribute.js.confirm')?js_string}";
+                    const confirmed = confirm(confirmTemplate.replace('%s', (val * 0.80).toFixed(2)));
+                    if (!confirmed) {
+                        event.preventDefault();
+                    }
+                });
+            }
         });
     </script>
 

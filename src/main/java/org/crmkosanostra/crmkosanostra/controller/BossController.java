@@ -45,6 +45,7 @@ public class BossController {
     @GetMapping("/members")
     public String getMembers(@AuthenticationPrincipal CustomUserDetails userDetails, Model model) {
         User boss = bossService.getBossById(userDetails.getUserId());
+        model.addAttribute("boss", boss);
         model.addAttribute("members", bossService.getFamilyMembers(boss));
         if (!model.containsAttribute("assignRoleRequest")) {
             model.addAttribute("assignRoleRequest", new BossDto.AssignRoleRequest(null, null));
@@ -155,8 +156,13 @@ public class BossController {
 
     @PostMapping("/diplomacy/declare-war")
     public String declareWar(@AuthenticationPrincipal CustomUserDetails userDetails,
-                             @ModelAttribute("diplomacyRequest") BossDto.DiplomacyRequest request,
+                             @Valid @ModelAttribute("diplomacyRequest") BossDto.DiplomacyRequest request,
+                             BindingResult bindingResult,
                              RedirectAttributes redirectAttributes) {
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Некорректный идентификатор целевой семьи");
+            return "redirect:/boss/diplomacy";
+        }
         try {
             User boss = bossService.getBossById(userDetails.getUserId());
             bossService.declareWar(boss, request);
@@ -169,8 +175,13 @@ public class BossController {
 
     @PostMapping("/diplomacy/propose-peace")
     public String proposePeace(@AuthenticationPrincipal CustomUserDetails userDetails,
-                               @ModelAttribute("diplomacyRequest") BossDto.DiplomacyRequest request,
+                               @Valid @ModelAttribute("diplomacyRequest") BossDto.DiplomacyRequest request,
+                               BindingResult bindingResult,
                                RedirectAttributes redirectAttributes) {
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Некорректный идентификатор целевой семьи");
+            return "redirect:/boss/diplomacy";
+        }
         try {
             User boss = bossService.getBossById(userDetails.getUserId());
             bossService.proposePeace(boss, request);
@@ -183,8 +194,13 @@ public class BossController {
 
     @PostMapping("/diplomacy/accept-peace")
     public String acceptPeace(@AuthenticationPrincipal CustomUserDetails userDetails,
-                              @ModelAttribute("diplomacyRequest") BossDto.DiplomacyRequest request,
+                              @Valid @ModelAttribute("diplomacyRequest") BossDto.DiplomacyRequest request,
+                              BindingResult bindingResult,
                               RedirectAttributes redirectAttributes) {
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Некорректный идентификатор целевой семьи");
+            return "redirect:/boss/diplomacy";
+        }
         try {
             User boss = bossService.getBossById(userDetails.getUserId());
             bossService.acceptPeace(boss, request);
@@ -208,6 +224,9 @@ public class BossController {
     public String getMessageNewForm(@AuthenticationPrincipal CustomUserDetails userDetails, Model model) {
         User boss = bossService.getBossById(userDetails.getUserId());
         model.addAttribute("recipients", bossService.getAllowedRecipientsForBoss(boss));
+        if (!model.containsAttribute("messageRequest")) {
+            model.addAttribute("messageRequest", new BossDto.BossMessageRequest(null, "", ""));
+        }
         return "boss/message_new";
     }
 
@@ -220,6 +239,7 @@ public class BossController {
 
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("errorMessage", "flash.message.error");
+            redirectAttributes.addFlashAttribute("messageRequest", request);
             return "redirect:/boss/messages/new";
         }
 
@@ -229,6 +249,7 @@ public class BossController {
             redirectAttributes.addFlashAttribute("successMessage", "flash.message.sent");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+            redirectAttributes.addFlashAttribute("messageRequest", request);
             return "redirect:/boss/messages/new";
         }
 

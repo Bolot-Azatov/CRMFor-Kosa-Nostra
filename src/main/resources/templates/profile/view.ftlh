@@ -12,7 +12,7 @@
                     <!-- Фотография бойца -->
                     <div class="avatar-box <#if (user.photoUrl)?? && user.photoUrl?has_content>clickable</#if>"
                             <#if (user.photoUrl)?? && user.photoUrl?has_content>
-                        onclick="openPhotoModal('${user.photoUrl}')"
+                        onclick="openPhotoModal('${(user.photoUrl)?js_string}')"
                         title="${springMacroRequestContext.getMessage('profile.click_zoom')}"
                             </#if>>
                         <#if (user.photoUrl)?? && user.photoUrl?has_content>
@@ -61,11 +61,23 @@
                     <p class="bio-text">${((user.bio)!springMacroRequestContext.getMessage("profile.bio_empty"))?trim}</p>
                 </div>
 
-                <!-- Действия с безопасными эмодзи в шаблоне -->
+                <!-- Действия -->
                 <div class="actions-panel">
-                    <a href="/family" class="btn-action">
-                        🏛️ <@spring.message "profile.btn.to_family"/>
-                    </a>
+                    <#if (user.familyId)??>
+                        <#if known && (SPRING_SECURITY_CONTEXT.authentication.principal.familyId)?? && SPRING_SECURITY_CONTEXT.authentication.principal.familyId == user.familyId>
+                            <a href="/family" class="btn-action">
+                                🏛️ <@spring.message "profile.btn.to_family"/>
+                            </a>
+                        <#else>
+                            <a href="/family/${user.familyId}" class="btn-action">
+                                🏛️ <@spring.message "profile.btn.to_family"/>
+                            </a>
+                        </#if>
+                    <#else>
+                        <a href="/hierarchy" class="btn-action">
+                            🏛️ <@spring.message "profile.btn.to_family"/>
+                        </a>
+                    </#if>
                     <a href="/articles" class="btn-action">
                         📜 <@spring.message "profile.btn.to_articles"/>
                     </a>

@@ -34,9 +34,13 @@
                             <span style="font-family: var(--font-heading); color: var(--brass-gold); font-size: 0.8rem;">${m.role}</span>
                         </td>
                         <td>
-                            <button type="button" onclick="selectUserForRole(${m.id}, '${m.username}')" class="btn-action" style="padding: 0.25rem 0.6rem; font-size: 0.75rem;">
-                                <@spring.message "boss.members.btn.select"/>
-                            </button>
+                            <#if m.role != 'BOSS'>
+                                <button type="button" onclick="selectUserForRole(${m.id}, '${m.username}')" class="btn-action" style="padding: 0.25rem 0.6rem; font-size: 0.75rem;">
+                                    <@spring.message "boss.members.btn.select"/>
+                                </button>
+                            <#else>
+                                <span style="color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase;">👑 <@spring.message "role.boss.badge"/></span>
+                            </#if>
                         </td>
                     </tr>
                 </#list>

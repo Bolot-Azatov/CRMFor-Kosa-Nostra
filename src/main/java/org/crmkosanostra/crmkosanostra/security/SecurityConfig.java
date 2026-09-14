@@ -49,7 +49,7 @@ public class SecurityConfig {
                                 "/error"
                         ).permitAll()
                         .requestMatchers("/boss/**").hasRole("BOSS")
-                        .requestMatchers("/consigliere/**").hasAnyRole("CONSIGLIERE", "BOSS")
+                        .requestMatchers("/consigliere/**").hasRole("CONSIGLIERE")
                         .requestMatchers("/capo/**").hasAnyRole("CAPO", "BOSS")
                         .requestMatchers("/family/**", "/family", "/hierarchy", "/hierarchy/**", "/profile/**", "/profile")
                         .hasAnyRole("SOLDIER", "CAPO", "CONSIGLIERE", "BOSS")
@@ -66,11 +66,17 @@ public class SecurityConfig {
                         .failureUrl("/login?error=true")
                         .permitAll()
                 )
+                .rememberMe(remember -> remember
+                        .key("cosa-nostra-syndicate-secret-key-1950")
+                        .tokenValiditySeconds(86400 * 14) // Запоминаем бойца на 14 дней
+                        .rememberMeParameter("remember-me")
+                        .userDetailsService(customUserDetailsService)
+                )
                 .logout(logout -> logout
                         .logoutUrl("/logout")
                         .logoutSuccessUrl("/login?logout=true")
                         .invalidateHttpSession(true)
-                        .deleteCookies("JSESSIONID")
+                        .deleteCookies("JSESSIONID", "remember-me")
                         .permitAll()
                 )
                 .exceptionHandling(ex -> ex

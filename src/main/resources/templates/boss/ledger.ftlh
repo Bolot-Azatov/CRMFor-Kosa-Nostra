@@ -1,7 +1,7 @@
 <#import "/spring.ftl" as spring/>
 <#import "../layout/layout.ftlh" as layout/>
 
-<@layout.page_layout title="${springMacroRequestContext.getMessage('boss.treasury.subtitle')} | ${springMacroRequestContext.getMessage('role.boss.badge')}" activeTab="racket">
+<@layout.page_layout title="${springMacroRequestContext.getMessage('boss.treasury.subtitle')} | ${springMacroRequestContext.getMessage('role.boss.badge')}" activeTab="boss_ledger">
 
     <div class="page-header-bar">
         <div>
@@ -27,7 +27,7 @@
                 <#list ledger as item>
                     <tr>
                         <td>#${item.id}</td>
-                        <td style="color: var(--brass-gold);">${(item.capo.username)!springMacroRequestContext.getMessage('family.other.family_prefix')}</td>
+                        <td style="color: var(--brass-gold); font-weight: bold;">${(item.capo.username)!springMacroRequestContext.getMessage('user.anonymous')}</td>
                         <td>
                             <#if (item.amount >= 0)>
                                 <span class="amount-positive">+$${item.amount?string[",##0.00"]}</span>

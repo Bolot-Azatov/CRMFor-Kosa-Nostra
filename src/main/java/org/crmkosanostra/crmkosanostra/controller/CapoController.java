@@ -37,9 +37,14 @@ public class CapoController {
     }
 
     @GetMapping("/tribute")
-    public String getTributePage(Model model) {
+    public String getTributePage(@AuthenticationPrincipal CustomUserDetails userDetails, Model model) {
         if (!model.containsAttribute("tributeRequest")) {
             model.addAttribute("tributeRequest", new TributeRequest());
+        }
+        try {
+            model.addAttribute("business", capoService.getCapoBusiness(userDetails.getUserId()));
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("error", e.getMessage());
         }
         return "capo/tribute";
     }
@@ -48,12 +53,15 @@ public class CapoController {
     public String submitTribute(@AuthenticationPrincipal CustomUserDetails userDetails,
                                 @Valid @ModelAttribute("tributeRequest") TributeRequest request,
                                 BindingResult bindingResult,
+                                @RequestParam(value = "source", required = false, defaultValue = "business") String source,
                                 RedirectAttributes redirectAttributes) {
 
+        String redirectUrl = "tribute".equalsIgnoreCase(source) ? "redirect:/capo/tribute" : "redirect:/capo/business";
+
         if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.tributeRequest", bindingResult);
+            redirectAttributes.addFlashAttribute("errorMessage", "flash.tribute.error");
             redirectAttributes.addFlashAttribute("tributeRequest", request);
-            return "redirect:/capo/business";
+            return redirectUrl;
         }
 
         try {
@@ -61,8 +69,9 @@ public class CapoController {
             redirectAttributes.addFlashAttribute("successMessage", "flash.tribute.success");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+            redirectAttributes.addFlashAttribute("tributeRequest", request);
         }
 
-        return "redirect:/capo/business";
+        return redirectUrl;
     }
 }

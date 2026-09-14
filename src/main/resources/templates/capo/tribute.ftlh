@@ -1,7 +1,7 @@
 <#import "/spring.ftl" as spring/>
 <#import "../layout/layout.ftlh" as layout/>
 
-<@layout.page_layout title="${springMacroRequestContext.getMessage('capo.tribute.title')} | Cosa Nostra" activeTab="racket">
+<@layout.page_layout title="${springMacroRequestContext.getMessage('capo.tribute.title')} | Cosa Nostra" activeTab="tribute">
 
     <div style="max-width: 680px; margin: 0 auto;">
 
@@ -23,48 +23,56 @@
                 <@spring.message "capo.tribute.rule_alert"/>
             </div>
 
-            <form action="/capo/tribute" method="POST" id="tributeForm">
-                <input type="hidden" name="${(_csrf.parameterName)!'_csrf'}" value="${(_csrf.token)!''}"/>
+            <#if business??>
+                <form action="/capo/tribute" method="POST" id="tributeForm">
+                    <input type="hidden" name="${(_csrf.parameterName)!'_csrf'}" value="${(_csrf.token)!''}"/>
+                    <input type="hidden" name="source" value="tribute"/>
 
-                <div class="form-group">
-                    <label for="amountInput" class="form-label"><@spring.message "capo.tribute.amount_label"/></label>
-                    <input type="number"
-                           step="0.01"
-                           min="100.00"
-                           id="amountInput"
-                           name="amount"
-                           class="form-input"
-                           placeholder="1000.00"
-                           onkeydown="if(event.key === '-' || event.key === '+' || event.key === 'e' || event.key === 'E') event.preventDefault();"
-                           oninput="if(this.value !== '' && this.value < 0) this.value = Math.abs(this.value);"
-                           required
-                           autofocus />
-                </div>
-
-                <!-- Блок расчета долей -->
-                <div class="ledger-preview" style="background: #121212; border: 1px dashed rgba(197, 160, 89, 0.35); padding: 1.2rem; margin: 1.5rem 0; display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; text-align: center;">
-                    <div>
-                        <div style="font-size: 0.72rem; text-transform: uppercase; color: var(--text-muted); letter-spacing: 1px;"><@spring.message "capo.tribute.calc.treasury"/></div>
-                        <div id="treasuryPreview" style="font-family: var(--font-heading); font-size: 1.3rem; font-weight: bold; margin-top: 0.4rem; color: #81C784;">$0.00</div>
+                    <div class="form-group">
+                        <label for="amountInput" class="form-label"><@spring.message "capo.tribute.amount_label"/></label>
+                        <input type="number"
+                               step="0.01"
+                               min="100.00"
+                               id="amountInput"
+                               name="amount"
+                               class="form-input"
+                               placeholder="1000.00"
+                               value="${(tributeRequest.amount)!''}"
+                               onkeydown="if(event.key === '-' || event.key === '+' || event.key === 'e' || event.key === 'E') event.preventDefault();"
+                               oninput="if(this.value !== '' && this.value < 0) this.value = Math.abs(this.value);"
+                               required
+                               autofocus />
                     </div>
-                    <div>
-                        <div style="font-size: 0.72rem; text-transform: uppercase; color: var(--text-muted); letter-spacing: 1px;"><@spring.message "capo.tribute.calc.capo"/></div>
-                        <div id="capoPreview" style="font-family: var(--font-heading); font-size: 1.3rem; font-weight: bold; margin-top: 0.4rem; color: var(--brass-gold);">$0.00</div>
+
+                    <!-- Блок расчета долей -->
+                    <div class="ledger-preview" style="background: #121212; border: 1px dashed rgba(197, 160, 89, 0.35); padding: 1.2rem; margin: 1.5rem 0; display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; text-align: center;">
+                        <div>
+                            <div style="font-size: 0.72rem; text-transform: uppercase; color: var(--text-muted); letter-spacing: 1px;"><@spring.message "capo.tribute.calc.treasury"/></div>
+                            <div id="treasuryPreview" style="font-family: var(--font-heading); font-size: 1.3rem; font-weight: bold; margin-top: 0.4rem; color: #81C784;">$0.00</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 0.72rem; text-transform: uppercase; color: var(--text-muted); letter-spacing: 1px;"><@spring.message "capo.tribute.calc.capo"/></div>
+                            <div id="capoPreview" style="font-family: var(--font-heading); font-size: 1.3rem; font-weight: bold; margin-top: 0.4rem; color: var(--brass-gold);">$0.00</div>
+                        </div>
                     </div>
-                </div>
 
-                <div class="form-group">
-                    <label for="description" class="form-label"><@spring.message "capo.tribute.desc_label"/></label>
-                    <textarea id="description"
-                              name="description"
-                              rows="3"
-                              class="form-textarea"
-                              placeholder="${springMacroRequestContext.getMessage('capo.tribute.desc_placeholder')}"
-                              style="resize: vertical;"></textarea>
-                </div>
+                    <div class="form-group">
+                        <label for="description" class="form-label"><@spring.message "capo.tribute.desc_label"/></label>
+                        <textarea id="description"
+                                  name="description"
+                                  rows="3"
+                                  class="form-textarea"
+                                  placeholder="${springMacroRequestContext.getMessage('capo.tribute.desc_placeholder')}"
+                                  style="resize: vertical;">${(tributeRequest.description)!''}</textarea>
+                    </div>
 
-                <button type="submit" class="btn-submit" id="submitBtn"><@spring.message "capo.tribute.submit"/></button>
-            </form>
+                    <button type="submit" class="btn-submit" id="submitBtn"><@spring.message "capo.tribute.submit"/></button>
+                </form>
+            <#else>
+                <div style="background: #121212; border: 1px solid rgba(255,119,119,0.3); padding: 1.5rem; text-align: center; color: var(--text-muted); margin-bottom: 1.5rem;">
+                    <p style="color: #FF7777; margin-bottom: 0.5rem;">⛔ <@spring.message "capo.business.tribute_locked"/></p>
+                </div>
+            </#if>
 
             <a href="/capo/business" style="display: inline-block; margin-top: 1.5rem; font-family: var(--font-heading); font-size: 0.82rem; letter-spacing: 1px; text-transform: uppercase;">
                 <@spring.message "capo.tribute.back_to_biz"/>
@@ -80,8 +88,9 @@
             const capoPreview = document.getElementById('capoPreview');
             const tributeForm = document.getElementById('tributeForm');
 
-            amountInput.addEventListener('input', function(event) {
-                const raw = parseFloat(event.target.value);
+            function updatePreview() {
+                if (!amountInput) return;
+                const raw = parseFloat(amountInput.value);
 
                 if (isNaN(raw) || raw <= 0) {
                     treasuryPreview.innerText = '$0.00';
@@ -100,22 +109,29 @@
                     minimumFractionDigits: 2,
                     maximumFractionDigits: 2
                 });
-            });
+            }
 
-            tributeForm.addEventListener('submit', function(event) {
-                const val = parseFloat(amountInput.value);
-                if (val < 100) {
-                    alert("${springMacroRequestContext.getMessage('capo.tribute.js.min_alert')}");
-                    event.preventDefault();
-                    return;
-                }
+            if (amountInput) {
+                amountInput.addEventListener('input', updatePreview);
+                updatePreview(); // Пересчитываем сразу при загрузке, если значение было подставлено из модели
+            }
 
-                const confirmTemplate = "${springMacroRequestContext.getMessage('capo.tribute.js.confirm')}";
-                const confirmed = confirm(confirmTemplate.replace('%s', (val * 0.80).toFixed(2)));
-                if (!confirmed) {
-                    event.preventDefault();
-                }
-            });
+            if (tributeForm) {
+                tributeForm.addEventListener('submit', function(event) {
+                    const val = parseFloat(amountInput.value);
+                    if (val < 100) {
+                        alert("${springMacroRequestContext.getMessage('capo.tribute.js.min_alert')?js_string}");
+                        event.preventDefault();
+                        return;
+                    }
+
+                    const confirmTemplate = "${springMacroRequestContext.getMessage('capo.tribute.js.confirm')?js_string}";
+                    const confirmed = confirm(confirmTemplate.replace('%s', (val * 0.80).toFixed(2)));
+                    if (!confirmed) {
+                        event.preventDefault();
+                    }
+                });
+            }
         });
     </script>
 

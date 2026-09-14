@@ -44,7 +44,7 @@
 
             <div class="form-group">
                 <label for="password" class="form-label"><@spring.message "auth.register.password"/></label>
-                <@spring.formPasswordInput "registerRequest.password" 'id="password" class="form-input" placeholder="••••••••" maxlength="10" required' />
+                <@spring.formPasswordInput "registerRequest.password" 'id="password" class="form-input" placeholder="••••••••" maxlength="100" required' />
                 <span class="field-error"><@spring.showErrors "<br>"/></span>
             </div>
         </div>
@@ -52,7 +52,18 @@
         <div class="form-row">
             <div class="form-group">
                 <label for="familyName" class="form-label"><@spring.message "auth.register.family"/></label>
-                <@spring.formInput "registerRequest.familyName" 'id="familyName" class="form-input" placeholder="Corleone" required' />
+                <select id="familyName" name="familyName" class="form-select" required>
+                    <option value="" disabled <#if !(registerRequest.familyName)??>selected</#if>>
+                        <@spring.message "auth.register.select_family"/>
+                    </option>
+                    <#if families??>
+                        <#list families as f>
+                            <option value="${f.name}" <#if (registerRequest.familyName!'') == f.name>selected</#if>>
+                                <@spring.message "family.other.family_prefix"/> ${f.name}
+                            </option>
+                        </#list>
+                    </#if>
+                </select>
                 <span class="field-error"><@spring.showErrors "<br>"/></span>
             </div>
 

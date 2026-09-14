@@ -69,7 +69,7 @@
                 <#list ledger as item>
                     <tr>
                         <td>#${item.id}</td>
-                        <td style="color: var(--brass-gold);">${(item.capo.username)!springMacroRequestContext.getMessage('family.other.family_prefix')}</td>
+                        <td style="color: var(--brass-gold); font-weight: bold;">${(item.capo.username)!springMacroRequestContext.getMessage('user.anonymous')}</td>
                         <td style="font-family: var(--font-heading); font-weight: bold;">
                             <#if (item.amount >= 0)>
                                 <span class="amount-positive">+$${item.amount?string[",##0.00"]}</span>

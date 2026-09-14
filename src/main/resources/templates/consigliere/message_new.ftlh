@@ -16,12 +16,22 @@
 
             <div class="form-group">
                 <label class="form-label"><@spring.message "consigliere.message_new.subject"/></label>
-                <input type="text" name="subject" class="form-input" placeholder="Brooklyn Dock Audit..." required />
+                <input type="text"
+                       name="subject"
+                       value="${(messageRequest.subject)!''}"
+                       class="form-input"
+                       placeholder="<@spring.message 'consigliere.message_new.subject_placeholder'/>"
+                       required />
             </div>
 
             <div class="form-group">
                 <label class="form-label"><@spring.message "consigliere.message_new.body"/></label>
-                <textarea name="body" rows="6" class="form-textarea" placeholder="..." style="resize: vertical;" required></textarea>
+                <textarea name="body"
+                          rows="6"
+                          class="form-textarea"
+                          placeholder="<@spring.message 'consigliere.message_new.body_placeholder'/>"
+                          style="resize: vertical;"
+                          required>${(messageRequest.body)!''}</textarea>
             </div>
 
             <button type="submit" class="btn-submit">

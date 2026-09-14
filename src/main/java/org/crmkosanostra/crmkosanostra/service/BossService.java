@@ -53,6 +53,11 @@ public class BossService {
             throw new BusinessLogicException("Cannot change role for member of another family");
         }
 
+        // Защита: Дон не может разжаловать самого себя
+        if (targetUser.getId().equals(boss.getId())) {
+            throw new BusinessLogicException("Дон не может изменить ранг самому себе");
+        }
+
         // Запрет назначения ролей ANONYMOUS и BOSS через данный эндпоинт
         if (request.newRole() == Role.BOSS || request.newRole() == Role.ANONYMOUS) {
             throw new BusinessLogicException("Invalid role assignment target");
@@ -122,11 +127,18 @@ public class BossService {
     // --- 4. Дипломатия ---
     @Transactional
     public void declareWar(User boss, BossDto.DiplomacyRequest request) {
+        if (request == null || request.targetFamilyId() == null || request.targetFamilyId() <= 0) {
+            throw new BusinessLogicException("Некорректный идентификатор целевой семьи");
+        }
         changeRelationStatus(boss, request.targetFamilyId(), RelationStatus.WAR, null);
     }
 
     @Transactional
     public void proposePeace(User boss, BossDto.DiplomacyRequest request) {
+        if (request == null || request.targetFamilyId() == null || request.targetFamilyId() <= 0) {
+            throw new BusinessLogicException("Некорректный идентификатор целевой семьи");
+        }
+
         FamilyRelation relation = relationRepository.findRelationBetween(boss.getFamily().getId(), request.targetFamilyId())
                 .orElseThrow(() -> new ResourceNotFoundException("Дипломатические отношения не найдены"));
 
@@ -143,6 +155,10 @@ public class BossService {
 
     @Transactional
     public void acceptPeace(User boss, BossDto.DiplomacyRequest request) {
+        if (request == null || request.targetFamilyId() == null || request.targetFamilyId() <= 0) {
+            throw new BusinessLogicException("Некорректный идентификатор целевой семьи");
+        }
+
         FamilyRelation relation = relationRepository.findRelationBetween(
                         boss.getFamily().getId(), request.targetFamilyId())
                 .orElseThrow(() -> new ResourceNotFoundException("Отношения между семьями не найдены"));
@@ -163,6 +179,10 @@ public class BossService {
     }
 
     private void changeRelationStatus(User boss, Long targetFamilyId, RelationStatus newStatus, Family initiator) {
+        if (targetFamilyId == null || targetFamilyId <= 0) {
+            throw new BusinessLogicException("Некорректный идентификатор целевой семьи");
+        }
+
         if (boss.getFamily().getId().equals(targetFamilyId)) {
             throw new BusinessLogicException("Нельзя изменять дипломатический статус с собственной семьей");
         }

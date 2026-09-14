@@ -31,7 +31,7 @@ spring:
 
   liquibase:
     change-log: classpath:db/changelog/master.yml
-    drop-first: true
+#    drop-first: true
     enabled: true
 
   freemarker:
