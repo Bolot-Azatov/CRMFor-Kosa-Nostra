@@ -112,7 +112,7 @@
                 <div class="soldiers-grid">
                     <#if fam.soldiers?? && fam.soldiers?has_content>
                         <#list fam.soldiers as s>
-                            <a href="/profile/${s.id}" class="soldier-card-link" title="${springMacroRequestContext.getMessage('role.soldier.title')}">
+                            <a href="/profile/${s.id}" class="soldier-card-link" title="${s.username}">
                                 <div class="avatar-frame" style="width: 36px; height: 36px; font-size: 0.9rem;">
                                     <#if (s.photoUrl)?? && s.photoUrl?has_content>
                                         <img src="${s.photoUrl}" alt="${s.username}" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerText='${(s.username[0..0])!'S'}';"/>
@@ -120,9 +120,9 @@
                                         ${(s.username[0..0])!'S'}
                                     </#if>
                                 </div>
-                                <div style="text-align: left; min-width: 0;">
-                                    <div style="color: var(--text-main); font-family: var(--font-heading); font-size: 0.85rem; font-weight: bold; word-break: break-word;">${s.username}</div>
-                                    <div style="font-size: 0.68rem; color: var(--brass-gold); text-transform: uppercase;"><@spring.message "role.soldier.title"/></div>
+                                <div class="soldier-info">
+                                    <div class="soldier-name" title="${s.username}">${s.username}</div>
+                                    <div class="soldier-role"><@spring.message "role.soldier.title"/></div>
                                 </div>
                             </a>
                         </#list>

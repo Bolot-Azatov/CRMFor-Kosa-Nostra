@@ -100,7 +100,7 @@
         <#if hierarchy.soldiers?? && hierarchy.soldiers?has_content>
             <div class="soldiers-grid">
                 <#list hierarchy.soldiers as soldier>
-                    <a href="/profile/${soldier.id}" class="soldier-card" title="${springMacroRequestContext.getMessage('role.soldier.title')}">
+                    <a href="/profile/${soldier.id}" class="soldier-card" title="${(soldier.username)!springMacroRequestContext.getMessage('family.unknown_member')}">
                         <div class="avatar-frame" style="width: 38px; height: 38px; font-size: 0.9rem;">
                             <#if (soldier.photoUrl)?? && soldier.photoUrl?has_content>
                                 <img src="${soldier.photoUrl}" alt="${soldier.username}" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerText='${(soldier.username[0..0])!'S'}';"/>
@@ -108,11 +108,11 @@
                                 ${(soldier.username[0..0])!'S'}
                             </#if>
                         </div>
-                        <div style="min-width: 0;">
-                            <div style="font-family: var(--font-heading); color: var(--text-main); font-size: 0.88rem; font-weight: bold; word-break: break-word;">
+                        <div class="soldier-info">
+                            <div class="soldier-name" title="${(soldier.username)!springMacroRequestContext.getMessage('family.unknown_member')}">
                                 ${(soldier.username)!springMacroRequestContext.getMessage("family.unknown_member")}
                             </div>
-                            <div style="color: var(--brass-gold); font-size: 0.72rem; text-transform: uppercase;"><@spring.message "role.soldier.title"/></div>
+                            <div class="soldier-role"><@spring.message "role.soldier.title"/></div>
                         </div>
                     </a>
                 </#list>

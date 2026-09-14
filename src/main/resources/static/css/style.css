@@ -901,21 +901,43 @@ img {
 .soldier-card, .soldier-card-link {
     background-color: #121212;
     border: 1px solid rgba(197, 160, 89, 0.2);
-    padding: 0.7rem 1rem;
-    width: 240px;
+    padding: 0.7rem 0.9rem;
+    width: 275px;
     max-width: 100%;
     display: flex;
     align-items: center;
     gap: 0.8rem;
     color: inherit;
     transition: all 0.3s ease;
-    word-break: break-word;
 }
 
 .soldier-card:hover, .soldier-card-link:hover {
     border-color: var(--brass-gold);
     transform: translateY(-2px);
     box-shadow: 0 0 15px rgba(197, 160, 89, 0.25);
+}
+
+.soldier-info {
+    min-width: 0;
+    flex: 1;
+    text-align: left;
+}
+
+.soldier-name {
+    font-family: var(--font-heading);
+    font-size: 0.85rem;
+    font-weight: bold;
+    color: var(--text-main);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.soldier-role {
+    font-size: 0.68rem;
+    color: var(--brass-gold);
+    text-transform: uppercase;
+    margin-top: 0.15rem;
 }
 
 /* --------------------------------------------------------------------------
