@@ -212,7 +212,7 @@ public class BossService {
     // --- 5. Почта Босса ---
     @Transactional
     public Message sendMessage(User boss, BossDto.BossMessageRequest request) {
-        User recipient = userRepository.findById(request.recipientId())
+        User recipient = userRepository.findById(request.getRecipientId())
                 .orElseThrow(() -> new ResourceNotFoundException("Recipient not found"));
 
         if (boss.getId().equals(recipient.getId())) {
@@ -237,15 +237,13 @@ public class BossService {
         Message message = Message.builder()
                 .sender(boss)
                 .recipient(recipient)
-                .subject(request.subject())
-                .body(request.body())
+                .subject(request.getSubject())
+                .body(request.getBody())
                 .sentAt(LocalDateTime.now())
                 .build();
 
         return messageRepository.save(message);
     }
-
-    // Добавить в src/main/java/org/crmkosanostra/crmkosanostra/service/BossService.java
 
     // Закрепление бизнеса за Капо (1 Капо = 1 бизнес)
     @Transactional
