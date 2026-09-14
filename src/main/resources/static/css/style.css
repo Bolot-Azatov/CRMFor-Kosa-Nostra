@@ -1175,7 +1175,7 @@ img {
 }
 
 /* --------------------------------------------------------------------------
-   МОДАЛЬНОЕ ОКНО ЗУМА ФОТО (БЕЗ 100vw И БЕЗ ВЫЛЕТОВ)
+   МОДАЛЬНОЕ ОКНО ЗУМА ФОТО (АДАПТИВНОЕ, БЕЗ ВЫЛЕТОВ)
    -------------------------------------------------------------------------- */
 .photo-modal {
     display: none;
@@ -1187,12 +1187,13 @@ img {
     bottom: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.88);
+    background-color: rgba(0, 0, 0, 0.9);
     backdrop-filter: blur(5px);
     align-items: center;
     justify-content: center;
     animation: fadeInModal 0.2s ease-out;
     padding: 1rem;
+    box-sizing: border-box;
 }
 
 .photo-modal.active {
@@ -1203,19 +1204,21 @@ img {
     position: relative;
     background: var(--bg-card);
     border: 2px solid var(--brass-gold);
-    padding: 1rem;
+    padding: 1.2rem;
     box-shadow: 0 0 50px rgba(0, 0, 0, 0.95), inset 0 0 20px rgba(61, 12, 2, 0.5);
     text-align: center;
     animation: scaleInModal 0.25s ease-out;
-    max-width: 95%;
+    max-width: min(90vw, 480px); /* Карточка никогда не шире экрана */
     max-height: 90vh;
+    box-sizing: border-box;
 }
 
 .photo-modal-img {
-    width: 440px;
-    height: 440px;
-    max-width: 80vw;
-    max-height: 65vh;
+    width: 100%; /* Занимает доступную ширину внутри карточки */
+    max-width: 400px;
+    height: auto; /* Сохраняет оригинальные пропорции фото */
+    max-height: 65vh; /* Не вылезает по высоте */
+    aspect-ratio: 1 / 1;
     object-fit: cover;
     display: block;
     border: 1px solid rgba(197, 160, 89, 0.4);
@@ -1229,19 +1232,20 @@ img {
     font-size: 0.82rem;
     letter-spacing: 1.5px;
     text-transform: uppercase;
+    word-break: break-word;
 }
 
 .photo-modal-close {
     position: absolute;
-    top: -12px;
-    right: -12px;
-    width: 30px;
-    height: 30px;
+    top: 6px;
+    right: 6px; /* Крестик расположен аккуратно внутри карточки */
+    width: 28px;
+    height: 28px;
     background: var(--burgundy-dark);
     border: 1px solid var(--brass-gold);
     border-radius: 50%;
     color: var(--brass-gold);
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     line-height: 1;
     cursor: pointer;
     display: flex;
@@ -1249,6 +1253,7 @@ img {
     justify-content: center;
     transition: all 0.2s ease;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+    z-index: 10;
 }
 
 .photo-modal-close:hover {
