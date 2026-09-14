@@ -50,6 +50,7 @@
             padding-bottom: 2rem;
             border-bottom: 1px solid rgba(197, 160, 89, 0.2);
             margin-bottom: 2rem;
+            padding-right: 140px; /* Защита от наложения штампа */
         }
 
         .avatar-box {
@@ -70,7 +71,6 @@
             position: relative;
         }
 
-        /* Интерактив для кликабельной аватарки */
         .avatar-box.clickable {
             cursor: pointer;
             transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
@@ -107,6 +107,7 @@
 
         .user-title-group {
             flex-grow: 1;
+            min-width: 0; /* Для корректного word-break во flex-контейнере */
         }
 
         .username-title {
@@ -117,6 +118,8 @@
             letter-spacing: 2px;
             margin-bottom: 0.4rem;
             text-transform: uppercase;
+            word-break: break-word;
+            overflow-wrap: anywhere;
         }
 
         .role-badge {
@@ -139,16 +142,6 @@
             margin-bottom: 2rem;
         }
 
-        @media (max-width: 580px) {
-            .dossier-header {
-                flex-direction: column;
-                text-align: center;
-            }
-            .info-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
         .info-item {
             background-color: #121212;
             border: 1px solid rgba(197, 160, 89, 0.2);
@@ -169,7 +162,7 @@
             font-size: 1.05rem;
             color: var(--text-main);
             font-weight: bold;
-            word-break: break-all;
+            word-break: break-word;
         }
 
         .info-value.gold {
@@ -180,8 +173,19 @@
         .bio-panel {
             background-color: #121212;
             border: 1px solid rgba(197, 160, 89, 0.2);
-            padding: 1.2rem;
+            padding: 1.2rem 1.5rem;
             margin-bottom: 2rem;
+        }
+
+        /* Выровненный текст биографии */
+        .bio-text {
+            color: var(--text-main);
+            font-size: 0.95rem;
+            line-height: 1.7;
+            margin-top: 0.6rem;
+            white-space: pre-line;
+            word-break: break-word;
+            text-align: left;
         }
 
         .actions-panel {
@@ -190,6 +194,7 @@
             justify-content: flex-end;
             padding-top: 1.5rem;
             border-top: 1px dashed rgba(197, 160, 89, 0.2);
+            flex-wrap: wrap;
         }
 
         .btn-action {
@@ -216,7 +221,46 @@
             border-color: var(--brass-gold-hover);
         }
 
-        /* --- Стили для модального увеличения фотографии (x4) --- */
+        /* Мобильная адаптация */
+        @media (max-width: 650px) {
+            .dossier-card {
+                padding: 1.5rem 1.2rem;
+            }
+
+            .dossier-header {
+                flex-direction: column;
+                text-align: center;
+                padding-right: 0;
+                gap: 1.2rem;
+            }
+
+            .file-stamp {
+                position: static;
+                display: inline-block;
+                margin-bottom: 1rem;
+                transform: none;
+            }
+
+            .username-title {
+                font-size: 1.6rem;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .actions-panel {
+                justify-content: center;
+            }
+
+            .btn-action {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        /* Модальное окно увеличения фото */
         .photo-modal {
             display: none;
             position: fixed;
@@ -247,12 +291,11 @@
             max-width: 95vw;
         }
 
-        /* Ровно х4 от базового размера 110px = 440px */
         .photo-modal-img {
             width: 440px;
             height: 440px;
             max-width: 85vw;
-            max-height: 75vh;
+            max-height: 70vh;
             object-fit: cover;
             display: block;
             border: 1px solid rgba(197, 160, 89, 0.4);
@@ -311,7 +354,7 @@
                 <span class="file-stamp">ЛИЧНОЕ ДЕЛО №${user.id}</span>
 
                 <div class="dossier-header">
-                    <!-- Фотография бойца с кликом для зума -->
+                    <!-- Фотография бойца -->
                     <div class="avatar-box <#if (user.photoUrl)?? && user.photoUrl?has_content>clickable</#if>"
                             <#if (user.photoUrl)?? && user.photoUrl?has_content>
                         onclick="openPhotoModal('${user.photoUrl}')"
@@ -357,12 +400,10 @@
                     </div>
                 </div>
 
-                <!-- Досье / Биография -->
+                <!-- Досье / Биография: убраны пробелы и применен ?trim -->
                 <div class="bio-panel">
                     <span class="info-label">Досье / Характеристика</span>
-                    <p style="color: var(--text-main); font-size: 0.92rem; line-height: 1.6; margin-top: 0.5rem; white-space: pre-wrap;">
-                        ${(user.bio)!"Записи в архиве отсутствуют..."}
-                    </p>
+                    <p class="bio-text">${((user.bio)!"Записи в архиве отсутствуют...")?trim}</p>
                 </div>
 
                 <!-- Действия -->
@@ -376,7 +417,7 @@
                 </div>
             </div>
 
-            <!-- Модальное окно увеличения фотографии (x4) -->
+            <!-- Модальное окно увеличения фотографии -->
             <div id="photoModal" class="photo-modal" onclick="closePhotoModal(event)">
                 <div class="photo-modal-card">
                     <button type="button" class="photo-modal-close" onclick="closeModalDirect()" title="Закрыть">&times;</button>
