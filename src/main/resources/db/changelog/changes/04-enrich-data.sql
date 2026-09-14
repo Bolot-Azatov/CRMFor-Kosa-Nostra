@@ -10,85 +10,85 @@
 -- --- СЕМЬЯ GAMBINO (Family ID: 1) ---
 INSERT INTO users (id, username, password_hash, role, family_id, photo_url, bio, bio_en) VALUES
                                                                                              (18, 'james_failla', '$2a$12$on/8hD.t/h6GPu5Gdt.khunNPmf3C.5H6FCBjOYTAA8g.MDJ.1MVS', 'CAPO', 1,
-                                                                                              'https://upload.wikimedia.org/wikipedia/commons/7/77/James_Failla.jpg',
+                                                                                              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTuDz3knL61xpxDecah9PoB8CckxSE1PcNSJt3NfErS9g&s=10',
                                                                                               'Капо по кличке "Джимми Браун". Бессменный куратор синдиката по вывозу мусора и утилизации отходов в Большом Нью-Йорке.',
                                                                                               'Capo nicknamed "Jimmy Brown". Longtime overseer of the commercial waste and garbage hauling cartels across Greater New York.'),
 
                                                                                              (19, 'roy_demeo', '$2a$12$on/8hD.t/h6GPu5Gdt.khunNPmf3C.5H6FCBjOYTAA8g.MDJ.1MVS', 'SOLDIER', 1,
-                                                                                              'https://upload.wikimedia.org/wikipedia/commons/d/dd/Roy_DeMeo.jpg',
+                                                                                              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQfGA9KYjEqJjvDEub2MZYNEh3EAOLcjgzOnkvlZ8I4kA&s=10',
                                                                                               'Хладнокровный солдат семьи и главарь печально известной бригады мясников с Флэтбуш-авеню. Эксперт по угонам автомобилей.',
                                                                                               'Cold-blooded soldier and leader of the notorious Flatbush butcher crew. Specialist in stolen luxury car syndicates and contract hits.'),
 
                                                                                              (20, 'ettore_zappi', '$2a$12$on/8hD.t/h6GPu5Gdt.khunNPmf3C.5H6FCBjOYTAA8g.MDJ.1MVS', 'SOLDIER', 1,
-                                                                                              'https://upload.wikimedia.org/wikipedia/commons/2/2f/Ettore_Zappi_mugshot.jpg',
+                                                                                              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT8EA9_c_QmuPC78fqzWCVSbyjZtHPEZI2OdfVQMas8YQ&s=10',
                                                                                               'Ветеран сицилийской старой гвардии, доверенное лицо Карло Гамбино по контролю за грузоперевозками и складами в Бруклине.',
                                                                                               'Old-school Sicilian veteran, trusted courier of Carlo Gambino coordinating freight trucking unions and waterfront warehouses in Brooklyn.');
 
 -- --- СЕМЬЯ GENOVESE (Family ID: 2) ---
 INSERT INTO users (id, username, password_hash, role, family_id, photo_url, bio, bio_en) VALUES
                                                                                              (21, 'matthew_ianniello', '$2a$12$on/8hD.t/h6GPu5Gdt.khunNPmf3C.5H6FCBjOYTAA8g.MDJ.1MVS', 'CAPO', 2,
-                                                                                              'https://upload.wikimedia.org/wikipedia/commons/e/e4/MattyIanniello.jpg',
+                                                                                              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSlQSIWxGwfd-qHunElC55h6T-Cqe74gP0i28jxsFcxgw&s=10',
                                                                                               'Капо по кличке "Мэтти Лошадь". Контролирует барно-ресторанную индустрию, ночные клубы и индустрию развлечений Таймс-Сквер.',
                                                                                               'Capo nicknamed "Matty the Horse". Undisputed kingpin of Times Square hospitality, topless bars, and Midtown entertainment venues.'),
 
                                                                                              (22, 'frank_tieri', '$2a$12$on/8hD.t/h6GPu5Gdt.khunNPmf3C.5H6FCBjOYTAA8g.MDJ.1MVS', 'SOLDIER', 2,
-                                                                                              'https://upload.wikimedia.org/wikipedia/commons/8/87/Frank_Tieri.jpg',
+                                                                                              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTxWkmdcfK46XpaGwWkM3xBphk74YiPHJoYcBEQqSXFbg&s=10',
                                                                                               'Солдат по кличке "Фунзи". Эксперт по хитроумному ростовщичеству и координатор бригад в Бронксе и округе Вестчестер.',
                                                                                               'Soldier nicknamed "Funzi". Cunning loan-sharking strategist coordinating Bronx extortion rings and Westchester bookmaking.'),
 
                                                                                              (23, 'venero_mangano', '$2a$12$on/8hD.t/h6GPu5Gdt.khunNPmf3C.5H6FCBjOYTAA8g.MDJ.1MVS', 'SOLDIER', 2,
-                                                                                              'https://upload.wikimedia.org/wikipedia/commons/4/43/Venero_Mangano.jpg',
+                                                                                              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ_4tze0hvijk7KvoYGjCryjeTlRPYPCDtSXUkSKiTJsw&s=10',
                                                                                               'Боец "Бенни Яйца". Руководит операциями на рыбном рынке Фултон и координирует силовое давление на оконный картель.',
                                                                                               'Soldier "Benny Eggs". Ground operative at Fulton Fish Market and chief enforcer across Manhattan replacement window rackets.');
 
 -- --- СЕМЬЯ LUCCHESE (Family ID: 3) ---
 INSERT INTO users (id, username, password_hash, role, family_id, photo_url, bio, bio_en) VALUES
                                                                                              (24, 'paul_vario', '$2a$12$on/8hD.t/h6GPu5Gdt.khunNPmf3C.5H6FCBjOYTAA8g.MDJ.1MVS', 'CAPO', 3,
-                                                                                              'https://upload.wikimedia.org/wikipedia/commons/e/ea/Paul_Vario_mugshot.jpg',
+                                                                                              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTgp-jrFfymkPlAq_icOcyzlNOVE8lnRrrAKvy1b1BPvA&s=10',
                                                                                               'Грозный капо из Бруклина. Полновластный хозяин логистических терминалов и грузовых авиалиний аэропорта Айдлуайлд (JFK).',
                                                                                               'Formidable Brooklyn Capo. Undisputed overlord of air cargo hijackings and logistics unions surrounding Idlewild (JFK) Airport.'),
 
                                                                                              (25, 'salvatore_santoro', '$2a$12$on/8hD.t/h6GPu5Gdt.khunNPmf3C.5H6FCBjOYTAA8g.MDJ.1MVS', 'SOLDIER', 3,
-                                                                                              'https://upload.wikimedia.org/wikipedia/commons/3/33/Salvatore_Santoro.jpg',
+                                                                                              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTa8_nxFzAt471gtmb_aZAbQ07pNVFFZcPNFSOF6_trsA&s=10',
                                                                                               'Солдат по прозвищу "Том Микс". Контролирует подпольные тотализаторы в Гарлеме и профсоюзы водителей грузовиков.',
                                                                                               'Soldier known as "Tom Mix". Mastermind of East Harlem numbers banks and Teamsters union influence peddling.'),
 
                                                                                              (26, 'christopher_furnari', '$2a$12$on/8hD.t/h6GPu5Gdt.khunNPmf3C.5H6FCBjOYTAA8g.MDJ.1MVS', 'SOLDIER', 3,
-                                                                                              'https://upload.wikimedia.org/wikipedia/commons/7/7b/Christopher_Furnari.jpg',
+                                                                                              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT_6W2Ahr6Ekx9YtdcBUO9hgKjyv71WJhR7C6VhiIXSsw&s=10',
                                                                                               'Боец по кличке "Кристи Тик". Хозяин нелегального игорного клуба в Астории, специалист по разрешению спорных конфликтов.',
                                                                                               'Soldier nicknamed "Christie Tick". Operator of premier illegal card rooms in Astoria and skilled syndicate mediator.');
 
 -- --- СЕМЬЯ BONANNO (Family ID: 4) ---
 INSERT INTO users (id, username, password_hash, role, family_id, photo_url, bio, bio_en) VALUES
                                                                                              (27, 'philip_rastelli', '$2a$12$on/8hD.t/h6GPu5Gdt.khunNPmf3C.5H6FCBjOYTAA8g.MDJ.1MVS', 'CAPO', 4,
-                                                                                              'https://upload.wikimedia.org/wikipedia/commons/a/af/Philip_Rastelli.jpg',
+                                                                                              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS5pI_4wCcmM4zrejpaxz7_VB8754iSgabnNp9X7soOxA&s',
                                                                                               'Капо по прозвищу "Расти". Владелец сети коммерческих пекарен и оператор кассовых аппаратов в Квинсе и Гринпойнте.',
                                                                                               'Capo known as "Rusty". Ruler of Queens lunch wagon concessions, bakery syndicates, and Greenpoint loan operations.'),
 
                                                                                              (28, 'alphonse_indelicato', '$2a$12$on/8hD.t/h6GPu5Gdt.khunNPmf3C.5H6FCBjOYTAA8g.MDJ.1MVS', 'SOLDIER', 4,
-                                                                                              'https://upload.wikimedia.org/wikipedia/commons/c/c2/Alphonse_Indelicato.jpg',
+                                                                                              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRzXLmwByBahFjrgSwFlWj-eowclcwQmskj5UxuEqMUVg&s',
                                                                                               'Солдат по прозвищу "Сонни Ред". Выдающийся стрелок и жесткий лидер бригады из Нижнего Манхэттена.',
                                                                                               'Soldier known as "Sonny Red". Fierce street commander and enforcer heading Lower East Side distribution cells.'),
 
                                                                                              (29, 'cesare_bonventre', '$2a$12$on/8hD.t/h6GPu5Gdt.khunNPmf3C.5H6FCBjOYTAA8g.MDJ.1MVS', 'SOLDIER', 4,
-                                                                                              'https://upload.wikimedia.org/wikipedia/commons/7/74/Cesare_Bonventre_mugshot.jpg',
+                                                                                              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQtW3tQ5eia6tTS1bimk4pCcz8WwnpRcB78iEmi4NfQ4Q&s=10',
                                                                                               'Молодой сицилийский солдат из клана "зипов". Предан традициям Кастелламмаре, обеспечивает безопасность штаба Бонанно.',
                                                                                               'Young Sicilian soldier from the "Zips" faction. Fiercely loyal to Castellammare traditions, bodyguard for senior leadership.');
 
 -- --- СЕМЬЯ COLOMBO (Family ID: 5) ---
 INSERT INTO users (id, username, password_hash, role, family_id, photo_url, bio, bio_en) VALUES
                                                                                              (30, 'joe_gallo', '$2a$12$on/8hD.t/h6GPu5Gdt.khunNPmf3C.5H6FCBjOYTAA8g.MDJ.1MVS', 'CAPO', 5,
-                                                                                              'https://upload.wikimedia.org/wikipedia/commons/3/3b/Joe_Gallo_Mugshot.jpg',
+                                                                                              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQggHskBCEp5v002PtZbsRXnLm0KtdLCfiBd3P1omLKMg&s=10',
                                                                                               'Капо по кличке "Бешеный Джо". Импульсивный бунтарь из Ред-Хук, держащий в страхе ростовщиков и автоматы с музыкальными боксами.',
                                                                                               'Capo nicknamed "Crazy Joe". Charismatic renegade based in Red Hook, running jukebox distribution and loan-sharking cells.'),
 
                                                                                              (31, 'john_franzese', '$2a$12$on/8hD.t/h6GPu5Gdt.khunNPmf3C.5H6FCBjOYTAA8g.MDJ.1MVS', 'SOLDIER', 5,
-                                                                                              'https://upload.wikimedia.org/wikipedia/commons/4/4b/SonnyFranzese1965.jpg',
+                                                                                              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS5W1RdJslwCl1DXDPnQI8mYMb13_fYj0vLr3JD6ciNrw&s=10',
                                                                                               'Легендарный солдат "Сонни" Франзезе. Несокрушимый сборщик дани и теневой инвестор звукозаписывающих студий.',
                                                                                               'Legendary soldier "Sonny" Franzese. Iron-willed tribute collector, nightlife financier, and Long Island loanshark.'),
 
                                                                                              (32, 'nicholas_bianco', '$2a$12$on/8hD.t/h6GPu5Gdt.khunNPmf3C.5H6FCBjOYTAA8g.MDJ.1MVS', 'SOLDIER', 5,
-                                                                                              'https://upload.wikimedia.org/wikipedia/commons/f/fb/Nicholas_Bianco_mugshot.jpg',
+                                                                                              'https://www.courant.com/wp-content/uploads/migration/2021/02/26/ZJRBVOLGYBGPZEDLQBTLZ22T3I.jpg?w=620',
                                                                                               'Дисциплинированный солдат бруклинской команды, доверенное лицо Профачи в операциях с оптовой торговлей оливковым маслом.',
                                                                                               'Disciplined Brooklyn crew soldier, trusted lieutenant handling olive oil import logistics and wholesale food distribution.');
 
