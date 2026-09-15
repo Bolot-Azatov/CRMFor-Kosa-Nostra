@@ -2,6 +2,7 @@ package org.crmkosanostra.crmkosanostra.exception;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.catalina.connector.ClientAbortException;
 import org.crmkosanostra.crmkosanostra.exception.exceptions.BadRequestException;
 import org.crmkosanostra.crmkosanostra.exception.exceptions.BusinessLogicException;
 import org.crmkosanostra.crmkosanostra.exception.exceptions.ResourceNotFoundException;
@@ -82,6 +83,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(org.springframework.security.access.AccessDeniedException.class)
     public void handleAccessDenied(org.springframework.security.access.AccessDeniedException ex) {
         throw ex;
+    }
+
+    @ExceptionHandler(ClientAbortException.class)
+    public void handleClientAbort(ClientAbortException ex, HttpServletRequest request) {
+        log.debug("Клиент закрыл соединение при скачивании [{}]: {}", request.getRequestURI(), ex.getMessage());
     }
 
     private void populateErrorModel(Model model, int status, String title, String message, String path) {
