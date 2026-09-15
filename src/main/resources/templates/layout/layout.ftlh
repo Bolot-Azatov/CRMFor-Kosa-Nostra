@@ -90,7 +90,7 @@
                         </div>
                     </a>
 
-                    <form action="/logout" method="post" class="logout-form">
+                    <form action="/logout" method="post" class="logout-form" onsubmit="localStorage.removeItem('syndicate_playlist'); localStorage.removeItem('syndicate_track_idx'); localStorage.removeItem('syndicate_audio_time');">
                         <#if _csrf??>
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         </#if>
@@ -192,6 +192,142 @@
         <#nested/>
 
     </main>
+
+    <!-- Аудио-плеер Синдиката -->
+    <audio id="syndicateAudio" preload="auto"></audio>
+
+    <!-- Скромная кнопка управления звуком в углу экрана -->
+    <div id="audioControls" style="position: fixed; bottom: 15px; right: 15px; z-index: 9999; background: var(--bg-card); border: var(--border-gold); padding: 6px 12px; display: flex; align-items: center; gap: 8px; font-family: var(--font-heading); font-size: 0.75rem; box-shadow: 0 2px 10px rgba(0,0,0,0.8);">
+        <span id="audioTrackName" style="color: var(--brass-gold); max-width: 150px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+            ♫ Синдикат
+        </span>
+        <button type="button" id="audioToggleBtn" style="background: none; border: none; color: var(--brass-gold); cursor: pointer; font-size: 1rem; line-height: 1;">
+            🔊
+        </button>
+    </div>
+
+    <script>
+        (function() {
+            // Список доступных треков
+            const TRACKS = [
+                { src: '/audio/track1.mp3', title: 'Композиция I' },
+                { src: '/audio/track2.mp3', title: 'Композиция II' },
+                { src: '/audio/track3.mp3', title: 'Композиция III' }
+            ];
+
+            const audio = document.getElementById('syndicateAudio');
+            const toggleBtn = document.getElementById('audioToggleBtn');
+            const trackNameEl = document.getElementById('audioTrackName');
+
+            // Алгоритм Фишера-Йетса для честного случайного перемешивания очереди
+            function shuffle(array) {
+                const arr = [...array];
+                for (let i = arr.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [arr[i], arr[j]] = [arr[j], arr[i]];
+                }
+                return arr;
+            }
+
+            // Инициализация или получение перемешанного плейлиста
+            function getPlaylist() {
+                let playlist = null;
+                try {
+                    playlist = JSON.parse(localStorage.getItem('syndicate_playlist'));
+                } catch (e) {}
+
+                // Если списка еще нет или он пуст — генерируем случайный порядок
+                if (!playlist || !Array.isArray(playlist) || playlist.length === 0) {
+                    playlist = shuffle(TRACKS);
+                    localStorage.setItem('syndicate_playlist', JSON.stringify(playlist));
+                    localStorage.setItem('syndicate_track_idx', '0');
+                    localStorage.setItem('syndicate_audio_time', '0');
+                }
+                return playlist;
+            }
+
+            let playlist = getPlaylist();
+            let currentIndex = parseInt(localStorage.getItem('syndicate_track_idx') || '0', 10);
+            if (currentIndex >= playlist.length) currentIndex = 0;
+
+            function loadAndPlayCurrent(startTime = 0) {
+                const track = playlist[currentIndex];
+                audio.src = track.src;
+                trackNameEl.textContent = '♫ ' + track.title;
+                trackNameEl.title = track.title;
+
+                audio.addEventListener('loadedmetadata', function onLoaded() {
+                    if (startTime > 0 && startTime < audio.duration) {
+                        audio.currentTime = startTime;
+                    }
+                    audio.removeEventListener('loadedmetadata', onLoaded);
+                });
+
+                // Пробуем запустить воспроизведение
+                const isMuted = localStorage.getItem('syndicate_audio_muted') === 'true';
+                if (!isMuted) {
+                    audio.play().then(() => {
+                        toggleBtn.textContent = '🔊';
+                    }).catch(() => {
+                        // Если браузер заблокировал autoplay без клика — ждем первого клика по странице
+                        toggleBtn.textContent = '🔇';
+                        const unlockAutoplay = () => {
+                            if (localStorage.getItem('syndicate_audio_muted') !== 'true') {
+                                audio.play().then(() => {
+                                    toggleBtn.textContent = '🔊';
+                                }).catch(() => {});
+                            }
+                            window.removeEventListener('click', unlockAutoplay);
+                        };
+                        window.addEventListener('click', unlockAutoplay);
+                    });
+                } else {
+                    toggleBtn.textContent = '🔇';
+                }
+            }
+
+            // Событие: трек закончился -> переходим к следующему по рандомной очереди
+            audio.addEventListener('ended', function() {
+                currentIndex++;
+                // Когда все 3 композиции из очереди отыграли:
+                if (currentIndex >= playlist.length) {
+                    // Заново перемешиваем треки в новом случайном порядке!
+                    playlist = shuffle(TRACKS);
+                    localStorage.setItem('syndicate_playlist', JSON.stringify(playlist));
+                    currentIndex = 0;
+                }
+                localStorage.setItem('syndicate_track_idx', currentIndex.toString());
+                localStorage.setItem('syndicate_audio_time', '0');
+                loadAndPlayCurrent(0);
+            });
+
+            // Сохраняем секунду воспроизведения перед уходом/переходом на другую страницу
+            window.addEventListener('beforeunload', function() {
+                if (!audio.paused && !isNaN(audio.currentTime)) {
+                    localStorage.setItem('syndicate_audio_time', audio.currentTime.toString());
+                }
+            });
+
+            // Кнопка включения/выключения звука
+            toggleBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                if (audio.paused) {
+                    audio.play().then(() => {
+                        localStorage.setItem('syndicate_audio_muted', 'false');
+                        toggleBtn.textContent = '🔊';
+                    }).catch(() => {});
+                } else {
+                    audio.pause();
+                    localStorage.setItem('syndicate_audio_muted', 'true');
+                    toggleBtn.textContent = '🔇';
+                }
+            });
+
+            // Запуск при открытии страницы с восстановлением прогресса воспроизведения
+            const savedTime = parseFloat(localStorage.getItem('syndicate_audio_time') || '0');
+            loadAndPlayCurrent(savedTime);
+        })();
+    </script>
 
     </body>
     </html>

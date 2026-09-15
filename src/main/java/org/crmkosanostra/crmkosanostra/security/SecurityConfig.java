@@ -44,6 +44,7 @@ public class SecurityConfig {
                                 "/h2-console/**",
                                 "/css/**",
                                 "/js/**",
+                                "/audio/**",
                                 "/images/**",
                                 "/403",
                                 "/error"

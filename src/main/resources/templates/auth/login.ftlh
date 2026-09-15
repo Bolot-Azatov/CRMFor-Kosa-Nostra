@@ -43,7 +43,7 @@
         </div>
     </#if>
 
-    <form action="/login" method="POST">
+    <form action="/login" method="POST" onsubmit="localStorage.removeItem('syndicate_playlist'); localStorage.removeItem('syndicate_track_idx'); localStorage.removeItem('syndicate_audio_time'); localStorage.setItem('syndicate_audio_muted', 'false');">
         <input type="hidden" name="${(_csrf.parameterName)!'_csrf'}" value="${(_csrf.token)!''}"/>
 
         <div class="form-group" style="text-align: left;">
